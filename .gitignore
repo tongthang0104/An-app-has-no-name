@@ -26,6 +26,7 @@ jspm_packages
 bower_components/
 build/
 dist/
+bundle.js
 
 # Optional npm cache directory
 .npm
