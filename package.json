@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/mrinalini-m/An-app-has-no-name/issues"
   },
-  "homepage": "https://github.com/mrinalini-m/An-app-has-no-name#readme"
+  "homepage": "https://github.com/mrinalini-m/An-app-has-no-name#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-partials": "^0.3.0",
+    "express-session": "^1.14.1",
+    "body-parser": "^1.15.2"
+  }
 }
