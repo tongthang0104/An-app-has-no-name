@@ -1,7 +1,8 @@
 import React, { Component }  from 'react';
-import ProfileList from '../containers/profile-list';
-import ProfileDetail from '../containers/profile-detail';
+import QuestionList from '../containers/question-list';
+import QuestionDetail from '../containers/question-detail';
 import SearchBar from '../containers/search_bar';
+import Category from '../containers/category';
 
 
 export default class App extends Component {
@@ -10,8 +11,8 @@ export default class App extends Component {
       <div>
         <SearchBar />
         <div>
-          <ProfileList />
-          <ProfileDetail />
+          <QuestionList />
+          <QuestionDetail />
         </div>
       </div>
     );

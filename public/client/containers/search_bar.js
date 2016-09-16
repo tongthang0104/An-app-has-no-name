@@ -9,24 +9,26 @@ export default class SearchBar extends Component {
   }
 
   onInputChange(event){
-      console.log(event.target.value);
       this.setState({term: event.target.value});
   }
-onFormsubmit(event){
-  event.preventDefault();
-}
+  onFormsubmit(event){
+    event.preventDefault();
+  }
+
   render() {
     return (
       <form onSubmit={this.onFormsubmit} className="input-group">
-        <input
-          placeholder="Search for someone"
-          className="form-control"
-          value={this.state.term}
-          onChange={this.onInputChange} />
-        <span className="input-group=btn">
-          <button type="submit" className="btn btn-secondary">Submit</button>
-        </span>
+      
       </form>
     );
   }
 }
+// 
+// <input
+//   placeholder="Search for someone"
+//   className="form-control"
+//   value={this.state.term}
+//   onChange={this.onInputChange} />
+// <span className="input-group=btn">
+//   <button type="submit" className="btn btn-secondary">Submit</button>
+// </span>

@@ -1,7 +1,21 @@
-export function selectProfile(profile) {
-  console.log(profile)
+import axios from 'axios';
+
+export const FETCH_QUESTION = 'FETCH_QUESTION';
+const ROOT_URL = '';
+
+export function fetchQuestion(){
+  // const request = axios.get{`${ROOT_URL}/`};
+
   return {
-    type: 'PERSON_SELECTED',
-    payload: profile
+    type: FETCH_QUESTION,
+    payload:request
+  };
+}
+
+export function selectQuestion(question) {
+  console.log(question)
+  return {
+    type: 'QUESTION_SELECTED',
+    payload: question
   }
 }

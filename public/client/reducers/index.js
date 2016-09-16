@@ -1,9 +1,14 @@
 import { combineReducers } from 'redux';
-import profiles from './reducer_profile';
-import activePerson from './reducer_active_person';
+import questions from './reducer_question';
+import activeQuestion from './reducer_active_question';
+import QuestionReducer from './reducer_post';
+import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
-  profiles,
-  activePerson
+  questions,
+  activeQuestion,
+  post: QuestionReducer,
+  form: formReducer
 });
+
 export default rootReducer;
