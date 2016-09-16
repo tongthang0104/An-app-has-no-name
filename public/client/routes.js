@@ -1,15 +1,14 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router'
-import App from './components/stuff';
-import Question from './components/question';
+import App from './components/app';
+import Correct from './components/correct';
+import Incorrect from './components/incorrect';
 
-const Hi = () => {
-  return <div>Whatup</div>
-}
 
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={App} />
-    <Route path="/question" component={Question} />
+    <Route path="/correct" component={Correct}/>
+    <Route path="/incorrect" component={Incorrect}/>
   </Router>
 );
