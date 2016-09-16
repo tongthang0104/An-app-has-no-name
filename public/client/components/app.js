@@ -1,12 +1,14 @@
 import React, { Component }  from 'react';
-import Categorys from '../components/category';
-
+// import Categories from '../containers/categories';
+// import QuestionsList from '../containers/questionsList';
+import NavBar from './navigation_bar';
 
 export default class App extends Component {
   render(){
     return (
       <div>
-        <Categorys />
+        <NavBar />
+        {this.props.children}
       </div>
     );
   }
