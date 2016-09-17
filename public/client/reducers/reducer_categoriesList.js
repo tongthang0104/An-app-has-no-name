@@ -31,8 +31,6 @@ export default function () {
 
     let x = 0;
 
-
-
     let randomCat = [];
 
     while (x < 5) {
@@ -45,4 +43,5 @@ export default function () {
   }
 
   return getRandomCategories(0, categoriesList.length);
+  // return ['Entertainment: Film']
 }
