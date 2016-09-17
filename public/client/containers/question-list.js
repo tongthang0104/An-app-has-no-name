@@ -30,7 +30,11 @@ componentWillMount() {
 }
 openModal() {
   console.log('workign')
+  let that = this;
   this.setState({modalOpen: true});
+  setTimeout(function(){
+    that.setState({modalOpen: false});
+  }, 5000);
 }
 
 closeModal() {
