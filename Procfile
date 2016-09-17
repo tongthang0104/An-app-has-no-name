@@ -1,1 +1,1 @@
-web: node public/server/server.babel.js
+web: npm run dev
