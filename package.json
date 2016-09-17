@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "postinstall": "webpack -p",
     "start": "node ./public/server/server.js"
   },
@@ -54,8 +54,6 @@
     "react-router": "^2.0.1",
     "redux": "^3.0.4",
     "redux-form": "^6.0.5",
-    "redux-promise": "^0.5.3",
-    "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "redux-promise": "^0.5.3"
   }
 }
