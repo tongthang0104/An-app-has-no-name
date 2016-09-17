@@ -5,6 +5,21 @@ import {Link} from 'react-router';
 import Modal from 'react-modal';
 
 class QuestionDetail extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+    };
+  }
+
+openModal() {
+  console.log('workign')
+  this.setState({modalOpen: true});
+}
+
+closeModal() {
+  this.setState({modalOpen: false});
+}
   checkAnswer(event) {
     console.log(this.props.question.correct_answer)
     if(this.props.question.correct_answer === event.target.id) {
@@ -25,6 +40,7 @@ class QuestionDetail extends Component {
     });
   }
   render() {
+      const { modalOpen } = this.state;
     const props = this.props.question
     if (!props){
       return <div>Select a question to start!</div>
