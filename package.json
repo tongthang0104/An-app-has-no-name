@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< b778effe3f212eb0f5246725838cfcc49c6ed150
 <<<<<<< 81dee0a8c5085efb6b4fab93ae0b23cad215d4dd
     "lint": "./node_modules/.bin/eslint",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
 =======
     "dev": " node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
 >>>>>>> [feat] Server side hook up on 9999
+=======
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+>>>>>>> (fix) delete server.babel
     "postinstall": "webpack -p",
     "start": "node ./public/server/server.js"
   },
@@ -69,6 +73,5 @@
     "redux-promise": "^0.5.3",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
-
   }
 }
