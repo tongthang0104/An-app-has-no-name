@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< 81dee0a8c5085efb6b4fab93ae0b23cad215d4dd
     "lint": "./node_modules/.bin/eslint",
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+=======
+    "dev": " node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+>>>>>>> [feat] Server side hook up on 9999
     "postinstall": "webpack -p",
     "start": "node ./public/server/server.js"
   },
