@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "webpack-watch": "webpack -w",
+    "express-server": "nodemon ./public/server/server.js",
+    "dev": "concurrently --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,7 +36,11 @@
   },
   "dependencies": {
     "axios": "^0.14.0",
-    "babel-preset-stage-1": "^6.1.18",
+    "babel-plugin-transform-class-properties": "^6.4.0",
+    "babel-plugin-transform-runtime": "^6.4.3",
+    "babel-polyfill": "^6.3.14",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.14.0",
     "body-parser": "^1.15.2",
     "eslint": "^3.5.0",
     "express": "^4.14.0",
