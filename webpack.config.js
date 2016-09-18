@@ -8,7 +8,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   debug: true,
-  devtools: 'source-map',
+  devtool: 'source-map',
   module: {
     loaders: [{
       exclude: /node_modules/,
