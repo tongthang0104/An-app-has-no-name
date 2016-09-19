@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 export function selectQuestion(question) {
-  console.log(question);
   return {
     type: 'QUESTION_SELECTED',
     payload: question
