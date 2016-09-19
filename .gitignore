@@ -27,6 +27,7 @@ bower_components/
 build/
 dist/
 bundle.js
+data/
 
 # Optional npm cache directory
 .npm
