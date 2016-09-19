@@ -11,7 +11,7 @@ import Incorrect from './components/incorrect';
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={App} ></Route>
-    {/* <Route path="/correct" component={Correct}/>
-    <Route path="/incorrect" component={Incorrect}/> */}
+    <Route path="/correct" component={Correct}/>
+    <Route path="/incorrect" component={Incorrect}/>
   </Router>
 );

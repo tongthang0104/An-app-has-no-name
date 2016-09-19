@@ -1,12 +1,7 @@
-'use strict'
 const express = require('express');
-const bodyParser = require('body-parser');
-
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(express.static(`${__dirname}/../../public/client`));
+app.use('/', express.static(`${__dirname}/../..`));
+app.listen(process.env.PORT || 9999);
 
-const port = process.env.PORT || 8080;
-app.listen(port);
+console.log('Server is running on Port 9999');
