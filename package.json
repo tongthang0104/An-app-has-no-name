@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint",
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "postinstall": "webpack -p",
     "start": "node ./public/server/server.js"
