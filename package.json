@@ -15,7 +15,7 @@
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
 >>>>>>> (fix) delete server.babel
     "postinstall": "webpack -p",
-    "start": "node ./public/server/server.js"
+    "start": "concurrently \"npm run dev\" \"node ./public/server/server.js\""
   },
   "repository": {
     "type": "git",
