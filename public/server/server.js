@@ -29,9 +29,9 @@ if (!isProduction) {
     });
   });
 
-  // app.all('/db/*', function (req, res) {
+  // app.all('/jeopardy/*', function (req, res) {
   //   proxy.web(req, res, {
-  //     target: 'http://localhost:9999/api'
+  //     target: 'http://localhost:9999/jeopardy'
   //   });
   // });
 }
