@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "start": "node ./public/server/server.js",
-    "postinstall": "node ./public/server/deploy.js"
+    "postinstall": "node ./public/server/deploy"
   },
   "repository": {
     "type": "git",
