@@ -14,7 +14,8 @@ const config = {
   ],
   output: {
     path: buildPath,
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/build/'
   },
   debug: true,
   devtool: 'source-map',
