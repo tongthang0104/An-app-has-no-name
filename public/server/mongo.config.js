@@ -1,5 +1,5 @@
 'use strict';
-const { MongoClient } = require('mongodb');
+const MongoClient = require('mongodb');
 const assert = require('assert');
 
 const mongodb = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
