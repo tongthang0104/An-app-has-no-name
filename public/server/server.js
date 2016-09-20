@@ -4,15 +4,13 @@
 const express = require('express');
 require('./mongo.config');
 const app = express();
-const path = require('path');
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({
   changeOrigin: true
 });
 
-const isProduction= process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
-const publicPath = path.resolve(__dirname, '../..');
 let port = isProduction ? process.env.PORT : 9999;
 
 // When not in production ==> run workflow
@@ -43,8 +41,6 @@ proxy.on('error', function(err) {
 });
 
 require('./middleware')(app, express);
-
-app.use(express.static(publicPath));
 
 app.listen(port, function(){
   console.log(`Server is running on ${port}`);

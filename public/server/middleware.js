@@ -1,6 +1,8 @@
 'use strict';
 
 const bodyParser  = require('body-parser');
+const path = require('path');
+const publicPath = path.resolve(__dirname, '../..');
 
 module.exports = function(app, express) {
 
@@ -10,6 +12,7 @@ module.exports = function(app, express) {
   app.use(bodyParser.json());
   // app.use(express.static(`${__dirname}/../..`));
 
+  app.use(express.static(publicPath));
   app.use('/api/questions', questionRouter);
   require('./questionRoutes')(questionRouter);
 };
