@@ -1,4 +1,6 @@
 'use strict';
+
+//proxy between express and webpack-dev-server
 const express = require('express');
 require('./mongo.config');
 const app = express();
@@ -13,10 +15,14 @@ const isProduction= process.env.NODE_ENV === 'production';
 const publicPath = path.resolve(__dirname, '../..');
 let port = isProduction ? process.env.PORT : 9999;
 
+// When not in production ==> run workflow
+
 if (!isProduction) {
   const bundle = require('./bundle.js');
   bundle();
 
+  // bundler inside the if block because
+  //it is only needed in a development environment.
   app.all('/build/*', function(req, res) {
     proxy.web(req, res, {
       target: 'http://localhost:8080'
@@ -30,6 +36,7 @@ if (!isProduction) {
   // });
 }
 
+//catch error
 proxy.on('error', function(err) {
   console.error(err);
   console.log('Could not connect to proxy, please try again...');

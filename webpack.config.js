@@ -5,6 +5,8 @@ var path = require('path');
 
 const config = {
   entry: [
+
+    //hot style updates
      'webpack/hot/dev-server',
      'webpack-dev-server/client?http://localhost:8080',
     './public/client/index.js'
