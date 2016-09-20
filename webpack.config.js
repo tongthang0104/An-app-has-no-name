@@ -1,10 +1,17 @@
-module.exports = {
+'use strict';
+var Webpack = require('webpack');
+var path = require('path');
+
+
+const config = {
   entry: [
+     'webpack/hot/dev-server',
+     'webpack-dev-server/client?http://localhost:8080',
     './public/client/index.js'
   ],
   output: {
     path: __dirname,
-    publicPath: '/',
+    publicPath: '/build/',
     filename: 'bundle.js'
   },
   debug: true,
@@ -24,5 +31,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './'
-  }
+  },
+  plugins: [new Webpack.HotModuleReplacementPlugin()]
 };
+
+module.exports = config;

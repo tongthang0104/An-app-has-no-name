@@ -4,18 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< b778effe3f212eb0f5246725838cfcc49c6ed150
-<<<<<<< 81dee0a8c5085efb6b4fab93ae0b23cad215d4dd
     "lint": "./node_modules/.bin/eslint",
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-=======
-    "dev": " node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
->>>>>>> [feat] Server side hook up on 9999
-=======
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
->>>>>>> (fix) delete server.babel
-    "postinstall": "webpack -p",
-    "start": "concurrently \"npm run dev\" \"node ./public/server/server.js\""
+    "postinstall": "node ./public/server/deploy.js",
+    "start": "node ./public/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -56,13 +47,16 @@
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.14.0",
     "body-parser": "^1.15.2",
+    "child-process": "^1.0.2",
     "concurrently": "^2.2.0",
     "eslint": "^3.5.0",
     "express": "^4.14.0",
     "express-partials": "^0.3.0",
     "express-session": "^1.14.1",
+    "http-proxy": "^1.15.1",
     "lodash": "^3.10.1",
     "mongodb": "^2.2.10",
+    "path": "^0.12.7",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-modal": "^1.4.0",
