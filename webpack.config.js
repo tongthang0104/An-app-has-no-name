@@ -1,14 +1,23 @@
-module.exports = {
+'use strict';
+var Webpack = require('webpack');
+var path = require('path');
+var mainPath = path.resolve(__dirname, 'public','client', 'index.js');
+var buildPath = path.resolve(__dirname, 'public', 'build');
+
+const config = {
   entry: [
+
+    //hot style updates
+     'webpack/hot/dev-server',
+     'webpack-dev-server/client?http://localhost:8080',
     './public/client/index.js'
   ],
   output: {
-    path: __dirname,
-    publicPath: '/',
+    path: buildPath,
     filename: 'bundle.js'
   },
   debug: true,
-  devtools: 'source-map',
+  devtool: 'source-map',
   module: {
     loaders: [{
       exclude: /node_modules/,
@@ -24,5 +33,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './'
-  }
+  },
+  plugins: [new Webpack.HotModuleReplacementPlugin()]
 };
+
+module.exports = config;

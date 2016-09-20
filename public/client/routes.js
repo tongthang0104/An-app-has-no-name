@@ -5,9 +5,6 @@ import Correct from './components/correct';
 import Incorrect from './components/incorrect';
 
 
-
-
-
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={App} ></Route>

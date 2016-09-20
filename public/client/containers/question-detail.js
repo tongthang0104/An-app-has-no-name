@@ -13,7 +13,7 @@ class QuestionDetail extends Component {
   }
 
 openModal() {
-  console.log('workign')
+  console.log('workign');
   this.setState({modalOpen: true});
 }
 
@@ -21,16 +21,16 @@ closeModal() {
   this.setState({modalOpen: false});
 }
   checkAnswer(event) {
-    console.log(this.props.question.correct_answer)
+    console.log(this.props.question.correct_answer);
     if(this.props.question.correct_answer === event.target.id) {
-      console.log('right')
+      console.log('right');
 
     } else {
-      console.log('wrong')
+      console.log('wrong');
     }
   }
   renderAnswer(array) {
-    const shuffle = _.shuffle(array)
+    const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
         <li id={answer} onClick={this.checkAnswer.bind(this)}>
