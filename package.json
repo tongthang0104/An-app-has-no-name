@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
-    "postinstall": "node ./public/server/deploy.js",
-    "start": "node ./public/server/server.js"
+    "start": "node ./public/server/server.js",
+    "postinstall": "node ./public/server/deploy.js"
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ const publicPath = path.resolve(__dirname, '../..');
 let port = isProduction ? process.env.PORT : 9999;
 
 if (!isProduction) {
-  const bundle = require('./bundler');
+  const bundle = require('./bundle.js');
   bundle();
 
   app.all('/build/*', function(req, res) {
