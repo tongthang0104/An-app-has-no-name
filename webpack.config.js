@@ -1,7 +1,8 @@
 'use strict';
 var Webpack = require('webpack');
 var path = require('path');
-
+var mainPath = path.resolve(__dirname, 'public','client', 'index.js');
+var buildPath = path.resolve(__dirname, 'public', 'build');
 
 const config = {
   entry: [
@@ -12,8 +13,7 @@ const config = {
     './public/client/index.js'
   ],
   output: {
-    path: __dirname,
-    publicPath: '/build/',
+    path: buildPath,
     filename: 'bundle.js'
   },
   debug: true,
