@@ -12,7 +12,7 @@ const mainPath = path.resolve(__dirname, '..', 'client', 'index.js');
 module.exports = function() {
   //fire up Webpack
   let bundleStart = null;
-  let compiler = new Webpack(webpackConfig);
+  let compiler = Webpack(webpackConfig);
 
   //notice when it starts bundling
   compiler.plugin('compile', function() {
