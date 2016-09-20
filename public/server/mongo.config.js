@@ -1,6 +1,6 @@
 'use strict';
-import { MongoClient } from 'mongodb';
-import assert from 'assert';
+const { MongoClient } = require('mongodb');
+const assert = require('assert');
 
 const mongodb = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
 
@@ -22,4 +22,4 @@ MongoClient.connect(mongodb, (err, db) => {
 
 const jeopardy = MongoClient.connection;
 
-export default jeopardy;
+module.exports = jeopardy;

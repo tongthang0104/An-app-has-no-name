@@ -1,5 +1,5 @@
 const express = require('express');
-const mongodb = require('./mongo.config');
+require('./mongo.config');
 
 const app = express();
 app.use('/', express.static(`${__dirname}/../..`));
