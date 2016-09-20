@@ -27,7 +27,13 @@ bower_components/
 build/
 dist/
 bundle.js
+
+#Big data directories/files
 data/
+public/server/data.txt
+
+#config files
+public/server/config.js
 
 # Optional npm cache directory
 .npm
