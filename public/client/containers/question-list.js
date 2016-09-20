@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import QuestionDetail from './question-detail';
 import Modal from 'react-modal';
 
+
 const customStyles = {
   content : {
     top                   : '50%',
@@ -22,6 +23,7 @@ class QuestionList extends Component {
     super(props);
     this.state = {
       modalOpen: false,
+      completed: false
     };
   }
 
@@ -29,12 +31,14 @@ class QuestionList extends Component {
     this.setState({categories: this.props.categories})
   }
   openModal() {
+    if(this.state.completed === false){
     // console.log('workign')
     // let that = this;
-    this.setState({modalOpen: true});
+      this.setState({modalOpen: true});
     // setTimeout(function(){
     //   that.setState({modalOpen: false});
     // }, 5000);
+    }
   }
 
   closeModal() {
@@ -48,13 +52,14 @@ class QuestionList extends Component {
     const { modalOpen } = this.state;
     return questions.map(question => {
       return (
-        <div onClick={this.openModal.bind(this)} >
-        <button
+        <div onClick={this.openModal.bind(this)} key={this.props.question}>
+        <div
           key={this.props.title}
           onClick={() => this.props.selectQuestion(question)}
           className="list-group-item">
           {question.difficulty}
-        </button>
+
+        </div>
         <Modal
           isOpen={this.state.modalOpen}
           onAfterOpen={this.afterOpenModal}
@@ -76,8 +81,8 @@ class QuestionList extends Component {
       let list = questions.slice(0,5);
       console.log("filter", questions);
       return (
-        <td >
-          <th className="list-group-item" key={cate} >{cate}</th>
+        <td id="customTable">
+          <th  className="list-group-item" key={cate} >{cate}</th>
           {this.renderQuestion(list)}
         </td>
       );
@@ -87,8 +92,8 @@ class QuestionList extends Component {
   render (){
     return (
       <div className="List-group" key={this.props.title}>
-        <table >
-          <tc>{this.renderList()}</tc>
+        <table id="table">
+          <td>{this.renderList()}</td>
         </table>
       </div>
     )
@@ -98,7 +103,8 @@ class QuestionList extends Component {
 function mapStateToProps(state){
   return {
     categories: state.categories,
-    questions: state.questions
+    questions: state.questions,
+    modal: state.openModal,
   };
 }
 

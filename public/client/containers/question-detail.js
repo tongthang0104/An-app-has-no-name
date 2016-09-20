@@ -19,6 +19,10 @@ openModal() {
 =======
 >>>>>>> (cleanup)
 
+  closeModal() {
+    this.setState({modalOpen: false});
+  }
+
   checkAnswer(event) {
 <<<<<<< 37bbe3aee318d13827f5551cff5aa3b1e014ea3a
     console.log(this.props.question.correct_answer);
@@ -27,13 +31,22 @@ openModal() {
 
 =======
     if(this.props.question.correct_answer === event.target.id) {
+<<<<<<< 95e56a8e1b11d4f08e7a12122cc5dfd088c1f182
       console.log('right')
       return <div><Correct /></div>
 >>>>>>> (cleanup)
     } else {
       console.log('wrong');
+=======
+      console.log('right');
+      this.closeModal();
+    } else {
+      console.log('wrong');
+
+>>>>>>> (cleanup) component and container files
     }
   }
+
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
@@ -44,11 +57,12 @@ openModal() {
       );
     });
   }
+
   render() {
-    const props = this.props.question
-    const answerArray = [props.correct_answer]
+    const props = this.props.question;
+    const answerArray = [props.correct_answer];
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(props.incorrect_answers[i])
+      answerArray.push(props.incorrect_answers[i]);
     }
 
     return (

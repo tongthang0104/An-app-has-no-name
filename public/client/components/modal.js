@@ -29,6 +29,10 @@ class Modal extends Component {
     );
   }
   render() {
-    return (<noscript />);
+    return (
+      <div>
+      <noscript />
+      </div>
+    );
   }
 }
