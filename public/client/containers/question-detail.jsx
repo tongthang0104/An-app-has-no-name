@@ -1,60 +1,66 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Correct from '../components/correct';
+
 
 class QuestionDetail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalOpen: true,
-      completed: true,
+      modalOpen: false,
     };
-    this.closeModal.bind(this);
-  }
-  componentWillMount() {
-    console.log('props',this.props)
-  }
-  closeModal() {
-    this.setState({modalOpen: false});
+    this.checkAnswer = this.checkAnswer.bind(this)
   }
 
-  checkAnswer(event) {
-    this.setState({completed: true})
-    this.props.checkCompleted();
-    if(this.props.question.correct_answer === event.target.id) {
-      console.log('right');
-      this.closeModal();
-    } else {
+openModal() {
+  console.log('workign');
+  this.setState({modalOpen: true});
+}
+
+closeModal() {
+  this.setState({modalOpen: false});
+}
+
+checkAnswer(event) {
+  this.setState({completed: true})
+  this.props.checkCompleted();
+  if(this.props.question.correct_answer === event.target.id) {
+    console.log('right');
+  } else {
       console.log('wrong');
-      console.log('state', this.props)
-      this.closeModal();
+      console.log('state', this.props);
     }
+    this.closeModal();
   }
-
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
-        <div id={answer} onClick={this.checkAnswer.bind(this)}>
-          {answer}
+        <div id={answer} onClick={this.checkAnswer}>
+            {answer}
         </div>
       );
     });
   }
-
   render() {
+
     const props = this.props.question;
-    const answerArray = [props.correct_answer];
+    if(!props){
+      return (
+        <div></div>
+      );
+    }
+    const question = _.unescape(props.question);
+    const answerArray = [_.unescape(props.correct_answer)]
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(props.incorrect_answers[i]);
+      answerArray.push(_.unescape(props.incorrect_answers[i]))
     }
 
     return (
-      <div id="modal">
+      <div>
         <h3>Question:</h3>
-        <h3>{props.question}</h3>
-        {this.renderAnswer(answerArray)}
+        <h3>{question}</h3>
+          {this.renderAnswer(answerArray)}
       </div>
     );
   }

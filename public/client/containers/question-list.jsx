@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import QuestionDetail from './question-detail';
 import Modal from 'react-modal';
 
-
 const customStyles = {
   content : {
     top                   : '50%',
@@ -13,7 +12,7 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
+    transform             : 'translate(-50%, -50%)'
   }
 };
 
@@ -23,78 +22,80 @@ class QuestionList extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      completed: false,
     };
-    this.checkCompleted.bind(this);
+    this.checkCompleted = this.checkCompleted.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
-  componentWillMount() {
-    this.setState({categories: this.props.categories});
-  }
+checkCompleted() {
+  console.log('hioawjfoawf');
+  this.setState({modalOpen: false});
+  clearTimeout();
+}
 
-  checkCompleted() {
-    console.log('hioawjfoawf')
-    this.setState({modalOpen: false});
-  }
-  openModal() {
+openModal() {
+  console.log('workign')
+  let that = this;
+  this.setState({modalOpen: true});
+  setTimeout(function(){
+    that.setState({modalOpen: false});
+  }, 5000);
+}
 
-    if(this.state.completed === false ){
-    // console.log('workign')
-     let that = this;
-      this.setState({modalOpen: true});
-    setTimeout(function(){
-      that.setState({modalOpen: false});
-    }, 5000).bind(this);
-    }
-  }
+closeModal() {
+  this.setState({modalOpen: false});
+}
+// afterOpenModal() {
+//   // references are now sync'd and can be accessed.
+//   this.refs.subtitle.style.color = '#f00';
+// }
 
-  closeModal() {
-    this.setState({modalOpen: false});
-  }
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
+renderQuestion(questions) {
+  const { modalOpen } = this.state;
+  return questions.map(question => {
+    return (
+      <div onClick={this.openModal} key={this.props.question}>
+      <div
+        key={this.props.title}
+        onClick={() => this.props.selectQuestion(question)}
+        className="list-group-item">
+        {question.difficulty}
+      </div>
+      <Modal
+        isOpen={this.state.modalOpen}
+        onAfterOpen={this.afterOpenModal}
+        onRequestClose={this.closeModal}
+        style={customStyles} >
+        <QuestionDetail  checkCompleted={this.checkCompleted} {...this.state}/>
+        <button onClick={this.closeModal}>close</button>
+      </Modal>
+      </div>
+    );
+  })
+}
 
-  renderQuestion(questions) {
-    const { modalOpen } = this.state;
-    return questions.map(question => {
-      return (
-        <div onClick={this.openModal.bind(this)} key={this.props.question}>
-        <div
-          key={this.props.title}
-          onClick={() => this.props.selectQuestion(question)}
-          className="list-group-item">
-          {question.difficulty}
 
-        </div>
-        <Modal
-          isOpen={this.state.modalOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles} >
-          <QuestionDetail  checkCompleted={this.checkCompleted} {...this.state}/>
-          <button onClick={this.closeModal.bind(this)}>close</button>
-        </Modal>
-        </div>
-      );
-    })
-  }
+renderList() {
 
-  renderList() {
-    return this.state.categories.map(cate => {
-      let questions = this.props.questions.filter(question => {
-        return question.category === cate
-      })
-      let list = questions.slice(0,5);
-      console.log("filter", questions);
-      return (
-        <td id="customTable">
-          <th  className="list-group-item" key={cate} >{cate}</th>
-          {this.renderQuestion(list)}
-        </td>
-      );
-    });
+  if(!this.props.questions){
+    return (
+      <div> Loading...</div>
+    )
   }
+  return Object.keys(this.props.questions).map(cate => {
+    console.log(cate);
+    return (
+       <td id="customTable">
+         <th  className="list-group-item" key={cate} >
+           {cate}
+         </th>
+         {this.renderQuestion(this.props.questions[cate])}
+       </td>
+    );
+  });
+}
+
 
   render (){
     return (
@@ -103,15 +104,15 @@ class QuestionList extends Component {
           <td>{this.renderList()}</td>
         </table>
       </div>
-    )
+    );
   }
 }
 
 function mapStateToProps(state){
   return {
     categories: state.categories,
-    questions: state.questions,
-    modal: state.openModal,
+    questions: state.QuestionReducer,
+    modal: state.openModal
   };
 }
 

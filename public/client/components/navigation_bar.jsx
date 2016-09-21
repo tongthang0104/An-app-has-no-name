@@ -14,7 +14,7 @@ class FetchBar extends Component {
 
   render() {
     return (
-      <button onClick={ this.fetchQuestion } className="btn btn-primary">Fetch</button>
+      <Link to="/play" onClick={ this.fetchQuestion } className="btn btn-primary btn-lg btn-block navbar" data-loading-text="Loading...">Fetch</Link>
     );
   }
 }

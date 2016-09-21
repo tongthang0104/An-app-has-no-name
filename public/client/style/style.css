@@ -1,3 +1,11 @@
+#container {
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+.navbar {
+  margin: 0 auto;
+}
 #table{
  position: absolute;
  top: 0;
