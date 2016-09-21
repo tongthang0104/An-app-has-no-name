@@ -4,46 +4,31 @@ import _ from 'lodash';
 import Correct from '../components/correct';
 
 class QuestionDetail extends Component {
-<<<<<<< 37bbe3aee318d13827f5551cff5aa3b1e014ea3a
   constructor (props) {
     super(props);
     this.state = {
-      modalOpen: false,
+      modalOpen: true,
+      completed: true,
     };
+    this.closeModal.bind(this);
   }
-
-openModal() {
-  console.log('workign');
-  this.setState({modalOpen: true});
-}
-=======
->>>>>>> (cleanup)
-
+  componentWillMount() {
+    console.log('props',this.props)
+  }
   closeModal() {
     this.setState({modalOpen: false});
   }
 
   checkAnswer(event) {
-<<<<<<< 37bbe3aee318d13827f5551cff5aa3b1e014ea3a
-    console.log(this.props.question.correct_answer);
+    this.setState({completed: true})
+    this.props.checkCompleted();
     if(this.props.question.correct_answer === event.target.id) {
-      console.log('right');
-
-=======
-    if(this.props.question.correct_answer === event.target.id) {
-<<<<<<< 95e56a8e1b11d4f08e7a12122cc5dfd088c1f182
-      console.log('right')
-      return <div><Correct /></div>
->>>>>>> (cleanup)
-    } else {
-      console.log('wrong');
-=======
       console.log('right');
       this.closeModal();
     } else {
       console.log('wrong');
-
->>>>>>> (cleanup) component and container files
+      console.log('state', this.props)
+      this.closeModal();
     }
   }
 

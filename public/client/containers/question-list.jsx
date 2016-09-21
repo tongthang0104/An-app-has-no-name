@@ -23,21 +23,28 @@ class QuestionList extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      completed: false
+      completed: false,
     };
+    this.checkCompleted.bind(this);
   }
 
   componentWillMount() {
-    this.setState({categories: this.props.categories})
+    this.setState({categories: this.props.categories});
+  }
+
+  checkCompleted() {
+    console.log('hioawjfoawf')
+    this.setState({modalOpen: false});
   }
   openModal() {
-    if(this.state.completed === false){
+
+    if(this.state.completed === false ){
     // console.log('workign')
-    // let that = this;
+     let that = this;
       this.setState({modalOpen: true});
-    // setTimeout(function(){
-    //   that.setState({modalOpen: false});
-    // }, 5000);
+    setTimeout(function(){
+      that.setState({modalOpen: false});
+    }, 5000).bind(this);
     }
   }
 
@@ -65,7 +72,7 @@ class QuestionList extends Component {
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles} >
-          <QuestionDetail />
+          <QuestionDetail  checkCompleted={this.checkCompleted} {...this.state}/>
           <button onClick={this.closeModal.bind(this)}>close</button>
         </Modal>
         </div>

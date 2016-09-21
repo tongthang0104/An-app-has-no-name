@@ -43,7 +43,7 @@ export default function () {
   }
 
 
-  // return getRandomCategories(0, categoriesList.length);
-   return ['Entertainment: Film']
+  return getRandomCategories(0, categoriesList.length);
+   //return ['Entertainment: Film']
 
 }
