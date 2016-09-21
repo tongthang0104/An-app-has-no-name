@@ -5,7 +5,7 @@
   "main": "index.jsx",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
-    "start": "nodemon ./public/server/server.js",
+    "start": "node ./public/server/server.js",
     "postinstall": "node ./public/server/deploy"
   },
   "repository": {
