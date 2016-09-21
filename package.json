@@ -2,7 +2,7 @@
   "name": "An-app-has-no-name",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "start": "nodemon ./public/server/server.js",

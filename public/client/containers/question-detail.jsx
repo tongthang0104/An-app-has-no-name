@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import {Link} from 'react-router';
-import Modal from 'react-modal';
+
 
 class QuestionDetail extends Component {
   constructor (props) {
@@ -10,6 +9,7 @@ class QuestionDetail extends Component {
     this.state = {
       modalOpen: false,
     };
+    this.checkAnswer = this.checkAnswer.bind(this)
   }
 
 openModal() {
@@ -20,30 +20,35 @@ openModal() {
 closeModal() {
   this.setState({modalOpen: false});
 }
-  checkAnswer(event) {
-    console.log(this.props.question.correct_answer);
-    if(this.props.question.correct_answer === event.target.id) {
-      console.log('right');
 
-    } else {
+checkAnswer(event) {
+  this.setState({completed: true})
+  this.props.checkCompleted();
+  if(this.props.question.correct_answer === event.target.id) {
+    console.log('right');
+  } else {
       console.log('wrong');
+      console.log('state', this.props);
     }
+    this.closeModal();
   }
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
-        <li id={answer} onClick={this.checkAnswer.bind(this)}>
+        <div id={answer} onClick={this.checkAnswer}>
             {answer}
-        </li>
+        </div>
       );
     });
   }
   render() {
-    const { modalOpen } = this.state;
+
     const props = this.props.question;
-    if (!props){
-      return <div>Select a question to start!</div>
+    if(!props){
+      return (
+        <div></div>
+      );
     }
     const question = _.unescape(props.question);
     const answerArray = [_.unescape(props.correct_answer)]
@@ -54,8 +59,8 @@ closeModal() {
     return (
       <div>
         <h3>Question:</h3>
-        <div>{question}</div>
-          <div> {this.renderAnswer(answerArray)} </div>
+        <h3>{question}</h3>
+          {this.renderAnswer(answerArray)}
       </div>
     );
   }
