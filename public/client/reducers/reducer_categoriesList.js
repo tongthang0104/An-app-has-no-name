@@ -42,6 +42,8 @@ export default function () {
     return randomCat;
   }
 
-  // return getRandomCategories(0, categoriesList.length);
-   return ['Entertainment: Film']
+
+  return getRandomCategories(0, categoriesList.length);
+   //return ['Entertainment: Film']
+
 }

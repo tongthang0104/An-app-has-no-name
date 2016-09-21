@@ -3,7 +3,6 @@
 import axios from 'axios';
 
 export function selectQuestion(question) {
-  console.log(question);
   return {
     type: 'QUESTION_SELECTED',
     payload: question
@@ -25,4 +24,20 @@ export function fetchQuestion(){
     type: FETCH_QUESTION,
     payload:request
   };
+}
+let nextQuestionId = 0
+
+export const addQuestion = question => {
+  return {
+    type: 'ADD_QUESTION',
+    id: nextQuestionId++,
+    question
+  }
+}
+
+export const toggleQuestion = id => {
+  return {
+    type: 'TOGGLE_QUESTION',
+    id
+  }
 }

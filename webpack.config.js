@@ -1,7 +1,7 @@
 'use strict';
 var Webpack = require('webpack');
 var path = require('path');
-var mainPath = path.resolve(__dirname, 'public','client', 'index.js');
+var mainPath = path.resolve(__dirname, 'public','client', 'index.jsx');
 var buildPath = path.resolve(__dirname, 'public', 'build');
 
 const config = {
@@ -10,7 +10,7 @@ const config = {
     //hot style updates
      'webpack/hot/dev-server',
      'webpack-dev-server/client?http://localhost:8080',
-    './public/client/index.js'
+    './public/client/index.jsx'
   ],
   output: {
     path: buildPath,

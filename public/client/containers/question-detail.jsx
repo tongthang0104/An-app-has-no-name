@@ -1,60 +1,60 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import {Link} from 'react-router';
-import Modal from 'react-modal';
+import Correct from '../components/correct';
 
 class QuestionDetail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalOpen: false,
+      modalOpen: true,
+      completed: true,
     };
+    this.closeModal.bind(this);
+  }
+  componentWillMount() {
+    console.log('props',this.props)
+  }
+  closeModal() {
+    this.setState({modalOpen: false});
   }
 
-openModal() {
-  console.log('workign');
-  this.setState({modalOpen: true});
-}
-
-closeModal() {
-  this.setState({modalOpen: false});
-}
   checkAnswer(event) {
-    console.log(this.props.question.correct_answer);
+    this.setState({completed: true})
+    this.props.checkCompleted();
     if(this.props.question.correct_answer === event.target.id) {
       console.log('right');
-
+      this.closeModal();
     } else {
       console.log('wrong');
+      console.log('state', this.props)
+      this.closeModal();
     }
   }
+
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
-        <li id={answer} onClick={this.checkAnswer.bind(this)}>
-            {answer}
-        </li>
+        <div id={answer} onClick={this.checkAnswer.bind(this)}>
+          {answer}
+        </div>
       );
     });
   }
+
   render() {
-      const { modalOpen } = this.state;
-    const props = this.props.question
-    if (!props){
-      return <div>Select a question to start!</div>
-    }
-    const answerArray = [props.correct_answer]
+    const props = this.props.question;
+    const answerArray = [props.correct_answer];
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(props.incorrect_answers[i])
+      answerArray.push(props.incorrect_answers[i]);
     }
 
     return (
-      <div>
+      <div id="modal">
         <h3>Question:</h3>
-        <div>{props.question}</div>
-          <div> {this.renderAnswer(answerArray)} </div>
+        <h3>{props.question}</h3>
+        {this.renderAnswer(answerArray)}
       </div>
     );
   }
