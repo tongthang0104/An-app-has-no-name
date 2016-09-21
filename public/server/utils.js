@@ -3,16 +3,7 @@ const _ = require('lodash');
 module.exports = {
 
   randomize: (array, amount) => {
-    // let x = 0;
-    // let randomResult = [];
-    // while (x < amount) {
-    //   let randomIndex = Math.floor(Math.random() * (array.length - 0) + 0);
-    //   randomResult.push(array[randomIndex]);
-    //   x += 1;
-    // }
-    let shuffledArray = _.shuffle(array);
-
-    return shuffledArray.slice(0, amount);
+    return _.shuffle(array).slice(0, amount);
   },
 
   categoriesList:  [
@@ -38,7 +29,7 @@ module.exports = {
     'Animals',
     'Vehicles',
   ],
-  
+
   getRandomCategories: () => {
     return module.exports.randomize(module.exports.categoriesList, 5);
   },
