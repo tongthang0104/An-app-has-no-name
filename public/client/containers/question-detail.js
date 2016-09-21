@@ -40,20 +40,21 @@ closeModal() {
     });
   }
   render() {
-      const { modalOpen } = this.state;
-    const props = this.props.question
+    const { modalOpen } = this.state;
+    const props = this.props.question;
     if (!props){
       return <div>Select a question to start!</div>
     }
-    const answerArray = [props.correct_answer]
+    const question = _.unescape(props.question);
+    const answerArray = [_.unescape(props.correct_answer)]
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(props.incorrect_answers[i])
+      answerArray.push(_.unescape(props.incorrect_answers[i]))
     }
 
     return (
       <div>
         <h3>Question:</h3>
-        <div>{props.question}</div>
+        <div>{question}</div>
           <div> {this.renderAnswer(answerArray)} </div>
       </div>
     );

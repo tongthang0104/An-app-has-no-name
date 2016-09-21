@@ -10,7 +10,7 @@ import CategoriesListReducer from './reducer_categoriesList';
 const rootReducer = combineReducers({
   questions,
   activeQuestion,
-  post: QuestionReducer,
+  QuestionReducer,
   categories: CategoriesListReducer
 });
 

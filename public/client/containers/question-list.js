@@ -72,16 +72,17 @@ renderQuestion(questions) {
 
 
 renderList() {
-  return this.state.categories.map(cate => {
-    let questions = this.props.questions.filter(question => {
-      return question.category === cate
-    })
 
-    console.log("filter", questions);
+  if(!this.props.questions){
+    return (
+      <div> Loading...</div>
+    )
+  }
+  return Object.keys(this.props.questions).map(cate => {
     return (
       <div className="col-md-3">
         <li key={cate} >{cate}</li>
-        {this.renderQuestion(questions)}
+        {this.renderQuestion(this.props.questions[cate])}
       </div>
     );
   });
@@ -135,7 +136,7 @@ renderList() {
 function mapStateToProps(state){
   return {
     categories: state.categories,
-    questions: state.questions
+    questions: state.QuestionReducer
   };
 }
 
