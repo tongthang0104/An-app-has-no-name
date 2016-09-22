@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import ReactCountDownClock from 'react-countdown-clock';
+
+
 
 
 class QuestionDetail extends Component {
@@ -9,11 +12,10 @@ class QuestionDetail extends Component {
     this.state = {
       modalOpen: false,
     };
-    this.checkAnswer = this.checkAnswer.bind(this)
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
 openModal() {
-  console.log('workign');
   this.setState({modalOpen: true});
 }
 
@@ -21,14 +23,14 @@ closeModal() {
   this.setState({modalOpen: false});
 }
 
+
 checkAnswer(event) {
-  this.setState({completed: true})
+  this.setState({completed: true});
   this.props.checkCompleted();
   if(this.props.question.correct_answer === event.target.id) {
-    console.log('right');
+    this.props.question.difficulty = "RIGHT";
   } else {
-      console.log('wrong');
-      console.log('state', this.props);
+      this.props.question.difficulty = "WRONG";
     }
     this.closeModal();
   }
@@ -42,8 +44,8 @@ checkAnswer(event) {
       );
     });
   }
-  render() {
 
+  render() {
     const props = this.props.question;
     if(!props){
       return (
@@ -61,6 +63,12 @@ checkAnswer(event) {
         <h3>Question:</h3>
         <h3>{question}</h3>
           {this.renderAnswer(answerArray)}
+        <ReactCountDownClock seconds={10}
+                     color="blue"
+                     alpha={1.5}
+                     showMilliseconds={false}
+                     size={75}
+                     onComplete={this.closeModal.bind(this)} />
       </div>
     );
   }
@@ -71,4 +79,6 @@ function mapStateToProps(state) {
     question: state.activeQuestion
   };
 }
+
+
 export default connect(mapStateToProps)(QuestionDetail)

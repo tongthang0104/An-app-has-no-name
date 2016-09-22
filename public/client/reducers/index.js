@@ -8,7 +8,6 @@ import QuestionReducer from './reducer_post';
 const rootReducer = combineReducers({
   activeQuestion,
   QuestionReducer,
-
 });
 
 export default rootReducer;

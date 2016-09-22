@@ -58,9 +58,18 @@ module.exports = {
     let medium = module.exports.randomize(mediumQuestion, 2);
     let hard = module.exports.randomize(hardQuestion, 1);
 
-    if (!hard) {
-      hard = medium[3];
+    if (hard === null) {
+      hard = medium[2];
+      hard[0].difficulty = 500;
     }
+<<<<<<< eb57a7b947f62dc180502c849c646f1c436e21db
+=======
+    easy[0].difficulty = 100;
+    easy[1].difficulty = 200;
+    medium[0].difficulty = 300;
+    medium[1].difficulty = 400;
+    hard[0].difficulty = 500;
+>>>>>>> (feat) Implemented timer and point values for questions
 
     result = result.concat(easy, medium, hard);
     return result;
