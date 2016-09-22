@@ -3,10 +3,13 @@ import NavBar from './navigation_bar';
 
 
 
+
 class Main extends Component {
   render(){
     return (
-      <NavBar />
+      <div>
+        <NavBar />
+      </div>
     );
   }
 }

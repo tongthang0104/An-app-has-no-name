@@ -18,19 +18,26 @@ export function fetchQuestion(){
     payload:request
   };
 }
-let nextQuestionId = 0
 
-export const addQuestion = question => {
-  return {
-    type: 'ADD_QUESTION',
-    id: nextQuestionId++,
-    question
-  }
-}
-
-export const toggleQuestion = id => {
-  return {
-    type: 'TOGGLE_QUESTION',
-    id
-  }
-}
+// export function getScore(){
+//   return {
+//     type: 'GET_SCORE',
+//     payload:
+//   }
+// }
+// let nextQuestionId = 0
+//
+// export const addQuestion = question => {
+//   return {
+//     type: 'ADD_QUESTION',
+//     id: nextQuestionId++,
+//     question
+//   }
+// }
+//
+// export const toggleQuestion = id => {
+//   return {
+//     type: 'TOGGLE_QUESTION',
+//     id
+//   }
+// }

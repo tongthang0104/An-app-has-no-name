@@ -15,7 +15,6 @@ module.exports = function(appRoute) {
         if (questionList[category] === undefined) {
           questionList[category] = [];
         }
-          console.log(questionList.category)
           questionList[category] = questionList[category].concat(utils.getRandomQuestions(category, data));
       }
 

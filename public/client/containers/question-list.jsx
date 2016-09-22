@@ -29,18 +29,16 @@ class QuestionList extends Component {
   }
 
 checkCompleted() {
-  console.log('hioawjfoawf');
   this.setState({modalOpen: false});
   clearTimeout();
 }
 
 openModal() {
-  console.log('workign')
   let that = this;
   this.setState({modalOpen: true});
   setTimeout(function(){
     that.setState({modalOpen: false});
-  }, 5000);
+  }, 10000);
 }
 
 closeModal() {
@@ -84,7 +82,6 @@ renderList() {
     )
   }
   return Object.keys(this.props.questions).map(cate => {
-    console.log(cate);
     return (
        <td id="customTable">
          <th  className="list-group-item" key={cate} >
@@ -99,7 +96,7 @@ renderList() {
 
   render (){
     return (
-      <div className="List-group" key={this.props.title}>
+      <div className="List-group" key={this.props.questions}>
         <table id="table">
           <td>{this.renderList()}</td>
         </table>
