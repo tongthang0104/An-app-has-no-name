@@ -1,7 +1,6 @@
 var Webpack = require('webpack');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var buildPath = path.resolve(__dirname, 'public', 'build');
 var mainPath = path.resolve(__dirname, 'public','client', 'index.jsx');
 
 var config = {
@@ -10,9 +9,8 @@ var config = {
   devtool: 'source-map',
   entry: mainPath,
   output: {
-    path: buildPath,
-    filename: 'bundle.js',
-    publicPath: '/build/'
+    path: path.resolve(__dirname, 'public', 'build'),
+    filename: 'bundle.js'
   },
   debug: true,
   module: {
@@ -20,7 +18,7 @@ var config = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: ['react', 'es2015', 'stage-1']
+        presets: ['react', 'es2015', 'stage-2']
       }
     }, {
       test: /\.css$/,
