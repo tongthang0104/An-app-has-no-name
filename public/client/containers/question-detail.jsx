@@ -15,15 +15,6 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-openModal() {
-  this.setState({modalOpen: true});
-}
-
-closeModal() {
-  this.setState({modalOpen: false});
-}
-
-
 checkAnswer(event) {
   this.setState({completed: true});
   this.props.checkCompleted();
@@ -32,7 +23,7 @@ checkAnswer(event) {
   } else {
       this.props.question.difficulty = "WRONG";
     }
-    this.closeModal();
+    this.props.checkCompleted();
   }
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
@@ -68,7 +59,7 @@ checkAnswer(event) {
                      alpha={1.5}
                      showMilliseconds={false}
                      size={75}
-                     onComplete={this.closeModal.bind(this)} />
+                     onComplete={this.props.checkCompleted.bind(this)} />
       </div>
     );
   }

@@ -23,39 +23,30 @@ class QuestionList extends Component {
     this.state = {
       modalOpen: false,
     };
-    this.checkCompleted = this.checkCompleted.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-checkCompleted() {
-  this.setState({modalOpen: false});
-  clearTimeout();
-}
+
+
 
 openModal() {
-  let that = this;
   this.setState({modalOpen: true});
-  setTimeout(function(){
-    that.setState({modalOpen: false});
-  }, 10000);
 }
 
 closeModal() {
   this.setState({modalOpen: false});
 }
-// afterOpenModal() {
-//   // references are now sync'd and can be accessed.
-//   this.refs.subtitle.style.color = '#f00';
-// }
+
 
 renderQuestion(questions) {
+
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
       <div onClick={this.openModal} key={this.props.question}>
       <div
-        key={this.props.title}
+        key={question}
         onClick={() => this.props.selectQuestion(question)}
         className="list-group-item">
         {question.difficulty}
@@ -65,8 +56,8 @@ renderQuestion(questions) {
         onAfterOpen={this.afterOpenModal}
         onRequestClose={this.closeModal}
         style={customStyles} >
-        <QuestionDetail  checkCompleted={this.checkCompleted} {...this.state}/>
-        <button onClick={this.closeModal}>close</button>
+        <QuestionDetail  checkCompleted={this.closeModal} />
+        <button onClick={this.closeModal}>Close</button>
       </Modal>
       </div>
     );
@@ -93,14 +84,13 @@ renderList() {
   });
 }
 
-
-  render (){
+render (){
     return (
-      <div className="List-group" key={this.props.questions}>
+      // <div className="List-group" key={this.props.questions}>
         <table id="table">
           <td>{this.renderList()}</td>
         </table>
-      </div>
+      // </div>
     );
   }
 }
