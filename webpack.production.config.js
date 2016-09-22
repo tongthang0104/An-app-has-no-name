@@ -14,16 +14,27 @@ var config = {
     filename: 'bundle.js',
     publicPath: '/build/'
   },
+  debug: true,
   module: {
     loaders: [{
-      test: /\.js$/,
+      exclude: /node_modules/,
       loader: 'babel',
-      exclude: [nodeModulesPath]
-    },{
+      query: {
+        presets: ['react', 'es2015', 'stage-1']
+      }
+    }, {
       test: /\.css$/,
       loader: 'style!css'
     }]
-  }
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './'
+  },
+  plugins: [new Webpack.HotModuleReplacementPlugin()]
 };
 
 module.exports = config;
