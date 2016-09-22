@@ -6,10 +6,12 @@ export default class CategoryList extends Component {
   render (){
     return (
       <div key={this.props.title}>
-            <QuestionList />
+        <QuestionList />
         <div style={{'padding':'400px'}}>
           <Score/>
         </div>
+          </td>
+        </table>
       </div>
     )
   }

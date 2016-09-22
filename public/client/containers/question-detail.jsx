@@ -4,6 +4,8 @@ import _ from 'lodash';
 import ReactCountDownClock from 'react-countdown-clock';
 import { changeScore, incrementScore, decrementScore } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import { unescapeHelper } from '../helpers/lodashHelper';
+
 
 class QuestionDetail extends Component {
   constructor (props) {
@@ -44,10 +46,10 @@ class QuestionDetail extends Component {
         <div></div>
       );
     }
-    const question = _.unescape(props.question);
-    const answerArray = [_.unescape(props.correct_answer)]
+    const question = unescapeHelper(props.question);
+    const answerArray = [unescapeHelper(props.correct_answer)]
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(_.unescape(props.incorrect_answers[i]))
+      answerArray.push(unescapeHelper(props.incorrect_answers[i]))
     }
 
     return (
@@ -60,7 +62,7 @@ class QuestionDetail extends Component {
                      alpha={1.5}
                      showMilliseconds={false}
                      size={75}
-                     onComplete={this.closeModal.bind(this)} />
+                     onComplete={this.props.checkCompleted.bind(this)} />
       </div>
     );
   }
