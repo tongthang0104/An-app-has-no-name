@@ -27,7 +27,6 @@ bower_components/
 build/
 dist/
 
-
 #Big data directories/files
 data/
 public/server/data.txt
