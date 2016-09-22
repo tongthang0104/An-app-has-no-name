@@ -1,6 +1,7 @@
 'use strict';
-
 import axios from 'axios';
+const FETCH_QUESTION = 'FETCH_QUESTION';
+const CHANGE_SCORE = 'CHANGE_SCORE';
 
 export function selectQuestion(question) {
   return {
@@ -8,8 +9,6 @@ export function selectQuestion(question) {
     payload: question
   };
 }
-
-export const FETCH_QUESTION = 'FETCH_QUESTION';
 
 export function fetchQuestion(){
   const request = axios.get('/api/questions');
@@ -41,3 +40,16 @@ export function fetchQuestion(){
 //     id
 //   }
 // }
+
+export const changeScore = (score) => {
+
+  return {
+    type: 'CHANGE_SCORE',
+    score: score,
+  }
+}
+
+export {
+  FETCH_QUESTION,
+  CHANGE_SCORE
+}
