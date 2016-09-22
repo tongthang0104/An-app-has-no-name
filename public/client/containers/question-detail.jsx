@@ -14,28 +14,28 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-checkAnswer(event) {
-  this.setState({completed: true});
-  this.props.checkCompleted();
-  if(this.props.question.correct_answer === event.target.id) {
-    this.props.incrementScore(this.props.score, this.props.question.difficulty);
-    this.props.question.difficulty = "CORRECT";
-  } else {
-    this.props.decrementScore(this.props.score, this.props.question.difficulty);
-      this.props.question.difficulty = "INCORRECT";
-    }
+  checkAnswer(event) {
+    this.setState({completed: true});
     this.props.checkCompleted();
-  }
-  renderAnswer(array) {
-    const shuffle = _.shuffle(array);
-    return shuffle.map((answer) => {
-      return (
-        <div id={answer} onClick={this.checkAnswer}>
-            {answer}
-        </div>
-      );
-    });
-  }
+    if(this.props.question.correct_answer === event.target.id) {
+      this.props.incrementScore(this.props.score, this.props.question.difficulty);
+      this.props.question.difficulty = "CORRECT";
+    } else {
+      this.props.decrementScore(this.props.score, this.props.question.difficulty);
+        this.props.question.difficulty = "INCORRECT";
+      }
+      this.closeModal();
+    }
+    renderAnswer(array) {
+      const shuffle = _.shuffle(array);
+      return shuffle.map((answer) => {
+        return (
+          <div id={answer} onClick={this.checkAnswer}>
+              {answer}
+          </div>
+        );
+      });
+    }
 
   render() {
     const props = this.props.question;
@@ -55,12 +55,12 @@ checkAnswer(event) {
         <h3>Question:</h3>
         <h3>{question}</h3>
           {this.renderAnswer(answerArray)}
-        <ReactCountDownClock seconds={10}
+        <ReactCountDownClock seconds={15}
                      color="blue"
                      alpha={1.5}
                      showMilliseconds={false}
                      size={75}
-                     onComplete={this.props.checkCompleted.bind(this)} />
+                     onComplete={this.closeModal.bind(this)} />
       </div>
     );
   }
