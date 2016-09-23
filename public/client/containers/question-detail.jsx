@@ -16,28 +16,32 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
+
   checkAnswer(event) {
     this.setState({completed: true});
     this.props.checkCompleted();
     if(this.props.question.correct_answer === event.target.id) {
       this.props.incrementScore(this.props.score, this.props.question.difficulty);
-      this.props.question.difficulty = "CORRECT";
+      // this.props.question.difficulty = "CORRECT";
+      alert('Correct');
     } else {
       this.props.decrementScore(this.props.score, this.props.question.difficulty);
-        this.props.question.difficulty = "INCORRECT";
-      }
+      // this.props.question.difficulty = "INCORRECT";
+      alert('Wrong');
+    }
       this.closeModal();
-    }
-    renderAnswer(array) {
-      const shuffle = _.shuffle(array);
-      return shuffle.map((answer) => {
-        return (
-          <div id={answer} onClick={this.checkAnswer}>
-              {answer}
-          </div>
-        );
-      });
-    }
+  }
+
+  renderAnswer(array) {
+    const shuffle = _.shuffle(array);
+    return shuffle.map((answer) => {
+      return (
+        <div id={answer} onClick={this.checkAnswer}>
+            {answer}
+        </div>
+      );
+    });
+  }
 
   render() {
     const props = this.props.question;

@@ -21,7 +21,7 @@ class QuestionList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalOpen: false,
+      modalOpen: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -30,8 +30,14 @@ class QuestionList extends Component {
 
 
 
-openModal() {
-  this.setState({modalOpen: true});
+openModal(question) {
+  if (question.clicked) {
+    console.log("Already cliked", question.question);
+  } else {
+    this.setState({modalOpen: true});
+    question.clicked = true;
+    question.difficulty = '';
+  }
 }
 
 closeModal() {
@@ -44,11 +50,16 @@ renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div onClick={this.openModal} key={this.props.question}>
+      <div className="question-list">
       <div
-        key={question}
-        onClick={() => this.props.selectQuestion(question)}
-        className="list-group-item">
+        key={question._id}
+        onClick={() => {
+            this.openModal(question)
+            this.props.selectQuestion(question)
+          }
+        }
+        disabled={question.clicked}
+        className="list-group-item questions">
         {question.difficulty}
       </div>
       <Modal

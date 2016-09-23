@@ -37,3 +37,9 @@
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
+
+.questions{
+  background-color: #DAEDBD;
+  min-height: 50px !important;
+  color: #E6A164;
+}
