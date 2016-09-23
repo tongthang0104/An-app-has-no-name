@@ -36,7 +36,6 @@ openModal(question) {
   } else {
     this.setState({modalOpen: true});
     question.clicked = true;
-    question.difficulty = '';
   }
 }
 
@@ -51,25 +50,29 @@ renderQuestion(questions) {
   return questions.map(question => {
     return (
       <div className="question-list">
-      <div
-        key={question._id}
-        onClick={() => {
-            this.openModal(question)
-            this.props.selectQuestion(question)
+        <div
+          key={question._id}
+          onClick={() => {
+              this.openModal(question)
+              this.props.selectQuestion(question)
+            }
           }
-        }
-        disabled={question.clicked}
-        className="list-group-item questions">
-        {question.difficulty}
-      </div>
-      <Modal
-        isOpen={this.state.modalOpen}
-        onAfterOpen={this.afterOpenModal}
-        onRequestClose={this.closeModal}
-        style={customStyles} >
-        <QuestionDetail  checkCompleted={this.closeModal} />
-        <button onClick={this.closeModal}>Close</button>
-      </Modal>
+          disabled={question.clicked}
+          className="list-group-item questions">
+          {question.difficulty}
+        </div>
+
+        <Modal
+          isOpen={this.state.modalOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={() => {
+              this.closeModal();
+            }
+          }
+          style={customStyles} >
+          <QuestionDetail  checkCompleted={this.closeModal} />
+          <button onClick={this.closeModal}>Close</button>
+        </Modal>
       </div>
     );
   })

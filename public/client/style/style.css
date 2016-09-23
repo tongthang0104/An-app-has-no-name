@@ -24,6 +24,12 @@ body {
   width:20%;
   padding: 10px;
 }
+
+th {
+  display: inline-block;
+  height: 75px;
+}
+
 .panel {
   margin-bottom: 20px;
   background-color: #ffffff;

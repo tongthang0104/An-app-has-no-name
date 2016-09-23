@@ -19,7 +19,6 @@ class QuestionDetail extends Component {
 
   checkAnswer(event) {
     this.setState({completed: true});
-    this.props.checkCompleted();
     if(this.props.question.correct_answer === event.target.id) {
       this.props.incrementScore(this.props.score, this.props.question.difficulty);
       // this.props.question.difficulty = "CORRECT";
@@ -29,7 +28,9 @@ class QuestionDetail extends Component {
       // this.props.question.difficulty = "INCORRECT";
       alert('Wrong');
     }
-      this.closeModal();
+
+    this.props.question.difficulty = '';
+    this.props.checkCompleted();
   }
 
   renderAnswer(array) {

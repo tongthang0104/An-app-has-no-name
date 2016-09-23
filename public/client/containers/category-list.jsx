@@ -8,10 +8,8 @@ export default class CategoryList extends Component {
       <div key={this.props.title}>
         <QuestionList />
         <div style={{'padding':'400px'}}>
-          <Score/>
+          <Score />
         </div>
-          </td>
-        </table>
       </div>
     )
   }
