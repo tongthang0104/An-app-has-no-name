@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import CreateRoom from './navigation_bar';
 
 
-
-
 class Main extends Component {
 
   constructor(props) {
