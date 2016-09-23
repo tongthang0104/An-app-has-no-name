@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ReactCountDownClock from 'react-countdown-clock';
-
-
-
+import { changeScore, incrementScore, decrementScore } from '../actions/index';
+import { bindActionCreators } from 'redux';
 
 class QuestionDetail extends Component {
   constructor (props) {
@@ -19,9 +18,11 @@ checkAnswer(event) {
   this.setState({completed: true});
   this.props.checkCompleted();
   if(this.props.question.correct_answer === event.target.id) {
-    this.props.question.difficulty = "RIGHT";
+    this.props.incrementScore(this.props.score, this.props.question.difficulty);
+    this.props.question.difficulty = "CORRECT";
   } else {
-      this.props.question.difficulty = "WRONG";
+    this.props.decrementScore(this.props.score, this.props.question.difficulty);
+      this.props.question.difficulty = "INCORRECT";
     }
     this.props.checkCompleted();
   }
@@ -67,9 +68,14 @@ checkAnswer(event) {
 
 function mapStateToProps(state) {
   return {
-    question: state.activeQuestion
+    question: state.activeQuestion,
+    score: state.ScoreReducer,
   };
 }
 
 
-export default connect(mapStateToProps)(QuestionDetail)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ changeScore, decrementScore, incrementScore }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionDetail)

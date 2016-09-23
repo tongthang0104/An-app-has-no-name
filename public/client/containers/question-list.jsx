@@ -87,7 +87,7 @@ renderList() {
 render (){
     return (
       // <div className="List-group" key={this.props.questions}>
-        <table id="table">
+        <table class="table">
           <td>{this.renderList()}</td>
         </table>
       // </div>

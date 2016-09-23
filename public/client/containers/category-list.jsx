@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import QuestionList from './question-list';
-
+import Score from './score';
 
 export default class CategoryList extends Component {
   render (){
     return (
-      <div className="List-group" key={this.props.title}>
-        <table id="table">
-          <td>
+      <div key={this.props.title}>
             <QuestionList />
-          </td>
-        </table>
+        <div style={{'padding':'400px'}}>
+          <Score/>
+        </div>
       </div>
     )
   }
