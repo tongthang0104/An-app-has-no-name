@@ -2,6 +2,7 @@
 var Webpack = require('webpack');
 var path = require('path');
 var mainPath = path.resolve(__dirname, 'public','client', 'index.jsx');
+var NpmInstallPlugin = require("npm-install-webpack-plugin");
 // require('babel-polyfill');
 
 const config = {
@@ -37,7 +38,10 @@ const config = {
     historyApiFallback: true,
     contentBase: './'
   },
-  plugins: [new Webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    new Webpack.HotModuleReplacementPlugin(),
+    new NpmInstallPlugin()
+  ]
 };
 
 module.exports = config;
