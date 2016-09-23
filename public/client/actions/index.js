@@ -55,6 +55,7 @@ export const changeScore = (score) => {
 }
 
 export const incrementScore = (score, difficulty) => {
+  console.log('THIS IS INCREMENT_SCORE', difficulty);
   return {
     type: INCREMENT_SCORE,
     score: score,
@@ -63,6 +64,8 @@ export const incrementScore = (score, difficulty) => {
 }
 
 export const decrementScore = (score, difficulty) => {
+  console.log('THIS IS DECREMENT_SCORE', score, "difficulty:", difficulty);
+
   return {
     type: DECREMENT_SCORE,
     score: score,

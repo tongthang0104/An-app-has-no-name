@@ -64,8 +64,12 @@ module.exports = {
     }
 
     result = result.concat(easy, medium, hard);
+
     let difficultyScore = 0;
-    result.map(question => question.difficulty = (difficultyScore += 100));
+    result.map(question => {
+      question.difficulty = (difficultyScore += 100);
+      question.clicked = false;
+    });
     return result;
   }
 };

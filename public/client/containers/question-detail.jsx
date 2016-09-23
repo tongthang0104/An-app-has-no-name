@@ -4,6 +4,8 @@ import _ from 'lodash';
 import ReactCountDownClock from 'react-countdown-clock';
 import { changeScore, incrementScore, decrementScore } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import { unescapeHelper } from '../helpers/lodashHelper';
+
 
 class QuestionDetail extends Component {
   constructor (props) {
@@ -14,18 +16,23 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-checkAnswer(event) {
-  this.setState({completed: true});
-  this.props.checkCompleted();
-  if(this.props.question.correct_answer === event.target.id) {
-    this.props.incrementScore(this.props.score, this.props.question.difficulty);
-    this.props.question.difficulty = "CORRECT";
-  } else {
-    this.props.decrementScore(this.props.score, this.props.question.difficulty);
-      this.props.question.difficulty = "INCORRECT";
+
+  checkAnswer(event) {
+    this.setState({completed: true});
+    if(this.props.question.correct_answer === event.target.id) {
+      this.props.incrementScore(this.props.score, this.props.question.difficulty);
+      // this.props.question.difficulty = "CORRECT";
+      alert('Correct');
+    } else {
+      this.props.decrementScore(this.props.score, this.props.question.difficulty);
+      // this.props.question.difficulty = "INCORRECT";
+      alert('Wrong');
     }
+
+    this.props.question.difficulty = '';
     this.props.checkCompleted();
   }
+
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
@@ -44,10 +51,10 @@ checkAnswer(event) {
         <div></div>
       );
     }
-    const question = _.unescape(props.question);
-    const answerArray = [_.unescape(props.correct_answer)]
+    const question = unescapeHelper(props.question);
+    const answerArray = [unescapeHelper(props.correct_answer)]
     for(let i = 0; i < props.incorrect_answers.length; i++){
-      answerArray.push(_.unescape(props.incorrect_answers[i]))
+      answerArray.push(unescapeHelper(props.incorrect_answers[i]))
     }
 
     return (
@@ -55,7 +62,7 @@ checkAnswer(event) {
         <h3>Question:</h3>
         <h3>{question}</h3>
           {this.renderAnswer(answerArray)}
-        <ReactCountDownClock seconds={10}
+        <ReactCountDownClock seconds={15}
                      color="blue"
                      alpha={1.5}
                      showMilliseconds={false}

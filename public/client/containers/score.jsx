@@ -20,13 +20,13 @@ class Score extends Component {
 
   render() {
     return (
-      <div> 
+      <div>
         <div className="panel panel-default">
           <div className="panel-heading">Your Score</div>
           <div className="panel-body">
             {this.props.score}
           </div>
-        </div>      
+        </div>
       </div>
     );
   }
@@ -39,9 +39,4 @@ function mapStateToProps(state){
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ changeScore }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Score);
-
+export default connect(mapStateToProps, {changeScore})(Score);
