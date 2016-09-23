@@ -64,8 +64,8 @@ module.exports = {
     }
 
     result = result.concat(easy, medium, hard);
-    let score = 0;
-    result.map(question => question.difficulty = (score += 100));
+    let difficultyScore = 0;
+    result.map(question => question.difficulty = (difficultyScore += 100));
     return result;
   }
 };

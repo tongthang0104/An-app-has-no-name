@@ -1,11 +1,17 @@
 'use strict';
+
 import axios from 'axios';
-const FETCH_QUESTION = 'FETCH_QUESTION';
-const CHANGE_SCORE = 'CHANGE_SCORE';
+
+const FETCH_QUESTION = 'FETCH_QUESTION',
+      CHANGE_SCORE = 'CHANGE_SCORE',
+      INCREMENT_SCORE = 'INCREMENT_SCORE',
+      DECREMENT_SCORE = 'DECREMENT_SCORE',
+      QUESTION_SELECTED = 'QUESTION_SELECTED';
+
 
 export function selectQuestion(question) {
   return {
-    type: 'QUESTION_SELECTED',
+    type: QUESTION_SELECTED,
     payload: question
   };
 }
@@ -42,14 +48,32 @@ export function fetchQuestion(){
 // }
 
 export const changeScore = (score) => {
-
   return {
-    type: 'CHANGE_SCORE',
+    type: CHANGE_SCORE,
     score: score,
   }
 }
 
+export const incrementScore = (score, difficulty) => {
+  return {
+    type: INCREMENT_SCORE,
+    score: score,
+    difficulty: difficulty,
+  }
+}
+
+export const decrementScore = (score, difficulty) => {
+  return {
+    type: DECREMENT_SCORE,
+    score: score,
+    difficulty: difficulty,
+  }
+}
+
 export {
+  CHANGE_SCORE,
+  DECREMENT_SCORE,
+  INCREMENT_SCORE,
   FETCH_QUESTION,
-  CHANGE_SCORE
+  QUESTION_SELECTED,
 }

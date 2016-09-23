@@ -9,15 +9,24 @@ class Score extends Component {
     super(props);
   }
 
+
   componentWillMount() {
-    this.props.changeScore(100);
+    if (!this.props.score) {
+      this.props.changeScore(0);
+    } else {
+      this.props.changeScore(this.props.score);
+    }
   }
 
   render() {
     return (
       <div> 
-        <span>Render Score:</span>
-        {this.props.score} 
+        <div className="panel panel-default">
+          <div className="panel-heading">Your Score</div>
+          <div className="panel-body">
+            {this.props.score}
+          </div>
+        </div>      
       </div>
     );
   }
