@@ -1,20 +1,18 @@
 'use strict';
 
-import { FETCH_QUESTION } from '../actions/index';
+import { FETCH_QUESTIONS } from '../actions/index';
+import { FETCH_QUESTIONS_RANDOM } from '../actions/index';
 
 export default function(state = null, action) {
   switch(action.type) {
-    case FETCH_QUESTION:
-      console.log(action);
+    case FETCH_QUESTIONS:
     if(action.payload.data){
-      console.log('HERE IS QUESTIONS');
       return action.payload.data;
     }
-    // if(action.categories){
-    //   console.log('Here is categories');
-    //   console.log(action.categories);
-    //   return action.categories;
-    // }
+    case FETCH_QUESTIONS_RANDOM:
+    if(action.payload.data){
+      return action.payload.data;
+    }
   }
     return state;
 }

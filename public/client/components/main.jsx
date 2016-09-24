@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CreateRoom from './navigation_bar';
 import NavBar from './navigation_bar';
-import Form from '../containers/select-category';
+import SelectCategory from '../containers/select-category';
 
 class Main extends Component {
 
@@ -20,10 +20,15 @@ class Main extends Component {
   render(){
     return (
       <div>
+<<<<<<< HEAD
         <input type="text" placeholder="Enter username" onKeyUp={this.addUser}></input>
         <CreateRoom />
         <button>Join</button>
         <Form/>
+=======
+        <SelectCategory/>
+        <NavBar/>
+>>>>>>> (feat) Implement post requests with random categories
       </div>
     );
   }

@@ -1,9 +1,6 @@
 import React, { Component }  from 'react';
 import NavBar from './navigation_bar';
 import QuestionList from '../containers/question-list';
-import QuestionDetail from '../containers/question-detail';
-import CategoryList from '../containers/category-list';
-
 
 export default class App extends Component {
 
@@ -70,10 +67,14 @@ export default class App extends Component {
 
     return (
       <div className="wrap">
+<<<<<<< HEAD
         <div>console.log();</div>
         <CategoryList />
           <div> {messages} </div>
           <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
+=======
+        <QuestionList />
+>>>>>>> (feat) Implement post requests with random categories
       </div>
     );
   }
