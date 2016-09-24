@@ -6,9 +6,10 @@ const escapeMap = {
   '<': '&lt;',
   '>': '&gt;',
   '"': '&quot;' || '&ldquo;' || '&rdquo;',
-  "'": '&#039;',
+  "'": '&#039;' || '&rsquo;',
   '`': '&#x60;',
-  'š': '&scaron;'
+  'š': '&scaron;',
+
 };
 
 const unescapeMap = _.invert(escapeMap);

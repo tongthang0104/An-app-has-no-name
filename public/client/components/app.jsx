@@ -14,15 +14,31 @@ export default class App extends Component {
 
   componentDidMount() {
 
+
+    let room = '12345'
     this.socket = io();
 
+    // this.socket.on('room', (socket) => {
+    //   console.log('I am room')
+    // });
+
+
+
+
+    this.socket.emit('room', room);
 
 
     this.socket.on('message', message => {
       this.setState({messages: [message, ...this.state.messages]});
-      console.log("i am socket", message)
+      console.log("i am socket", message, room)
 
     });
+  }
+
+  addUser() {
+    const user = {
+      username: socket.id
+    }
   }
 
   handleSubmit(e) {
@@ -47,14 +63,14 @@ export default class App extends Component {
   render(){
 
     const messages = this.state.messages.map((message, index) => {
-     return <li key={index}><b>{message.from}:</b>{message.body} </li>
+     return <div key={index}><b>{message.from}:</b>{message.body} </div>
     });
 
 
     return (
       <div className="wrap">
         <CategoryList />
-          <ul> {messages} </ul>
+          <div> {messages} </div>
           <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
       </div>
     );

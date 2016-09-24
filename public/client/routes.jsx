@@ -10,6 +10,7 @@ export default (
   <Router history={browserHistory}>
     <Route path="/" component={Main} ></Route>
     <Route path="/play" component={App} ></Route>
+    <Route path='/play/multiplayer/12345'component={App}></Route>
     <Route path="/correct" component={Correct}/>
     <Route path="/incorrect" component={Incorrect}/>
   </Router>

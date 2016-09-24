@@ -60,7 +60,17 @@ io.on('connection', function (socket) {
       body,
       from: socket.id.slice(8)
     });
+
+
+    // io.in('12345').emit('message', body);
+
   });
+
+  socket.on('room', (room) => {
+    socket.join(room);
+      console.log('roomed', room);
+  });
+
 
     console.log('client connected');
 });
