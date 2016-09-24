@@ -42,6 +42,25 @@ proxy.on('error', function(err) {
 
 require('./middleware')(app, express);
 
-app.listen(port, function(){
+const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
+});
+
+const io = require('socket.io')(server);
+
+
+
+io.on('connection', function (socket) {
+  // socket.emit('user connected');
+
+  socket.on('message', body => {
+    console.log('req.bodyasfdsf', body);
+
+    socket.broadcast.emit('message', {
+      body,
+      from: socket.id.slice(8)
+    });
+  });
+
+    console.log('client connected');
 });
