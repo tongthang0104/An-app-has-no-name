@@ -7,7 +7,7 @@ export default class CategoryList extends Component {
     return (
       <div key={this.props.title}>
         <QuestionList />
-        <div style={{'padding':'400px'}}>
+        <div style={{'padding':'50px'}}>
           <Score />
         </div>
       </div>

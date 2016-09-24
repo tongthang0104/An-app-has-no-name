@@ -64,7 +64,7 @@ class QuestionDetail extends Component {
           {this.renderAnswer(answerArray)}
         <ReactCountDownClock seconds={15}
                      color="blue"
-                     alpha={1.5}
+                     alpha={1.0}
                      showMilliseconds={false}
                      size={75}
                      onComplete={this.props.checkCompleted.bind(this)} />
