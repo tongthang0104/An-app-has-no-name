@@ -4,10 +4,12 @@ import QuestionList from '../containers/question-list';
 import QuestionDetail from '../containers/question-detail';
 import CategoryList from '../containers/category-list';
 
+
 export default class App extends Component {
   render(){
     return (
       <div className="wrap">
+        <div>console.log();</div>
         <CategoryList />
       </div>
     );
