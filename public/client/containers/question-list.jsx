@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectQuestion } from '../actions/index';
 import { bindActionCreators } from 'redux';
-import QuestionDetail from './question-detail';
 import Modal from 'react-modal';
+import QuestionDetail from './question-detail';
+import { selectQuestion } from '../actions/index';
 
 const customStyles = {
   content : {
@@ -27,9 +27,6 @@ class QuestionList extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-
-
-
 openModal(question) {
   if (question.clicked) {
     console.log("Already cliked", question.question);
@@ -43,9 +40,7 @@ closeModal() {
   this.setState({modalOpen: false});
 }
 
-
 renderQuestion(questions) {
-
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
@@ -58,7 +53,8 @@ renderQuestion(questions) {
             }
           }
           disabled={question.clicked}
-          className="list-group-item questions">
+          className="list-group-item questions"
+        >
           {question.difficulty}
         </div>
 
@@ -69,7 +65,8 @@ renderQuestion(questions) {
               this.closeModal();
             }
           }
-          style={customStyles} >
+          style={customStyles}
+        >
           <QuestionDetail  checkCompleted={this.closeModal} />
           <button onClick={this.closeModal}>Close</button>
         </Modal>
@@ -78,9 +75,7 @@ renderQuestion(questions) {
   })
 }
 
-
 renderList() {
-
   if(!this.props.questions){
     return (
       <div> Loading...</div>
