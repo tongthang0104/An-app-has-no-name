@@ -20,7 +20,7 @@ let port = isProduction ? process.env.PORT : 9999;
 
 if (!isProduction) {
   const bundle = require('./bundle.js');
-  
+
   bundle();
 
   // bundler inside the if block because
@@ -62,7 +62,7 @@ app.get('/users/:username/', (req, res) => { //
       }
     })
   })
-  
+
     // if (!token) {
     //     res.sendStatus(401);
     // } else {
@@ -84,7 +84,14 @@ const server = app.listen(port, function(){
 //   });
 // });
 
+
 const io = require('socket.io')(server);
+const CreateRoom = function(){
+  let thisGameId = (Math.random() * 10000) | 0;
+  this.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
+  this.join(thisGameId.toString());
+  console.log('server create room', thisGameId, this.id)
+}
 
 io.on('connection', function (socket) {
   // socket.emit('user connected');
@@ -97,14 +104,21 @@ io.on('connection', function (socket) {
       from: socket.id.slice(8)
     });
 
-    // io.in('12345').emit('message', body);
+
+
 
   });
 
-  socket.on('room', (room) => {
-    socket.join(room);
-      console.log('roomed', room);
-  });
+  socket.on('CreateRoom', CreateRoom)
+
+  //  => {
+  //   console.log('before join', room);
+  //   console.log('socket room id', socket.id);
+  //   socket.broadcast.emit('randomRoom', room);
+  //   socket.join(room);
+  //
+  //     console.log('roomed', room);
+  // });
 
 
     console.log('client connected');
