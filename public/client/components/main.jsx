@@ -19,9 +19,9 @@ class Main extends Component {
   render(){
     return (
       <div>
-        <SelectCategories/>
-        <RandamCategories/>
-        <input type="text" placeholder="Enter username" onKeyUp={this.addUser}></input>
+        <SelectCategories />
+        <RandamCategories />
+        <input type="text" placeholder="Enter username" onKeyUp={this.addUser} />
         <CreateRoom />
         <button>Join</button>
       </div>

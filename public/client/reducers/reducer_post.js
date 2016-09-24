@@ -1,7 +1,6 @@
 'use strict';
 
-import { FETCH_QUESTIONS } from '../actions/index';
-import { FETCH_QUESTIONS_RANDOM } from '../actions/index';
+import { FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM } from '../actions/index';
 
 export default function(state = null, action) {
   switch(action.type) {

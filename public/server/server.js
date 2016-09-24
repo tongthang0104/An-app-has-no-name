@@ -2,9 +2,11 @@
 
 //proxy between express and webpack-dev-server
 const express = require('express');
-require('./mongo.config');
-const app = express();
 const httpProxy = require('http-proxy');
+require('./mongo.config');
+
+const app = express();
+
 const proxy = httpProxy.createProxyServer({
   changeOrigin: true
 });
@@ -17,6 +19,7 @@ let port = isProduction ? process.env.PORT : 9999;
 
 if (!isProduction) {
   const bundle = require('./bundle.js');
+  
   bundle();
 
   // bundler inside the if block because

@@ -1,8 +1,9 @@
 'use strict';
 var Webpack = require('webpack');
 var path = require('path');
-var mainPath = path.resolve(__dirname, 'public','client', 'index.jsx');
 var NpmInstallPlugin = require("npm-install-webpack-plugin");
+
+var mainPath = path.resolve(__dirname, 'public', 'client', 'index.jsx');
 // require('babel-polyfill');
 
 const config = {
