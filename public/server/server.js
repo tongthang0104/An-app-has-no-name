@@ -45,6 +45,19 @@ proxy.on('error', function(err) {
 
 require('./middleware')(app, express);
 
+app.get('/users/:username/:password', (req, res) => {
+  console.log(req.params, req.url, "WE GOT SOMETHIJNG");
+  res.status(200).json({data: 'You are logged in!'});
+    // if (!token) {
+    //     res.sendStatus(401);
+    // } else {
+    //     res.status(200)
+    //         .json({data: 'You are logged in!'});
+    // } catch (e) {
+    //     res.sendStatus(401);
+
+    // }
+})
 const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
 });

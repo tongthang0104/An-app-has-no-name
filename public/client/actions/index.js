@@ -7,8 +7,17 @@ const FETCH_QUESTIONS = 'FETCH_QUESTIONS',
       CHANGE_SCORE = 'CHANGE_SCORE',
       INCREMENT_SCORE = 'INCREMENT_SCORE',
       DECREMENT_SCORE = 'DECREMENT_SCORE',
-      QUESTION_SELECTED = 'QUESTION_SELECTED';
+      QUESTION_SELECTED = 'QUESTION_SELECTED',
+      LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
 
+export function checkLogin(loginInfo) {
+  const url = `/users/${loginInfo.username}/${loginInfo.password}` 
+  const request = axios.get(url);
+  return {
+    type: LOGIN_USER_REQUEST,
+    payload:request
+  };
+}
 
 export function selectQuestion(question) {
   return {
@@ -26,7 +35,7 @@ export function fetchQuestionsRandCat(){
 
 export function fetchQuestions(categories){
   console.log(categories[0], "CHECKING CAT");
-  const url = '/api/questions/' + categories[0] + '/'+ categories[1] + '/' + categories[2] + '/'+ categories[3] + '/' + categories[4];
+  const url = `/api/questions/${categories[0]}/${categories[1]}/${categories[2]}/${categories[3]}/${categories[4]}`;
   const request = axios.get(url);
   return {
     type: FETCH_QUESTIONS,
