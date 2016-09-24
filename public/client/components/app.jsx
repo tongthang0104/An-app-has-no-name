@@ -1,18 +1,14 @@
 import React, { Component }  from 'react';
-import NavBar from './navigation_bar';
 import QuestionList from '../containers/question-list';
 
 export default class App extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {messages: []};
   }
 
   componentDidMount() {
-
-
     let room = '12345'
     this.socket = io();
 
@@ -20,11 +16,7 @@ export default class App extends Component {
     //   console.log('I am room')
     // });
 
-
-
-
     this.socket.emit('room', room);
-
 
     this.socket.on('message', message => {
       this.setState({messages: [message, ...this.state.messages]});
@@ -54,8 +46,6 @@ export default class App extends Component {
       console.log('body',this.socket)
       e.target.value = '';
     }
-
-
   }
 
   render(){
@@ -64,17 +54,11 @@ export default class App extends Component {
      return <div key={index}><b>{message.from}:</b>{message.body} </div>
     });
 
-
     return (
       <div className="wrap">
-<<<<<<< HEAD
-        <div>console.log();</div>
-        <CategoryList />
-          <div> {messages} </div>
-          <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
-=======
-        <QuestionList />
->>>>>>> (feat) Implement post requests with random categories
+        <QuestionList/>
+        <div> {messages} </div>
+        <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
       </div>
     );
   }

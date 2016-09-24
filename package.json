@@ -81,12 +81,9 @@
     "redux": "^3.0.4",
     "redux-form": "^6.0.5",
     "redux-promise": "^0.5.3",
-<<<<<<< HEAD
     "socket.io": "^1.4.8",
-=======
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
->>>>>>> (feat) Implement category selection
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   }

@@ -37,7 +37,7 @@ const categoriesList =  [
   'Vehicles',
 ];
 
-class SelectCategory extends Component {
+class SelectCategories extends Component {
 
   constructor (props) {
     super(props);
@@ -76,7 +76,7 @@ class SelectCategory extends Component {
 
 const SelectCatForm = reduxForm({
   form: 'selectCatForm',
-})(SelectCategory);
+})(SelectCategories);
 
 export default connect(null, {fetchQuestions})(SelectCatForm);
 
