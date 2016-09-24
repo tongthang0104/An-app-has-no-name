@@ -15,12 +15,23 @@ export function selectQuestion(question) {
     payload: question
   };
 }
-
-export function fetchQuestion(){
-  const request = axios.get('/api/questions');
+// export function fetchQuestion(categories){
+  // const request = axios.get('/api/questions');
+//   return {
+//     // categories,
+//     type: FETCH_QUESTION,
+//     payload:request
+//   };
+// }
+export function fetchQuestion(categories){
+  // const url = '/api/questions/'
+  console.log(categories[0], "CHECKING CAT");
+  const url = '/api/questions/' + categories[0] + '/'+ categories[1] + '/' + categories[2] + '/'+ categories[3] + '/' + categories[4] 
+  console.log(url, "CHECKING URL");
+  const request = axios.get(url);
   return {
     type: FETCH_QUESTION,
-    payload:request
+    payload:request,
   };
 }
 

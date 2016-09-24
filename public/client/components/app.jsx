@@ -4,6 +4,7 @@ import QuestionList from '../containers/question-list';
 import QuestionDetail from '../containers/question-detail';
 import CategoryList from '../containers/category-list';
 
+
 export default class App extends Component {
 
   constructor(props) {
@@ -69,6 +70,7 @@ export default class App extends Component {
 
     return (
       <div className="wrap">
+        <div>console.log();</div>
         <CategoryList />
           <div> {messages} </div>
           <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
