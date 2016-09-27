@@ -7,7 +7,7 @@ const httpProxy = require('http-proxy');
 require('./models/mongo.config');
 const db = require('./models/users/index');
 
-require('.models/questionRoutes');
+require('./models/questionRoutes');
 
 
 let gameSocket;
@@ -92,18 +92,7 @@ const server = app.listen(port, function(){
 
 
 const io = require('socket.io')(server);
-const CreateRoom = function(){
-  let thisGameId = (Math.random() * 10000) | 0;
-  this.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
-  this.join(thisGameId.toString());
-  console.log('server create room', thisGameId, this.id)
-}
 
-const JoinRoom = function(room){
-  this.join(room)
-  io.sockets.in(room).emit('playerJoined', 'body');
-  console.log('i am thang',room);
-}
 
 
 io.set('log level',1);

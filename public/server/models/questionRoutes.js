@@ -1,7 +1,7 @@
 'use strict';
 const mongoConfig = require('./mongo.config');
 const utils = require('./utils');
-const multiplayer = require('./server');
+const multiplayer = require('../server');
 
 module.exports = function(appRoute) {
 
