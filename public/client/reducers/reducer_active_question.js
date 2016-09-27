@@ -1,5 +1,5 @@
 'user strict';
-import { QUESTION_SELECTED } from '../actions/index';
+import { QUESTION_SELECTED } from '../constants/index';
 
 export default function(state = null, action) {
   switch(action.type) {

@@ -2,15 +2,10 @@
 
 import axios from 'axios';
 
-const FETCH_QUESTIONS = 'FETCH_QUESTIONS',
-      FETCH_QUESTIONS_RANDOM = 'FETCH_QUESTIONS_RANDOM',
-      CHANGE_SCORE = 'CHANGE_SCORE',
-      INCREMENT_SCORE = 'INCREMENT_SCORE',
-      DECREMENT_SCORE = 'DECREMENT_SCORE',
-      QUESTION_SELECTED = 'QUESTION_SELECTED',
-      LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST } from '../constants/index';
 
 export function checkLogin(loginInfo) {
+  console.log(LOGIN_USER_REQUEST);
   // const url = `/users/${loginInfo.username}/${loginInfo.password}`;
   const url = `/users/${loginInfo.username}/`;
   const request = axios.get(url);
@@ -87,12 +82,4 @@ export const decrementScore = (score, difficulty) => {
   }
 }
 
-export {
-  CHANGE_SCORE,
-  DECREMENT_SCORE,
-  FETCH_QUESTIONS,
-  FETCH_QUESTIONS_RANDOM,
-  INCREMENT_SCORE,
-  QUESTION_SELECTED,
-  LOGIN_USER_REQUEST
-}
+

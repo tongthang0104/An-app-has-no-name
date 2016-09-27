@@ -1,6 +1,6 @@
 'use strict';
 
-import { INCREMENT_SCORE, CHANGE_SCORE, DECREMENT_SCORE } from '../actions/index';
+import { INCREMENT_SCORE, CHANGE_SCORE, DECREMENT_SCORE } from '../constants/index';
 
 export default function(state = null, action) {
   switch(action.type) {
