@@ -66,8 +66,6 @@ const LoginForm = reduxForm({
   form: 'loginForm',
 })(Login);
 
-
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ checkLogin }, dispatch)
 };

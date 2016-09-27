@@ -1,9 +1,8 @@
 const Sequelize = require('sequelize');
-const pg = require('pg').native;
 const { PSQL_DB } = require('./../../config');
 
 const PSQLDB = process.env.DATABASE_URL || PSQL_DB ;
-sequelize = new Sequelize(PSQL_DB, {
+const sequelize = new Sequelize(PSQLDB, {
   native: true,
 });
 
