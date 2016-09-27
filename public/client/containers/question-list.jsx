@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
 import QuestionDetail from './question-detail';
 import { selectQuestion } from '../actions/index';
+import Socket from '../socket';
 
 const customStyles = {
   content : {
@@ -27,17 +28,66 @@ class QuestionList extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
+
+componentWillMount() {
+    Socket.on('receiveMultiplayerQuestions', (data) => {
+      console.log("roomID in QuestionList", data.roomId);
+      this.setState({roomId: data.roomId});
+    });
+}
+
+componentDidMount() {
+  Socket.on('receiveOpenOrder', (data) => {
+    console.log('broadcasting', data.modalOpen)
+    this.setState({
+      modalOpen: !data.modalOpen,
+      question: data.question
+    });
+    this.props.selectQuestion(data.question);
+  });
+
+  Socket.on('receiveCloseOrder', (data) => {
+    console.log('broadcasting', data.modalOpen)
+    this.setState({
+      modalOpen: data.modalOpen
+    });
+  });
+}
+
 openModal(question) {
   if (question.clicked) {
     console.log("Already cliked", question.question);
   } else {
-    this.setState({modalOpen: true});
+
+    let data = {
+      roomId: this.state.roomId,
+      modalOpen: this.state.modalOpen,
+      question: question
+    };
+
+    // Invoke openModal at the server and send data back
+    if (this.state.roomId) {
+      Socket.emit('openModal', data);
+    } else {
+      this.setState({modalOpen: true});
+    }
+
     question.clicked = true;
   }
 }
 
 closeModal() {
-  this.setState({modalOpen: false});
+
+  let data = {
+    roomId: this.state.roomId,
+    modalOpen: !this.state.modalOpen
+  };
+
+  if (this.state.roomId) {
+    Socket.emit('closeModal', data);
+  } else {
+    this.setState({modalOpen: false});
+  }
 }
 
 renderQuestion(questions) {
@@ -49,7 +99,9 @@ renderQuestion(questions) {
           key={question._id}
           onClick={() => {
               this.openModal(question)
-              this.props.selectQuestion(question)
+              if (!this.state.roomId) {
+                this.props.selectQuestion(question);
+              }
             }
           }
           disabled={question.clicked}
@@ -106,9 +158,7 @@ render (){
 
 function mapStateToProps(state){
   return {
-    categories: state.categories,
     questions: state.QuestionReducer,
-    modal: state.openModal
   };
 }
 

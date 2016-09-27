@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import QuestionList from '../containers/question-list';
 import Score from '../containers/score';
+
 export default class App extends Component {
 
   constructor(props) {
@@ -8,22 +9,8 @@ export default class App extends Component {
     this.state = {messages: []};
   }
 
-  componentDidMount() {
-    let room = '12345'
-    this.socket = io();
 
-    // this.socket.on('room', (socket) => {
-    //   console.log('I am room')
-    // });
 
-    this.socket.emit('room', room);
-
-    this.socket.on('message', message => {
-      this.setState({messages: [message, ...this.state.messages]});
-      console.log("i am socket", message, room)
-
-    });
-  }
 
   addUser() {
     const user = {
@@ -37,12 +24,12 @@ export default class App extends Component {
     if (e.keyCode === 13 && body) {
       const message = {
         body,
-        from: 'Thang'
+        room: this.state.room
       }
       this.setState({messages: [message, ...this.state.messages]});
 
 
-      this.socket.emit('message', body);
+      this.socket.emit('message': body);
       console.log('body',this.socket)
       e.target.value = '';
     }
@@ -57,7 +44,8 @@ export default class App extends Component {
     return (
       <div className="wrap">
         <QuestionList/>
-        <Score/>
+        <Score />
+        <div> {this.state.room} </div>
         <div> {messages} </div>
         <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
       </div>
