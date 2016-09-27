@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 import QuestionList from '../containers/question-list';
-
+import Score from '../containers/score';
 export default class App extends Component {
 
   constructor(props) {
@@ -57,6 +57,7 @@ export default class App extends Component {
     return (
       <div className="wrap">
         <QuestionList/>
+        <Score/>
         <div> {messages} </div>
         <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
       </div>

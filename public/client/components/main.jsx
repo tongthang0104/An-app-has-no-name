@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CreateRoom from './navigation_bar';
 import RandamCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
+import Login from './auth';
 
 class Main extends Component {
 
@@ -19,6 +20,7 @@ class Main extends Component {
   render(){
     return (
       <div>
+        <Login />
         <SelectCategories />
         <RandamCategories />
         <input type="text" placeholder="Enter username" onKeyUp={this.addUser} />

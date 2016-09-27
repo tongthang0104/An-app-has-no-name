@@ -2,13 +2,18 @@
 
 import axios from 'axios';
 
-const FETCH_QUESTIONS = 'FETCH_QUESTIONS',
-      FETCH_QUESTIONS_RANDOM = 'FETCH_QUESTIONS_RANDOM',
-      CHANGE_SCORE = 'CHANGE_SCORE',
-      INCREMENT_SCORE = 'INCREMENT_SCORE',
-      DECREMENT_SCORE = 'DECREMENT_SCORE',
-      QUESTION_SELECTED = 'QUESTION_SELECTED';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST } from '../constants/index';
 
+export function checkLogin(loginInfo) {
+  console.log(LOGIN_USER_REQUEST);
+  // const url = `/users/${loginInfo.username}/${loginInfo.password}`;
+  const url = `/users/${loginInfo.username}/`;
+  const request = axios.get(url);
+  return {
+    type: LOGIN_USER_REQUEST,
+    payload:request
+  };
+}
 
 export function selectQuestion(question) {
   return {
@@ -26,7 +31,7 @@ export function fetchQuestionsRandCat(){
 
 export function fetchQuestions(categories){
   console.log(categories[0], "CHECKING CAT");
-  const url = '/api/questions/' + categories[0] + '/'+ categories[1] + '/' + categories[2] + '/'+ categories[3] + '/' + categories[4];
+  const url = `/api/questions/${categories[0]}/${categories[1]}/${categories[2]}/${categories[3]}/${categories[4]}`;
   const request = axios.get(url);
   return {
     type: FETCH_QUESTIONS,
@@ -77,11 +82,4 @@ export const decrementScore = (score, difficulty) => {
   }
 }
 
-export {
-  CHANGE_SCORE,
-  DECREMENT_SCORE,
-  FETCH_QUESTIONS,
-  FETCH_QUESTIONS_RANDOM,
-  INCREMENT_SCORE,
-  QUESTION_SELECTED,
-}
+
