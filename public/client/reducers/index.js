@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   QuestionReducer,
   LoginReducer,
   ScoreReducer,
-  form: formReducer,
+  form: formReducer
 });
 
 export default rootReducer;

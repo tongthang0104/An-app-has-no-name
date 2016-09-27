@@ -2,7 +2,8 @@
 
 import axios from 'axios';
 
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST } from '../constants/index';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS } from '../constants/index';
+
 
 export function checkLogin(loginInfo) {
   console.log(LOGIN_USER_REQUEST);
@@ -39,6 +40,15 @@ export function fetchQuestions(categories){
   };
 }
 
+
+export function fetchQuestionsMultiplayer(questions) {
+
+  console.log('fetching from multiplayer', questions)
+  return {
+    type: FETCH_MULTI_QUESTIONS,
+    payload:questions,
+  };
+}
 // let nextQuestionId = 0
 //
 // export const addQuestion = question => {
@@ -81,5 +91,3 @@ export const decrementScore = (score, difficulty) => {
     difficulty: difficulty,
   }
 }
-
-
