@@ -3,7 +3,8 @@
 //proxy between express and webpack-dev-server
 const express = require('express');
 const httpProxy = require('http-proxy');
-require('./mongo.config');
+require('./models/mongo.config');
+const db = require('./models/users/index');
 
 const app = express();
 
@@ -45,9 +46,23 @@ proxy.on('error', function(err) {
 
 require('./middleware')(app, express);
 
-app.get('/users/:username/:password', (req, res) => {
-  console.log(req.params, req.url, "WE GOT SOMETHIJNG");
-  res.status(200).json({data: 'You are logged in!'});
+app.get('/users/:username/', (req, res) => { //
+  db.User.sync().then((User) => {
+    User.findOrCreate({where: {username: req.params.username}})
+    .spread(function(user, created) {
+      console.log(user.get({
+        plain: true
+      }))
+      if (created) {
+        console.log('You are logged in!');
+        res.status(200).json({data: 'You are logged in!'});
+      } else {
+        console.log('Sorry but that username is already taken!');
+        res.status(200).json({data: 'Sorry but that username is already taken!'})
+      }
+    })
+  })
+  
     // if (!token) {
     //     res.sendStatus(401);
     // } else {
@@ -57,10 +72,18 @@ app.get('/users/:username/:password', (req, res) => {
     //     res.sendStatus(401);
 
     // }
-})
+});
+
 const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
 });
+// 
+// const server = db.sequelize.sync().then(function() {
+//   app.listen(port, function(){
+//     console.log(`Server is running on ${port}`);
+//   });
+// });
+
 
 const io = require('socket.io')(server);
 

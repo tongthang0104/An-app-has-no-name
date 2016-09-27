@@ -11,7 +11,8 @@ const FETCH_QUESTIONS = 'FETCH_QUESTIONS',
       LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
 
 export function checkLogin(loginInfo) {
-  const url = `/users/${loginInfo.username}/${loginInfo.password}` 
+  // const url = `/users/${loginInfo.username}/${loginInfo.password}`;
+  const url = `/users/${loginInfo.username}/`;
   const request = axios.get(url);
   return {
     type: LOGIN_USER_REQUEST,
@@ -93,4 +94,5 @@ export {
   FETCH_QUESTIONS_RANDOM,
   INCREMENT_SCORE,
   QUESTION_SELECTED,
+  LOGIN_USER_REQUEST
 }
