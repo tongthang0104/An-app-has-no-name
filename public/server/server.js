@@ -93,11 +93,7 @@ const server = app.listen(port, function(){
 
 const io = require('socket.io')(server);
 
-
-
-io.set('log level',1);
-
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
   // socket.emit('user connected');
   gameSocket = socket;
 
@@ -107,6 +103,10 @@ io.sockets.on('connection', function (socket) {
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', openModal);
   gameSocket.on('closeModal', closeModal);
+  gameSocket.on('changingScore', function(data) {
+      console.log('changingScore', data.roomId);
+      socket.broadcast.emit('broadcastScore', data);
+  });
     console.log('client connected ', socket.id);
 });
 

@@ -27,11 +27,11 @@ class Login extends Component {
     this.checkLogin(values);
     console.log(values);
     // browserHistory.push('/play');
-  }  
+  }
   renderLoginStatus() {
     if(!this.props.loginStatus){
       return (
-        <div> Loading...</div>
+        <div>Sign in to save scores!</div>
       )
     }
     return (
@@ -71,4 +71,3 @@ function mapDispatchToProps(dispatch) {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-
