@@ -38,7 +38,6 @@ componentWillMount() {
 
 componentDidMount() {
   Socket.on('receiveOpenOrder', (data) => {
-    console.log('broadcasting', data.modalOpen)
     this.setState({
       modalOpen: !data.modalOpen,
       question: data.question
@@ -47,7 +46,6 @@ componentDidMount() {
   });
 
   Socket.on('receiveCloseOrder', (data) => {
-    console.log('broadcasting', data.modalOpen)
     this.setState({
       modalOpen: data.modalOpen
     });
@@ -119,7 +117,7 @@ renderQuestion(questions) {
           }
           style={customStyles}
         >
-          <QuestionDetail  checkCompleted={this.closeModal} />
+          <QuestionDetail  checkCompleted={this.closeModal} roomId={this.state.roomId}/>
           <button onClick={this.closeModal}>Close</button>
         </Modal>
       </div>

@@ -5,27 +5,30 @@ import ReactCountDownClock from 'react-countdown-clock';
 import _ from 'lodash';
 import { changeScore, incrementScore, decrementScore } from '../actions/index';
 import { unescapeHelper } from '../helpers/lodashHelper';
+import Socket from '../socket';
 
 
 class QuestionDetail extends Component {
   constructor (props) {
     super(props);
-  
+
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
 
+
   checkAnswer(event) {
+
     this.setState({completed: true});
     if(this.props.question.correct_answer === event.target.id) {
-      this.props.incrementScore(this.props.score, this.props.question.difficulty);
-      // this.props.question.difficulty = "CORRECT";
+      this.props.incrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
+
       alert('Correct');
     } else {
-      this.props.decrementScore(this.props.score, this.props.question.difficulty);
-      // this.props.question.difficulty = "INCORRECT";
+      this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
       alert('Wrong');
     }
+
 
     this.props.question.difficulty = '';
     this.props.checkCompleted();

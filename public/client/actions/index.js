@@ -49,45 +49,31 @@ export function fetchQuestionsMultiplayer(questions) {
     payload:questions,
   };
 }
-// let nextQuestionId = 0
-//
-// export const addQuestion = question => {
-//   return {
-//     type: 'ADD_QUESTION',
-//     id: nextQuestionId++,
-//     question
-//   }
-// }
-//
-// export const toggleQuestion = id => {
-//   return {
-//     type: 'TOGGLE_QUESTION',
-//     id
-//   }
-// }
 
 export const changeScore = (score) => {
   return {
     type: CHANGE_SCORE,
     score: score,
-  }
-}
+  };
+};
 
-export const incrementScore = (score, difficulty) => {
+export const incrementScore = (score, difficulty, roomId) => {
   console.log('THIS IS INCREMENT_SCORE', difficulty);
   return {
     type: INCREMENT_SCORE,
+    roomId: roomId,
     score: score,
     difficulty: difficulty,
-  }
-}
+  };
+};
 
-export const decrementScore = (score, difficulty) => {
+export const decrementScore = (score, difficulty, roomId) => {
   console.log('THIS IS DECREMENT_SCORE', score, "difficulty:", difficulty);
 
   return {
     type: DECREMENT_SCORE,
+    roomId: roomId,
     score: score,
     difficulty: difficulty,
-  }
-}
+  };
+};

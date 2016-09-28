@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import QuestionList from '../containers/question-list';
 import Score from '../containers/score';
+import MultiplayerScore from '../containers/multiplayer-score';
 
 export default class App extends Component {
 
@@ -45,6 +46,7 @@ export default class App extends Component {
       <div className="wrap">
         <QuestionList/>
         <Score />
+        <MultiplayerScore />
         <div> {this.state.room} </div>
         <div> {messages} </div>
         <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>
