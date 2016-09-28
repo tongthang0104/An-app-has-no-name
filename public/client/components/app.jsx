@@ -2,7 +2,7 @@ import React, { Component }  from 'react';
 import QuestionList from '../containers/question-list';
 import Score from '../containers/score';
 import MultiplayerScore from '../containers/multiplayer-score';
-
+import Socket from '../socket';
 export default class App extends Component {
 
   constructor(props) {
@@ -10,7 +10,12 @@ export default class App extends Component {
     this.state = {messages: []};
   }
 
-
+  componentWillMount() {
+    Socket.on('receiveMultiplayerQuestions', (data) => {
+      console.log("roomID in QuestionList", data.roomId);
+      this.setState({roomId: data.roomId});
+    });
+  }
 
 
   addUser() {
@@ -28,15 +33,30 @@ export default class App extends Component {
         room: this.state.room
       }
       this.setState({messages: [message, ...this.state.messages]});
-
-
-      this.socket.emit('message': body);
-      console.log('body',this.socket)
+      Socket.emit('message': body);
       e.target.value = '';
     }
   }
 
+  renderScore() {
+    if (this.state.roomId) {
+      console.log('Multiplayer', this.state.roomId)
+      return (
+        <div >
+          <Score />
+          <MultiplayerScore />
+        </div>
+      );
+    } else {
+      console.log('Single Player')
+
+      return (<Score />);
+    }
+
+  }
+
   render(){
+
 
     const messages = this.state.messages.map((message, index) => {
      return <div key={index}><b>{message.from}:</b>{message.body} </div>
@@ -45,8 +65,7 @@ export default class App extends Component {
     return (
       <div className="wrap">
         <QuestionList/>
-        <Score />
-        <MultiplayerScore />
+        {this.renderScore()}
         <div> {this.state.room} </div>
         <div> {messages} </div>
         <input type="text" onKeyUp={this.handleSubmit.bind(this)}></input>

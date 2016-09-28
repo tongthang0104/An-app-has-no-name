@@ -22,10 +22,12 @@ class QuestionList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      chosenQuestion: []
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
 
@@ -40,8 +42,10 @@ componentDidMount() {
   Socket.on('receiveOpenOrder', (data) => {
     this.setState({
       modalOpen: !data.modalOpen,
-      question: data.question
+      chosenQuestion: [data.question._id, ...this.state.chosenQuestion]
     });
+
+    console.log('questionId', data.question._id)
     this.props.selectQuestion(data.question);
   });
 
@@ -50,17 +54,22 @@ componentDidMount() {
       modalOpen: data.modalOpen
     });
   });
+  Socket.on('gameOver', this.gameOver)
 }
 
 openModal(question) {
-  if (question.clicked) {
+  console.log('List of chosenQuestion:', this.state.chosenQuestion)
+
+
+  if (this.state.chosenQuestion.includes(question._id)) {
     console.log("Already cliked", question.question);
   } else {
 
     let data = {
       roomId: this.state.roomId,
       modalOpen: this.state.modalOpen,
-      question: question
+      question: question,
+      chosenQuestion: this.state.chosenQuestion.length
     };
 
     // Invoke openModal at the server and send data back
@@ -70,15 +79,23 @@ openModal(question) {
       this.setState({modalOpen: true});
     }
 
-    question.clicked = true;
+    // question.clicked = true;
+
   }
+}
+
+
+gameOver(data) {
+  setTimeout(alert(data), 3000);
+  //need to route or do anything
 }
 
 closeModal() {
 
   let data = {
     roomId: this.state.roomId,
-    modalOpen: !this.state.modalOpen
+    modalOpen: !this.state.modalOpen,
+    chosenQuestion: this.state.chosenQuestion.length
   };
 
   if (this.state.roomId) {
@@ -86,6 +103,9 @@ closeModal() {
   } else {
     this.setState({modalOpen: false});
   }
+
+  Socket.emit('trackingGame', data);
+
 }
 
 renderQuestion(questions) {

@@ -103,11 +103,14 @@ io.on('connection', function (socket) {
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', openModal);
   gameSocket.on('closeModal', closeModal);
+
   gameSocket.on('changingScore', function(data) {
-      console.log('changingScore', data.roomId);
-      socket.broadcast.emit('broadcastScore', data);
+    socket.broadcast.emit('broadcastScore', data);
   });
-    console.log('client connected ', socket.id);
+
+  gameSocket.on('trackingGame', trackingGame);
+
+  console.log('client connected ', socket.id);
 });
 
 const CreateRoom = function(){
@@ -148,10 +151,6 @@ const JoinRoom = function(data){
       this.emit('errors', {message: "This room does not exist."});
     }
 };
-//
-// const leaveAndJoin = function(roomId) {
-//
-// };
 
 const fetchQuestions = function(data) {
 
@@ -167,8 +166,7 @@ const fetchQuestions = function(data) {
 const openModal = function(data) {
 
   //Invoke the receiveOpenOrder at Client and send back data.modalOpen
-    console.log('opening', data.roomId, data.modalOpen, data.question);
-
+    console.log('opening', data.roomId, data.question);
   io.sockets.in(data.roomId).emit('receiveOpenOrder', data);
 };
 
@@ -176,4 +174,13 @@ const closeModal = function(data) {
 
   //Invoke the receiveCloseOrder at Client and send back data.modalOpen
   io.sockets.in(data.roomId).emit('receiveCloseOrder', data);
+};
+
+
+const trackingGame = function(data) {
+  if (data.chosenQuestion === 2) {
+    io.sockets.in(data.roomId).emit('gameOver', 'Game Over');
+  } else {
+    console.log('game is going', data.chosenQuestion);
+  }
 };
