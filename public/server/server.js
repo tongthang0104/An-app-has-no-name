@@ -52,6 +52,21 @@ proxy.on('error', function(err) {
 
 require('./middleware')(app, express);
 
+app.post('/users/signup/', (req, res) => { //
+  db.User.sync().then((User) => {
+    User.findOrCreate({where: {username: req.body.username}})
+    .spread(function(user, created) {
+      if (created) {
+        console.log('You have been signed up!');
+        res.status(200).json({data: 'You have been signed up!'});
+      } else {
+        console.log('Sorry but that username is already taken!');
+        res.status(200).json({data: 'Sorry but that username is already taken!'})
+      }
+    })
+  })
+});
+
 app.get('/users/:username/', (req, res) => { //
   // db.User.sync().then((User) => {
   //   User.findOrCreate({where: {username: req.params.username}})

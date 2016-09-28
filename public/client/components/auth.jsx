@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { SubmissionError } from 'redux-form';
-import { checkLogin } from '../actions/index';
+import * as actions from '../actions/index';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
@@ -19,12 +19,12 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 class Login extends Component {
   constructor (props) {
     super(props);
-    this.checkLogin = this.props.checkLogin.bind(this);
-    this.submitAndCheck = this.submitAndCheck.bind(this);
+    // this.props.checkLogin = this.props.props.checkLogin.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  submitAndCheck(values) {
-    this.checkLogin(values);
+  handleFormSubmit(values) {
+    this.props.checkLogin(values);
     console.log(values);
     // browserHistory.push('/play');
   }
@@ -42,7 +42,7 @@ class Login extends Component {
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.submitAndCheck)}>
+      <form onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Field name="username" type="text" component={renderField} label="Username"/>
         {/* <Field name="password" type="password" component={renderField} label="Password"/> */}
         {/* {error && <strong>{error}</strong>} */}
@@ -58,7 +58,7 @@ class Login extends Component {
 
 function mapStateToProps(state){
   return {
-    loginStatus: state.LoginReducer,
+    loginStatus: state.AuthReducer,
   };
 }
 
@@ -66,8 +66,8 @@ const LoginForm = reduxForm({
   form: 'loginForm',
 })(Login);
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ checkLogin }, dispatch)
-};
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ props.checkLogin }, dispatch)
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, actions)(LoginForm);

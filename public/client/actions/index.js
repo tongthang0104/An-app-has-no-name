@@ -2,18 +2,37 @@
 
 import axios from 'axios';
 
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS } from '../constants/index';
-
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS } from '../constants/index';
 
 export function checkLogin(loginInfo) {
   console.log(LOGIN_USER_REQUEST);
-  // const url = `/users/${loginInfo.username}/${loginInfo.password}`;
   const url = `/users/${loginInfo.username}/`;
-  const request = axios.get(url);
-  return {
-    type: LOGIN_USER_REQUEST,
-    payload:request
-  };
+  const serverResponse = axios.get(url)
+    .then((response) => {
+      return {
+        type: LOGIN_USER_REQUEST,
+        payload:response
+      }
+    })
+    .catch(function (error) {
+    console.log(error);
+  });
+  return serverResponse;  
+}
+
+export function signupUser(props) {
+  const url = `/users/signup`;
+  const serverResponse = axios.post(url, props)
+    .then((response) => {
+      return {
+        type: SIGNUP_SUCCESS,
+        payload:response
+      }
+    })
+    .catch(function (error) {
+    console.log(error);
+  });
+  return serverResponse;  
 }
 
 export function selectQuestion(question) {
