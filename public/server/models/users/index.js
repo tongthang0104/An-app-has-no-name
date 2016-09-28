@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const PSQLDB = process.env.DATABASE_URL || require('./../../config').PSQL_DB;
-const sequelize = new Sequelize(PSQLDB, {
-  native: true,
+const sequelize = new Sequelize('database', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'postgres'
 });
 
 sequelize
