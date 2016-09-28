@@ -86,7 +86,7 @@ openModal(question) {
 
 
 gameOver(data) {
-  setTimeout(alert(data), 3000);
+  //setTimeout(alert(data), 3000);
   //need to route or do anything
 }
 
@@ -112,9 +112,9 @@ renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div className="question-list">
+      <div className="question-list" key={question._id}>
         <div
-          key={question._id}
+
           onClick={() => {
               this.openModal(question)
               if (!this.state.roomId) {
@@ -127,19 +127,6 @@ renderQuestion(questions) {
         >
           {question.difficulty}
         </div>
-
-        <Modal
-          isOpen={this.state.modalOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={() => {
-              this.closeModal();
-            }
-          }
-          style={customStyles}
-        >
-          <QuestionDetail  checkCompleted={this.closeModal} roomId={this.state.roomId}/>
-          <button onClick={this.closeModal}>Close</button>
-        </Modal>
       </div>
     );
   })
@@ -165,11 +152,18 @@ renderList() {
 
 render (){
     return (
-      // <div className="List-group" key={this.props.questions}>
+      <div className="List-group" key={this.props.questions}>
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-      // </div>
+        <Modal
+          isOpen={this.state.modalOpen}
+          onRequestClose={() => this.closeModal()}
+          style={customStyles} >
+          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId}/>
+          <button onClick={this.closeModal}>Close</button>
+        </Modal>
+      </div>
     );
   }
 }

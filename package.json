@@ -71,8 +71,6 @@
     "mysql": "^2.11.1",
     "npm-install-webpack-plugin": "^4.0.4",
     "path": "^0.12.7",
-    "pg": "^6.1.0",
-    "pg-native": "^1.10.0",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.3",
     "react-countdown-clock": "^1.0.9",
