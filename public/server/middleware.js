@@ -11,10 +11,8 @@ module.exports = function(app, express) {
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
-  // app.use(express.static(`${__dirname}/../..`));
-
   app.use(express.static(publicPath));
   app.use('/api/questions', questionRouter);
   require('./models/questionRoutes')(questionRouter);
-  
+
 };
