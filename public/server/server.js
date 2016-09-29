@@ -5,7 +5,7 @@ const express = require('express');
 const httpProxy = require('http-proxy');
 
 require('./models/mongo.config');
-// const db = require('./models/users/index');
+const db = require('./models/users/index');
 
 require('./models/questionRoutes');
 

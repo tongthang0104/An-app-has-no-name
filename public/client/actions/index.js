@@ -1,7 +1,7 @@
 'use strict';
 
 import axios from 'axios';
-
+import { browserHistory } from 'react-router';
 import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER } from '../constants/index';
 
 export function checkLogin(props) {
@@ -35,6 +35,7 @@ export function signupUser(props) {
   });
   return serverResponse;  
 }
+
 
 export function signoutUser() {
   localStorage.clear();

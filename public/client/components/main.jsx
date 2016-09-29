@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import RandamCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
-import Login from './auth';
+import Header from './header';
+import Signin from './auth/signin';
 import Singup from './auth/signup';
 import Socket from '../socket';
 import { connect } from 'react-redux';
@@ -183,9 +184,7 @@ class Main extends Component {
 
     return (
       <div>
-        <Singup />
-        <Login />
-        <Link to="users/signout">Signout</Link>
+        <Header />
         <SelectCategories />
         <RandamCategories />
 

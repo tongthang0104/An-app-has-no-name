@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { SubmissionError } from 'redux-form';
-import * as actions from '../actions/index';
+import * as actions from '../../actions/index';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
@@ -16,7 +16,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
   </div>
 )
 
-class Login extends Component {
+class Signin extends Component {
   constructor (props) {
     super(props);
     // this.props.checkLogin = this.props.props.checkLogin.bind(this);
@@ -25,7 +25,7 @@ class Login extends Component {
 
   handleFormSubmit(values) {
     this.props.checkLogin(values);
-    // browserHistory.push('/play');
+    browserHistory.push('/');
   }
   renderLoginStatus() {
     if(!this.props.loginStatus){
@@ -70,13 +70,13 @@ const validate = props => {
 
 function mapStateToProps(state){
   return {
-    loginStatus: state.LoginReducer,
+    loginStatus: state.SigninReducer,
   };
 }
 
-const LoginForm = reduxForm({
+const SigninForm = reduxForm({
   validate,
-  form: 'login',
-})(Login);
+  form: 'signin',
+})(Signin);
 
-export default connect(mapStateToProps, actions)(LoginForm);
+export default connect(mapStateToProps, actions)(SigninForm);

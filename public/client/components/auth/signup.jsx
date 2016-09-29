@@ -24,7 +24,7 @@ class Signup extends Component {
 
   handleFormSubmit(values) {
     this.props.signupUser(values);
-    // browserHistory.push('/play');
+    browserHistory.push('/');
   }  
   renderSignupStatus() {
     if(!this.props.signupStatus){
