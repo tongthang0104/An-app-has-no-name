@@ -33,12 +33,17 @@ class QuestionList extends Component {
   }
 
 
-componentWillMount() {
-    Socket.on('receiveMultiplayerQuestions', (data) => {
-      console.log("roomID in QuestionList", data.roomId);
-      this.setState({roomId: data.roomId});
-    });
-}
+  componentWillMount() {
+      Socket.on('receiveMultiplayerQuestions', (data) => {
+        console.log("roomID in QuestionList", data.roomId);
+        this.setState({roomId: data.roomId});
+      });
+
+      Socket.on('playerJoined', (data) => {
+        console.log("roomID in QuestionList", data.roomId);
+        this.setState({roomId: data.roomId});
+      });
+  }
 
 componentDidMount() {
   Socket.on('receiveOpenOrder', (data) => {
@@ -118,7 +123,6 @@ closeModal() {
   }
 
   Socket.emit('trackingGame', data);
-
 }
 
 renderQuestion(questions) {
@@ -164,6 +168,32 @@ renderList() {
 }
 
 render (){
+  console.log("roomId", this.state.roomId)
+  let loadingView = {
+    loading: (
+      <h1>Loading... </h1>
+    ),
+    waitingHost: (
+      <div>
+        <h1>Waiting for host.. </h1>
+        <button onClick={this.closeModal}>Exit</button>
+      </div>
+    )
+  };
+
+  let waitingModal = (
+      <Modal
+        isOpen={this.props.questions ? false : true}
+        onRequestClose={() => {
+            this.closeModal();
+          }
+        }
+        style={customStyles}
+      >
+      {this.state.roomId ? loadingView.waitingHost : loadingView.loading}
+
+      </Modal>
+  );
     return (
       <div className="List-group" key={this.props.questions}>
         <table className="table">

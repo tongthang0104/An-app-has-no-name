@@ -112,7 +112,7 @@ io.on('connection', function (socket) {
     
   });
   gameSocket.on('trackingGame', trackingGame);
-
+  gameSocket.on('checkRoom', checkRoom);
   gameSocket.on('disconnect', function() {
     console.log('Got disconnect');
   });
@@ -141,7 +141,6 @@ const CreateRoom = function(){
 
 const JoinRoom = function(data){
 
-
     let room = gameSocket.nsp.adapter.rooms[data.roomId];
 
     if (room !== undefined) {
@@ -157,8 +156,6 @@ const JoinRoom = function(data){
 
       this.emit('errors', null, false);
 
-    } else {
-      this.emit('errors', {message: "This room does not exist."}, true);
     }
 };
 
@@ -192,5 +189,14 @@ const trackingGame = function(data) {
     io.sockets.in(data.roomId).emit('gameOver', 'Game Over');
   } else {
     console.log('game is going', data.chosenQuestion);
+  }
+};
+
+const checkRoom = function(roomId) {
+  let room = gameSocket.nsp.adapter.rooms[roomId];
+  if (!room) {
+    this.emit('roomCheck', {valid: false});
+  } else {
+    this.emit('roomCheck', {valid: true});
   }
 };
