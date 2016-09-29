@@ -199,6 +199,7 @@ render (){
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
+        {waitingModal}
         <Modal
           isOpen={this.state.modalOpen}
           onRequestClose={() => this.closeModal()}

@@ -131,26 +131,23 @@ const server = app.listen(port, function(){
 //   });
 // });
 
-
 const io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
   // socket.emit('user connected');
+
   gameSocket = socket;
-
-
   gameSocket.on('JoinRoom', JoinRoom);
   gameSocket.on('CreateRoom', CreateRoom);
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', openModal);
   gameSocket.on('closeModal', closeModal);
-
   gameSocket.on('changingScore', function(data) {
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
   gameSocket.on('disconnect', function(){
     console.log("User disconnected");
-    
+
   });
   gameSocket.on('trackingGame', trackingGame);
   gameSocket.on('checkRoom', checkRoom);
@@ -161,21 +158,24 @@ io.on('connection', function (socket) {
   console.log('client connected ', socket.id);
 });
 
-const CreateRoom = function(){
+const CreateRoom = function(host){
 
   let roomId = (Math.random() * 10000) | 0;
 
   console.log("this is room Create", typeof roomId);
   console.log("this is room CreateString", typeof roomId.toString());
 
-
+  //join to the room
   this.join(roomId.toString());
 
   //invoke 'newGameCreated' at Client side and send gameId & socketId
-  this.emit('newGameCreated', {roomId: roomId, mySocketId: this.id});
-
-  //then join to the room
-
+  let data = {
+    room: roomId,
+    mySocketId: this.id,
+    roomList: roomId.toString()
+  };
+  this.emit('newGameCreated', data);
+  io.sockets.emit('newRoomCreated', data);
   console.log('server create room', roomId, this.id)
 };
 
@@ -183,20 +183,14 @@ const CreateRoom = function(){
 const JoinRoom = function(data){
 
     let room = gameSocket.nsp.adapter.rooms[data.roomId];
-
     if (room !== undefined) {
-      console.log('roomId',data.roomId)
 
-      console.log('this is rooms ', room);
-      this.join(data.roomId);
-      // ***** Player already Joined
-
-
-      // Call playerJoined at Frontend and pass room Id
-      io.sockets.in(data.roomId).emit('playerJoined', data);
-
-      this.emit('errors', null, false);
-
+      if (room.length <= 1) {
+        this.join(data.roomId);
+        // ***** Player already Joined
+        // Call playerJoined at Frontend and pass room Id
+        io.sockets.in(data.roomId).emit('playerJoined', data);
+      }
     }
 };
 
@@ -236,8 +230,12 @@ const trackingGame = function(data) {
 const checkRoom = function(roomId) {
   let room = gameSocket.nsp.adapter.rooms[roomId];
   if (!room) {
-    this.emit('roomCheck', {valid: false});
+    this.emit('validateRoom', {valid: false});
   } else {
-    this.emit('roomCheck', {valid: true});
+    if (room.length > 1) {
+      this.emit('validateRoom', {valid: false});
+    } else {
+      this.emit('validateRoom', {valid: true});
+    }
   }
 };
