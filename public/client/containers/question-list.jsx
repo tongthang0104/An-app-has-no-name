@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
 import { browserHistory } from 'react-router';
 import QuestionDetail from './question-detail';
-import { selectQuestion } from '../actions/index';
+import { selectQuestion, changeScore, resetQuestion } from '../actions/index';
 import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
+import * as audio from '../audio';
 
 const customStyles = {
   content : {
@@ -28,17 +29,22 @@ class QuestionList extends Component {
       modalOpen: false,
       chosenQuestion: [],
       singleP: [],
-      result: false,
-      p1Score: "0",
-      p2Score: "0",
-      answer: '',
+      resultModal: false,
+      p1ScoreResultModal: "0",
+      p2ScoreResultModal: "0",
+      answerResultModal: '',
+      gameOver: false,
+      playerTwoScore: 0
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.gameOver = this.gameOver.bind(this);
     this.closeResult = this.closeResult.bind(this);
     this.getScore = this.getScore.bind(this);
-
+    this.closeEndingModal = this.closeEndingModal.bind(this);
+    this.changeScore = this.props.changeScore.bind(this);
+    this.resetQuestion = this.props.resetQuestion.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
 
@@ -60,7 +66,7 @@ componentDidMount() {
     this.setState({
       modalOpen: !data.modalOpen,
       chosenQuestion: [data.question._id, ...this.state.chosenQuestion],
-      answer: data.question.correct_answer
+      answerResultModal: data.question.correct_answer
     });
 
     console.log('questionId', data.question._id)
@@ -71,20 +77,24 @@ componentDidMount() {
     console.log('receiveCloseOrder QL')
     this.setState({
       modalOpen: false,
-      result: true
+      resultModal: true
     });
   });
   Socket.on('broadcastScore', (data) => {
     console.log(" score from qL", data)
-    this.setState({p2Score: data.amount});
+    this.setState({
+      p2ScoreResultModal: data.amount,
+      playerTwoScore: data.score
+    });
   });
 
-  Socket.on('gameOver', this.gameOver)
+  Socket.on('gameOver', this.gameOver);
+
 }
 
 openModal(question) {
 
-  this.setState({answer: question.correct_answer});
+  this.setState({answerResultModal: question.correct_answer});
   if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
 
   } else {
@@ -108,16 +118,26 @@ openModal(question) {
 
 
 gameOver(data) {
+
   if(this.state.roomId){
+    if(data.gameOver){
+      audio.play('gameOver');
+      this.setState({
+        gameOver: true
+      });
+      // browserHistory.push('/endgame');
+    }
+  } else {
+    this.reset();
     browserHistory.push('/endgame');
   }
-  browserHistory.push('/endgame');
-  // alert(data);
-  //setTimeout(alert(data), 3000);
-  //need to route or do anything
+}
+reset(){
+  this.changeScore(0);
+  this.resetQuestion()
 }
 closeResult(){
-  this.setState({result:false});
+  this.setState({resultModal:false});
   this.setState({modalOpen: false});
 }
 closeModal() {
@@ -129,6 +149,7 @@ closeModal() {
   };
 
   if (this.state.roomId) {
+
     Socket.emit('closeModal', data);
   } else {
     let counter = 0;
@@ -142,7 +163,15 @@ closeModal() {
     }
   }
   Socket.emit('trackingGame', data);
-  this.setState({result:true})
+  this.setState({resultModal:true})
+}
+
+closeEndingModal(){
+  this.reset();
+  browserHistory.push('/');
+  this.setState({
+    gameOver: false,
+  });
 }
 
 renderQuestion(questions) {
@@ -187,8 +216,8 @@ renderList() {
 }
 
 getScore(data){
-  this.setState({p1Score: data});
-  
+  this.setState({p1ScoreResultModal: data});
+
 }
 render (){
   console.log("roomId", this.state.roomId)
@@ -217,35 +246,60 @@ render (){
 
       </Modal>
   );
+  let endingModal = (
+    <Modal
+      isOpen={this.state.gameOver}
+      onRequestClose={() => {
+          this.closeModal();
+        }
+      }
+      style={customStyles}
+    >
+    <h1>Your score: {this.props.playerOneScore}</h1>
+    <h1>Player 2: {this.state.playerTwoScore}</h1>
+    {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
+    <button onClick={this.closeEndingModal}>Go to home page</button>
+    </Modal>
+  );
+
+  let questionDetailModal = (
+    <Modal
+      isOpen={this.state.modalOpen}
+      shouldCloseOnOverlayClick={false}
+      onRequestClose={() => this.closeModal()}
+      style={customStyles} >
+      <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
+      <button onClick={this.closeModal}>Close</button>
+    </Modal>
+  );
+
+  let questionResultModal = (
+    <Modal
+      isOpen={this.state.resultModal}
+      shouldCloseOnOverlayClick={false}
+      onRequestClose={() => this.closeResult()}
+      style={customStyles} >
+      <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
+      <ReactCountDownClock
+        seconds={5}
+        color="blue"
+        alpha={1.5}
+        showMilliseconds={false}
+        size={75}
+        onComplete={this.closeResult}
+      />
+      <button onClick={this.closeResult}>Close</button>
+    </Modal>
+  );
     return (
       <div className="List-group" key={this.props.questions}>
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-        <Modal
-          isOpen={this.state.modalOpen}
-          shouldCloseOnOverlayClick={false}
-          onRequestClose={() => this.closeModal()}
-          style={customStyles} >
-          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
-          <button onClick={this.closeModal}>Close</button>
-        </Modal>
-        <Modal
-          isOpen={this.state.result}
-          shouldCloseOnOverlayClick={false}
-          onRequestClose={() => this.closeResult()}
-          style={customStyles} >
-          <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1Score} Player2={this.state.p2Score} Correct={this.state.answer} />
-          <ReactCountDownClock
-            seconds={5}
-            color="blue"
-            alpha={1.5}
-            showMilliseconds={false}
-            size={75}
-            onComplete={this.closeResult}
-          />
-          <button onClick={this.closeResult}>Close</button>
-        </Modal>
+        {waitingModal}
+        {endingModal}
+        {questionDetailModal}
+        {questionResultModal}
       </div>
     );
   }
@@ -255,11 +309,10 @@ function mapStateToProps(state){
   return {
     questions: state.QuestionReducer,
     roomId: state.roomId,
+    playerOneScore: state.ScoreReducer
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ selectQuestion: selectQuestion }, dispatch)
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionList);
+
+export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(QuestionList);
