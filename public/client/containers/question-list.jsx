@@ -47,7 +47,6 @@ class QuestionList extends Component {
     this.reset = this.reset.bind(this);
   }
 
-
   componentWillMount() {
       Socket.on('receiveMultiplayerQuestions', (data) => {
         console.log("roomID in QuestionList", data.roomId);
