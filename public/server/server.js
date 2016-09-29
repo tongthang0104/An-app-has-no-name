@@ -107,7 +107,10 @@ io.on('connection', function (socket) {
   gameSocket.on('changingScore', function(data) {
     socket.broadcast.emit('broadcastScore', data);
   });
-
+  gameSocket.on('disconnect', function(){
+    console.log("User disconnected");
+    
+  });
   gameSocket.on('trackingGame', trackingGame);
 
   console.log('client connected ', socket.id);

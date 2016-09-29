@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
+import { browserHistory } from 'react-router';
 import QuestionDetail from './question-detail';
 import { selectQuestion } from '../actions/index';
 import Socket from '../socket';
@@ -23,7 +24,8 @@ class QuestionList extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      chosenQuestion: []
+      chosenQuestion: [],
+      singleP: []
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -61,7 +63,7 @@ openModal(question) {
   console.log('List of chosenQuestion:', this.state.chosenQuestion)
 
 
-  if (this.state.chosenQuestion.includes(question._id)) {
+  if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
     console.log("Already cliked", question.question);
   } else {
 
@@ -78,14 +80,17 @@ openModal(question) {
     } else {
       this.setState({modalOpen: true});
     }
-
-    // question.clicked = true;
-
+    question.clicked = true;
   }
 }
 
 
 gameOver(data) {
+  if(this.state.roomId){
+    browserHistory.push('/endgame');
+  }
+  browserHistory.push('/endgame');
+  // alert(data);
   //setTimeout(alert(data), 3000);
   //need to route or do anything
 }
@@ -101,7 +106,15 @@ closeModal() {
   if (this.state.roomId) {
     Socket.emit('closeModal', data);
   } else {
-    this.setState({modalOpen: false});
+    let counter = 0;
+    this.setState({
+      modalOpen: false,
+      singleP: [counter++, ...this.state.singleP]
+    });
+    console.log('singleP', this.state.singleP);
+    if(this.state.singleP.length === 5){
+      this.gameOver();
+    }
   }
 
   Socket.emit('trackingGame', data);

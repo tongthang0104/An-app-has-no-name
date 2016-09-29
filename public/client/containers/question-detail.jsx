@@ -7,6 +7,7 @@ import { changeScore, incrementScore, decrementScore } from '../actions/index';
 import { unescapeHelper } from '../helpers/lodashHelper';
 import Socket from '../socket';
 import Modal from 'react-modal';
+import FinishGame from '../components/finish-game';
 
 const customStyles = {
   content : {
@@ -49,10 +50,8 @@ class QuestionDetail extends Component {
       let adding = '+' + this.props.question.difficulty;
       this.setState({newScore: adding});
       this.setState({isModal:true});
-      // alert('Correct');
     } else {
       this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
-      // alert('Wrong');
       let subing = '-' + this.props.question.difficulty;
       this.setState({newScore: subing});
       this.setState({isModal:true});
@@ -60,7 +59,6 @@ class QuestionDetail extends Component {
     this.setState({isModal:true});
     console.log('state afterclose', this.state)
     this.props.question.difficulty = '';
-    //this.props.closeModal();
   }
 
   renderAnswer(array) {
