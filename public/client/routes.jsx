@@ -9,6 +9,7 @@ import Signin from './components/auth/signin';
 
 export default (
   <Router history={browserHistory}>
+    <IndexRoute component={Main} />
     <Route path="/" component={Main}  />
     <Route path="/users/signout" component={Singout}/>
     <Route path="/users/signin" component={Signin}/>

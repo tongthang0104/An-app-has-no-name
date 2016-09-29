@@ -3,7 +3,7 @@ const jwt  = require('jwt-simple');
 //proxy between express and webpack-dev-server
 const express = require('express');
 const httpProxy = require('http-proxy');
-
+const path = require('path');
 require('./models/mongo.config');
 const db = require('./models/users/index');
 
@@ -120,6 +120,10 @@ app.post('/users/signin/', (req, res) => { //
   //       });
   //   }
   // }
+
+app.get('*', function (req, res){
+  res.redirect('/');
+})
 
 const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
