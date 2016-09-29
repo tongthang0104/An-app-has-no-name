@@ -105,13 +105,17 @@ io.on('connection', function (socket) {
   gameSocket.on('closeModal', closeModal);
 
   gameSocket.on('changingScore', function(data) {
-    socket.broadcast.emit('broadcastScore', data);
+    socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
   gameSocket.on('disconnect', function(){
     console.log("User disconnected");
     
   });
   gameSocket.on('trackingGame', trackingGame);
+  gameSocket.on('checkRoom', checkRoom);
+  gameSocket.on('disconnect', function() {
+    console.log('Got disconnect');
+  });
 
   console.log('client connected ', socket.id);
 });
@@ -137,7 +141,6 @@ const CreateRoom = function(){
 
 const JoinRoom = function(data){
 
-
     let room = gameSocket.nsp.adapter.rooms[data.roomId];
 
     if (room !== undefined) {
@@ -150,8 +153,9 @@ const JoinRoom = function(data){
 
       // Call playerJoined at Frontend and pass room Id
       io.sockets.in(data.roomId).emit('playerJoined', data);
-    } else {
-      this.emit('errors', {message: "This room does not exist."});
+
+      this.emit('errors', null, false);
+
     }
 };
 
@@ -161,7 +165,7 @@ const fetchQuestions = function(data) {
   //***** At this point we have the questions from the Client
 
   //broadcast data.questions and invoke the function receiveMultiplayerQuestions at Client side and send data.questions to Client.
-
+  console.log("Question from server", data)
   io.sockets.in(data.roomId).emit('receiveMultiplayerQuestions', data);
 };
 
@@ -185,5 +189,14 @@ const trackingGame = function(data) {
     io.sockets.in(data.roomId).emit('gameOver', 'Game Over');
   } else {
     console.log('game is going', data.chosenQuestion);
+  }
+};
+
+const checkRoom = function(roomId) {
+  let room = gameSocket.nsp.adapter.rooms[roomId];
+  if (!room) {
+    this.emit('roomCheck', {valid: false});
+  } else {
+    this.emit('roomCheck', {valid: true});
   }
 };
