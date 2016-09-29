@@ -105,13 +105,17 @@ io.on('connection', function (socket) {
   gameSocket.on('closeModal', closeModal);
 
   gameSocket.on('changingScore', function(data) {
-    socket.broadcast.emit('broadcastScore', data);
+    socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
   gameSocket.on('disconnect', function(){
     console.log("User disconnected");
     
   });
   gameSocket.on('trackingGame', trackingGame);
+
+  gameSocket.on('disconnect', function() {
+    console.log('Got disconnect');
+  });
 
   console.log('client connected ', socket.id);
 });
@@ -150,8 +154,11 @@ const JoinRoom = function(data){
 
       // Call playerJoined at Frontend and pass room Id
       io.sockets.in(data.roomId).emit('playerJoined', data);
+
+      this.emit('errors', null, false);
+
     } else {
-      this.emit('errors', {message: "This room does not exist."});
+      this.emit('errors', {message: "This room does not exist."}, true);
     }
 };
 
@@ -161,7 +168,7 @@ const fetchQuestions = function(data) {
   //***** At this point we have the questions from the Client
 
   //broadcast data.questions and invoke the function receiveMultiplayerQuestions at Client side and send data.questions to Client.
-
+  console.log("Question from server", data)
   io.sockets.in(data.roomId).emit('receiveMultiplayerQuestions', data);
 };
 
