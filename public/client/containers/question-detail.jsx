@@ -8,6 +8,7 @@ import { unescapeHelper } from '../helpers/lodashHelper';
 import Socket from '../socket';
 import Modal from 'react-modal';
 import FinishGame from '../components/finish-game';
+import * as audio from '../audio';
 
 const customStyles = {
   content : {
@@ -33,9 +34,11 @@ class QuestionDetail extends Component {
   }
   close(){
     this.setState({isModal: false});
-    this.props.closeModal()
+    this.props.closeModal();
   }
   open(){
+    audio.play('nothing');
+
     this.setState({isModal:true});
     let that = this;
     setTimeout(()=>{
@@ -50,13 +53,16 @@ class QuestionDetail extends Component {
       let adding = '+' + this.props.question.difficulty;
       this.setState({newScore: adding});
       this.setState({isModal:true});
+      audio.play('correct');
     } else {
       this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
       let subing = '-' + this.props.question.difficulty;
       this.setState({newScore: subing});
       this.setState({isModal:true});
+      audio.play('wrong');
     }
     this.setState({isModal:true});
+
     console.log('state afterclose', this.state)
     this.props.question.difficulty = '';
   }
