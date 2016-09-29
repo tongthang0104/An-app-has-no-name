@@ -17,7 +17,9 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    width                 : '50%',
+    height                : '50%'
   }
 };
 
@@ -25,13 +27,11 @@ class QuestionDetail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      isModal: false,
       newScore: 0,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
-    this.open = this.open.bind(this);
-    this.close = this.close.bind(this);
   }
+
   close(){
     this.setState({isModal: false});
     this.props.closeModal();
@@ -46,6 +46,8 @@ class QuestionDetail extends Component {
     },0);
   };
 
+>>>>>>> (feat) Result modal open and close after question
+
   checkAnswer(event) {
     this.setState({completed: true});
     if(this.props.question.correct_answer === event.target.id) {
@@ -54,6 +56,7 @@ class QuestionDetail extends Component {
       this.setState({newScore: adding});
       this.setState({isModal:true});
       audio.play('correct');
+
     } else {
       this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
       let subing = '-' + this.props.question.difficulty;
@@ -62,8 +65,9 @@ class QuestionDetail extends Component {
       audio.play('wrong');
     }
     this.setState({isModal:true});
-
     console.log('state afterclose', this.state)
+    }
+    this.setState({roomId: this.props.roomId});
     this.props.question.difficulty = '';
   }
 
@@ -80,6 +84,7 @@ class QuestionDetail extends Component {
 
   render() {
     const props = this.props.question;
+    console.log('props in render qd',this.props)
     if(!props){
       return (
         <div />
@@ -97,23 +102,13 @@ class QuestionDetail extends Component {
         <h3>{question}</h3>
           {this.renderAnswer(answerArray)}
           <ReactCountDownClock
-            seconds={15}
+            seconds={5}
             color="blue"
             alpha={1.5}
             showMilliseconds={false}
             size={75}
-            onComplete={this.open}
+            onComplete={this.props.closeModal}
           />
-          <div>
-            <Modal
-              isOpen={this.state.isModal}
-              onRequestClose={() => this.close()}
-              style={customStyles} >
-              <h1>Score: {this.state.newScore}</h1>
-              <h1> Answer: {this.props.question.correct_answer}</h1>
-              <button onClick={this.close}>Close</button>
-            </Modal>
-          </div>
       </div>
     );
   }

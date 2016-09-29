@@ -6,6 +6,8 @@ import { browserHistory } from 'react-router';
 import QuestionDetail from './question-detail';
 import { selectQuestion } from '../actions/index';
 import Socket from '../socket';
+import ReactCountDownClock from 'react-countdown-clock';
+import ResultDetail from './result-detail';
 
 const customStyles = {
   content : {
@@ -14,7 +16,7 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
+    transform             : 'translate(-50%, -50%)'
   }
 };
 
@@ -25,11 +27,18 @@ class QuestionList extends Component {
     this.state = {
       modalOpen: false,
       chosenQuestion: [],
-      singleP: []
+      singleP: [],
+      result: false,
+      p1Score: "0",
+      p2Score: "0",
+      answer: '',
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.gameOver = this.gameOver.bind(this);
+    this.closeResult = this.closeResult.bind(this);
+    this.getScore = this.getScore.bind(this);
+
   }
 
 
@@ -47,9 +56,11 @@ class QuestionList extends Component {
 
 componentDidMount() {
   Socket.on('receiveOpenOrder', (data) => {
+    console.log(data);
     this.setState({
       modalOpen: !data.modalOpen,
-      chosenQuestion: [data.question._id, ...this.state.chosenQuestion]
+      chosenQuestion: [data.question._id, ...this.state.chosenQuestion],
+      answer: data.question.correct_answer
     });
 
     console.log('questionId', data.question._id)
@@ -57,19 +68,25 @@ componentDidMount() {
   });
 
   Socket.on('receiveCloseOrder', (data) => {
+    console.log('receiveCloseOrder QL')
     this.setState({
-      modalOpen: data.modalOpen
+      modalOpen: false,
+      result: true
     });
   });
+  Socket.on('broadcastScore', (data) => {
+    console.log(" score from qL", data)
+    this.setState({p2Score: data.amount});
+  });
+
   Socket.on('gameOver', this.gameOver)
 }
 
 openModal(question) {
-  console.log('List of chosenQuestion:', this.state.chosenQuestion)
 
-
+  this.setState({answer: question.correct_answer});
   if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
-    console.log("Already cliked", question.question);
+
   } else {
 
     let data = {
@@ -99,7 +116,10 @@ gameOver(data) {
   //setTimeout(alert(data), 3000);
   //need to route or do anything
 }
-
+closeResult(){
+  this.setState({result:false});
+  this.setState({modalOpen: false});
+}
 closeModal() {
 
   let data = {
@@ -121,8 +141,8 @@ closeModal() {
       this.gameOver();
     }
   }
-
   Socket.emit('trackingGame', data);
+  this.setState({result:true})
 }
 
 renderQuestion(questions) {
@@ -131,7 +151,6 @@ renderQuestion(questions) {
     return (
       <div className="question-list" key={question._id}>
         <div
-
           onClick={() => {
               this.openModal(question)
               if (!this.state.roomId) {
@@ -167,6 +186,10 @@ renderList() {
   });
 }
 
+getScore(data){
+  this.setState({p1Score: data});
+  
+}
 render (){
   console.log("roomId", this.state.roomId)
   let loadingView = {
@@ -199,13 +222,29 @@ render (){
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-        {waitingModal}
         <Modal
           isOpen={this.state.modalOpen}
+          shouldCloseOnOverlayClick={false}
           onRequestClose={() => this.closeModal()}
           style={customStyles} >
-          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId}/>
+          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
           <button onClick={this.closeModal}>Close</button>
+        </Modal>
+        <Modal
+          isOpen={this.state.result}
+          shouldCloseOnOverlayClick={false}
+          onRequestClose={() => this.closeResult()}
+          style={customStyles} >
+          <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1Score} Player2={this.state.p2Score} Correct={this.state.answer} />
+          <ReactCountDownClock
+            seconds={5}
+            color="blue"
+            alpha={1.5}
+            showMilliseconds={false}
+            size={75}
+            onComplete={this.closeResult}
+          />
+          <button onClick={this.closeResult}>Close</button>
         </Modal>
       </div>
     );
@@ -215,6 +254,7 @@ render (){
 function mapStateToProps(state){
   return {
     questions: state.QuestionReducer,
+    roomId: state.roomId,
   };
 }
 

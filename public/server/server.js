@@ -83,7 +83,7 @@ app.post('/users/signin/', (req, res) => { //
         } else {
           console.log('Invalid password!', err);
           res.status(200).json('Invalid password.')
-        } 
+        }
       })
     })
   })
@@ -142,6 +142,10 @@ io.on('connection', function (socket) {
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', openModal);
   gameSocket.on('closeModal', closeModal);
+  gameSocket.on('closeResult', closeResult);
+  gameSocket.on('trackingGame', trackingGame);
+  gameSocket.on('checkRoom', checkRoom);
+
   gameSocket.on('changingScore', function(data) {
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
@@ -149,12 +153,6 @@ io.on('connection', function (socket) {
     console.log("User disconnected");
 
   });
-  gameSocket.on('trackingGame', trackingGame);
-  gameSocket.on('checkRoom', checkRoom);
-  gameSocket.on('disconnect', function() {
-    console.log('Got disconnect');
-  });
-
   console.log('client connected ', socket.id);
 });
 
@@ -217,10 +215,13 @@ const closeModal = function(data) {
   //Invoke the receiveCloseOrder at Client and send back data.modalOpen
   io.sockets.in(data.roomId).emit('receiveCloseOrder', data);
 };
-
+const closeResult = function(data) {
+  console.log(data);
+  io.sockets.in(data.roomId).emit('closeResultOrder', data);
+}
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 2) {
+  if (data.chosenQuestion === 5) {
     io.sockets.in(data.roomId).emit('gameOver', 'Game Over');
   } else {
     console.log('game is going', data.chosenQuestion);
