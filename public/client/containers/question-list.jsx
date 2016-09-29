@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router';
 import QuestionDetail from './question-detail';
 import { selectQuestion } from '../actions/index';
 import Socket from '../socket';
+import ReactCountDownClock from 'react-countdown-clock';
 
 const customStyles = {
   content : {
@@ -25,11 +26,13 @@ class QuestionList extends Component {
     this.state = {
       modalOpen: false,
       chosenQuestion: [],
-      singleP: []
+      singleP: [],
+      result: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.gameOver = this.gameOver.bind(this);
+    this.closeResult = this.closeResult.bind(this);
   }
 
 
@@ -57,10 +60,13 @@ componentDidMount() {
   });
 
   Socket.on('receiveCloseOrder', (data) => {
+    console.log('receiveCloseOrder QL')
     this.setState({
-      modalOpen: data.modalOpen
+      modalOpen: false,
+      result: true
     });
   });
+
   Socket.on('gameOver', this.gameOver)
 }
 
@@ -99,7 +105,10 @@ gameOver(data) {
   //setTimeout(alert(data), 3000);
   //need to route or do anything
 }
-
+closeResult(){
+  this.setState({result:false});
+  this.setState({modalOpen: false});
+}
 closeModal() {
 
   let data = {
@@ -121,8 +130,8 @@ closeModal() {
       this.gameOver();
     }
   }
-
   Socket.emit('trackingGame', data);
+  this.setState({result:true})
 }
 
 renderQuestion(questions) {
@@ -131,7 +140,6 @@ renderQuestion(questions) {
     return (
       <div className="question-list" key={question._id}>
         <div
-
           onClick={() => {
               this.openModal(question)
               if (!this.state.roomId) {
@@ -202,10 +210,27 @@ render (){
         {waitingModal}
         <Modal
           isOpen={this.state.modalOpen}
+          shouldCloseOnOverlayClick={false}
           onRequestClose={() => this.closeModal()}
           style={customStyles} >
           <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId}/>
           <button onClick={this.closeModal}>Close</button>
+        </Modal>
+        <Modal
+          isOpen={this.state.result}
+          shouldCloseOnOverlayClick={false}
+          onRequestClose={() => this.closeResult()}
+          style={customStyles} >
+          stifoiwajf
+          <ReactCountDownClock
+            seconds={5}
+            color="blue"
+            alpha={1.5}
+            showMilliseconds={false}
+            size={75}
+            onComplete={this.closeResult}
+          />
+          <button onClick={this.closeResult}>Close</button>
         </Modal>
       </div>
     );
@@ -215,6 +240,7 @@ render (){
 function mapStateToProps(state){
   return {
     questions: state.QuestionReducer,
+    roomId: state.roomId,
   };
 }
 

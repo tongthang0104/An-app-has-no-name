@@ -3,11 +3,16 @@ import QuestionList from '../containers/question-list';
 import Score from '../containers/score';
 import MultiplayerScore from '../containers/multiplayer-score';
 import Socket from '../socket';
+import { withRouter } from 'react-router';
+
 export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {messages: []};
+    this.state = {
+      messages: [],
+      unsaved: false,
+    };
   }
 
   componentWillMount() {
@@ -15,8 +20,8 @@ export default class App extends Component {
       console.log("roomID in QuestionList", data.roomId);
       this.setState({roomId: data.roomId});
     });
-  }
 
+  }
 
   addUser() {
     const user = {
