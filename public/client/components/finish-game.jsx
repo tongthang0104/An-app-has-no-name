@@ -5,10 +5,11 @@ import MultiplayerScore from '../containers/multiplayer-score';
 import Socket from '../socket';
 import { changeScore } from '../actions/index';
 import { connect } from 'react-redux';
-
+import * as audio from '../audio';
 
 class FinishGame extends Component {
   renderFinal(){
+
     if(this.props.score < 0){
       return (
         <div>You owe Thang, Spencer, Andrew and Mrinalini ${Math.abs(this.props.score)}</div>
@@ -16,9 +17,11 @@ class FinishGame extends Component {
     } else {
       return (<div>Makersquare owes you ${this.props.score}</div>)
     }
+
   }
 
   render(){
+    audio.play('gameOver');
     return (
       <div>
         <h1>Game Over</h1>
