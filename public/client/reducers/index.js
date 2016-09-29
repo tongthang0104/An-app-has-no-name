@@ -6,6 +6,7 @@ import activeQuestion from './reducer_active_question';
 import AuthReducer from './reducer_auth';
 import QuestionReducer from './reducer_post';
 import ScoreReducer from './reducer_score';
+import LoginReducer from './reducer_login';
 
 const rootReducer = combineReducers({
   form,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   activeQuestion,
   QuestionReducer,
   ScoreReducer,
+  LoginReducer
 });
 
 export default rootReducer;

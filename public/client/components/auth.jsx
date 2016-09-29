@@ -25,7 +25,6 @@ class Login extends Component {
 
   handleFormSubmit(values) {
     this.props.checkLogin(values);
-    console.log(values);
     // browserHistory.push('/play');
   }
   renderLoginStatus() {
@@ -35,7 +34,7 @@ class Login extends Component {
       )
     }
     return (
-      <div> {this.props.loginStatus.data}</div>
+      <div>{this.props.loginStatus.data}</div>
     )
   }
 
@@ -44,7 +43,7 @@ class Login extends Component {
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Field name="username" type="text" component={renderField} label="Username"/>
-        {/* <Field name="password" type="password" component={renderField} label="Password"/> */}
+        <Field name="password" type="password" component={renderField} label="Password"/>
         {/* {error && <strong>{error}</strong>} */}
         <div>
           <button type="submit" disabled={submitting}>Log In</button>
@@ -56,18 +55,28 @@ class Login extends Component {
   }
 }
 
+const validate = props => {
+  const errors = {};
+  const fields = ['username', 'password'];
+
+  fields.forEach((f) => {
+    if(!(f in props)) {
+      errors[f] = `${f} is required`;
+    }
+  });
+
+  return errors;
+}
+
 function mapStateToProps(state){
   return {
-    loginStatus: state.AuthReducer,
+    loginStatus: state.LoginReducer,
   };
 }
 
 const LoginForm = reduxForm({
-  form: 'loginForm',
+  validate,
+  form: 'login',
 })(Login);
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ props.checkLogin }, dispatch)
-// };
 
 export default connect(mapStateToProps, actions)(LoginForm);

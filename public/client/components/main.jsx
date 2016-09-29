@@ -185,6 +185,7 @@ class Main extends Component {
       <div>
         <Singup />
         <Login />
+        <Link to="users/signout">Signout</Link>
         <SelectCategories />
         <RandamCategories />
 

@@ -2,13 +2,13 @@
 
 import axios from 'axios';
 
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS } from '../constants/index';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER } from '../constants/index';
 
-export function checkLogin(loginInfo) {
-  console.log(LOGIN_USER_REQUEST);
-  const url = `/users/${loginInfo.username}/`;
-  const serverResponse = axios.get(url)
+export function checkLogin(props) {
+  const url = `/users/signin`;
+  const serverResponse = axios.post(url, props)
     .then((response) => {
+      localStorage.setItem('user', JSON.stringify(response.data.token));
       return {
         type: LOGIN_USER_REQUEST,
         payload:response
@@ -24,6 +24,7 @@ export function signupUser(props) {
   const url = `/users/signup`;
   const serverResponse = axios.post(url, props)
     .then((response) => {
+      localStorage.setItem('user', JSON.stringify(response.data.token));
       return {
         type: SIGNUP_SUCCESS,
         payload:response
@@ -34,6 +35,31 @@ export function signupUser(props) {
   });
   return serverResponse;  
 }
+
+export function signoutUser() {
+  localStorage.clear();
+
+  return {
+    type: UNAUTH_USER,
+  }
+}
+// export function signoutUser(props) {
+//   const url = `/users/signout`;
+//   const token = localStorage.getItem('user');
+//   console.log(token);
+//   localStorage.clear();
+//   const serverResponse = axios.post(url, {token})
+//     .then((response) => {
+//       return {
+//         type: UNAUTH_USER,
+//         payload:response
+//       }
+//     })
+//     .catch(function (error) {
+//     console.log(error);
+//   });
+//   return serverResponse;  
+// }
 
 export function selectQuestion(question) {
   return {

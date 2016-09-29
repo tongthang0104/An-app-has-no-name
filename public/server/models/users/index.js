@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { PSQL_DB } = require('./../../config');
 
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',

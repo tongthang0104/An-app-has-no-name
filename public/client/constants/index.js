@@ -10,4 +10,5 @@ module.exports = createConstants(
   'LOGIN_USER_REQUEST',
   'FETCH_MULTI_QUESTIONS',
   'SIGNUP_SUCCESS',
+  'UNAUTH_USER'
 );
