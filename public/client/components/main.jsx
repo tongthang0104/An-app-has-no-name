@@ -11,6 +11,7 @@ import Modal from 'react-modal';
 import Promise from 'bluebird';
 import {browserHistory} from 'react-router';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
 
 
@@ -33,6 +34,11 @@ class Main extends Component {
     this.state = {
       roomId: '',
       modalOpen: false,
+      roomList: [],
+      host: {
+        room: null,
+        id: null
+      }
     };
     this.getInput = this.getInput.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
@@ -45,19 +51,20 @@ class Main extends Component {
     this.fetchQuestionsMultiplayer = this.props.fetchQuestionsMultiplayer.bind(this);
     this.receiveMultiplayerQuestions = this.receiveMultiplayerQuestions.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.roomCheck = this.roomCheck.bind(this);
+    this.validateRoom = this.validateRoom.bind(this);
+    this.newRoomCreated = this.newRoomCreated.bind(this);
   }
+
 
   componentDidMount(){
 
     // this.setState({socket: Socket})
     Socket.on('newGameCreated', this.newGameCreated);
-
-
-    Socket.on('roomCheck', this.roomCheck)
+    Socket.on('validateRoom', this.validateRoom)
     //Listen to playerJoined at Server ==> invoke this.playerJoined
     Socket.on('playerJoined', this.playerJoined);
     Socket.on('receiveMultiplayerQuestions', this.receiveMultiplayerQuestions);
+    Socket.on('newRoomCreated', this.newRoomCreated);
   }
 
   getInput(e) {
@@ -67,32 +74,44 @@ class Main extends Component {
     if (this.state.roomValid) {
       this.setState({roomValid: true});
     }
-    Socket.emit('checkRoom', roomId);
+    _.debounce(Socket.emit('checkRoom', roomId), 500);
   }
 
   newGameCreated(data) {
-    console.log('this is room ', data)
-    this.setState({roomCreated: data.roomId});
-    // this.setState({players: })
 
+    this.setState({roomCreated: data.room});
+    this.setState({
+      host: {
+        room: data.room.toString(),
+        id: data.mySocketId,
+      }
+    });
     // At this point , the host joined the room.
     this.fetchQuestionsRandCat(this.state.roomCreated);
+  }
+
+  newRoomCreated(data) {
+    this.setState({
+      roomList: [data.roomList, ...this.state.roomList],
+    });
   }
 
   joinRoom(e){
 
     let data =  {
-      roomId: this.state.roomId
+      roomId: this.state.roomId,
     };
+
     if (this.state.roomValid) {
       //Call JoinRoom at server and send the data Object .
-      Socket.emit('JoinRoom', data);
-      this.setState({
-        roomId: ''
-      });
-      console.log(this.state.roomValid)
+        Socket.emit('JoinRoom', data);
+        this.setState({
+          roomId: ''
+        });
+          console.log(this.state.roomValid);
+
     } else {
-      alert('No room')
+      alert('This room not available');
     }
   }
 
@@ -103,14 +122,14 @@ class Main extends Component {
 
   playerJoined(data) {
 
-    console.log('Player Joining:', data.roomId);
+    console.log('Player Joining:', data);
     // browserHistory.push('/multiplayer');
+
     this.setState({
-      modalOpen: true
+      modalOpen: true,
+      roomList: data.roomList
     });
-
-
-    // **** At this point ,reset the state to data.roomId.
+  //At this point ,reset the state to data.roomId.
 
     // **** At this point, user already joined
 
@@ -119,10 +138,11 @@ class Main extends Component {
   }
 
 
-  roomCheck(flag) {
-
+  validateRoom(flag) {
     if (flag.valid) {
       this.setState({roomValid: true});
+      console.log("valid", this.state.roomValid);
+
     } else {
       this.setState({roomValid: false});
       console.log("not valid");
@@ -133,7 +153,8 @@ class Main extends Component {
     e.preventDefault();
 
     // this.fetchQuestionsRandCat();
-    Socket.emit('CreateRoom');
+    let host = 1;
+    Socket.emit('CreateRoom', host);
   }
 
   start() {
@@ -197,11 +218,10 @@ class Main extends Component {
           type="text"
           placeholder="Enter a room"
           value={this.state.roomId}
-          onChange={this.getInput}
-          onKeyUp={this.check}>
+          onChange={this.getInput}>
         </input>
 
-        {this.state.roomId ? html.joinButton : null}
+        {(this.state.host.room !== this.state.roomId) && this.state.roomId ? html.joinButton : null}
 
         <div>
           <Modal
