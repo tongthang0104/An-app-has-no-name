@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import { connect } from 'react-redux';
 import { changeScore } from '../actions/index';
 import Socket from "../socket";
+import FinishGame from '../components/finish-game';
 
 class Score extends Component {
 
