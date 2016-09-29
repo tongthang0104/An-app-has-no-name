@@ -147,6 +147,7 @@ io.on('connection', function (socket) {
   gameSocket.on('checkRoom', checkRoom);
 
   gameSocket.on('changingScore', function(data) {
+
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
   gameSocket.on('disconnect', function(){
@@ -221,8 +222,8 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 5) {
-    io.sockets.in(data.roomId).emit('gameOver', 'Game Over');
+  if (data.chosenQuestion === 2) {
+    io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
   } else {
     console.log('game is going', data.chosenQuestion);
   }

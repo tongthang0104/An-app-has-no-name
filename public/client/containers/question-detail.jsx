@@ -46,8 +46,6 @@ class QuestionDetail extends Component {
     },0);
   };
 
->>>>>>> (feat) Result modal open and close after question
-
   checkAnswer(event) {
     this.setState({completed: true});
     if(this.props.question.correct_answer === event.target.id) {
@@ -65,8 +63,6 @@ class QuestionDetail extends Component {
       audio.play('wrong');
     }
     this.setState({isModal:true});
-    console.log('state afterclose', this.state)
-    }
     this.setState({roomId: this.props.roomId});
     this.props.question.difficulty = '';
   }
