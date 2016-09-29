@@ -142,6 +142,9 @@ io.on('connection', function (socket) {
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', openModal);
   gameSocket.on('closeModal', closeModal);
+  gameSocket.on('closeResult', closeResult);
+  gameSocket.on('trackingGame', trackingGame);
+  gameSocket.on('checkRoom', checkRoom);
 
   gameSocket.on('changingScore', function(data) {
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
@@ -150,12 +153,6 @@ io.on('connection', function (socket) {
     console.log("User disconnected");
 
   });
-  gameSocket.on('trackingGame', trackingGame);
-  gameSocket.on('checkRoom', checkRoom);
-  gameSocket.on('disconnect', function() {
-    console.log('Got disconnect');
-  });
-
   console.log('client connected ', socket.id);
 });
 
