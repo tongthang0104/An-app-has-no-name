@@ -9,17 +9,7 @@ import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
 import * as audio from '../audio';
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+import {customStyles} from '../helpers/lodashHelper.js';
 
 class QuestionList extends Component {
 
@@ -34,7 +24,8 @@ class QuestionList extends Component {
       p2ScoreResultModal: "0",
       answerResultModal: '',
       gameOver: false,
-      playerTwoScore: 0
+      playerTwoScore: 0,
+      currentQuestion: null
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -65,15 +56,17 @@ componentDidMount() {
     this.setState({
       modalOpen: !data.modalOpen,
       chosenQuestion: [data.question._id, ...this.state.chosenQuestion],
-      answerResultModal: data.question.correct_answer
+      answerResultModal: data.question.correct_answer,
+      currentQuestion: data.question
     });
 
+    data.question.difficulty = '';
     console.log('questionId', data.question._id)
     this.props.selectQuestion(data.question);
   });
 
   Socket.on('receiveCloseOrder', (data) => {
-    console.log('receiveCloseOrder QL')
+    console.log('receiveCloseOrder QL', data)
     this.setState({
       modalOpen: false,
       resultModal: true
@@ -81,7 +74,6 @@ componentDidMount() {
   });
   Socket.on('broadcastScore', (data) => {
     console.log(" score from qL", data)
-
     this.setState({
       p2ScoreResultModal: data.amount,
       playerTwoScore: data.score
@@ -93,22 +85,21 @@ componentDidMount() {
 }
 
 openModal(question) {
-
-  this.setState({answerResultModal: question.correct_answer});
+  this.setState({
+    answerResultModal: question.correct_answer,
+  });
   if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
-
   } else {
-
     let data = {
       roomId: this.state.roomId,
       modalOpen: this.state.modalOpen,
       question: question,
       chosenQuestion: this.state.chosenQuestion.length
     };
-
     // Invoke openModal at the server and send data back
     if (this.state.roomId) {
       Socket.emit('openModal', data);
+      question.difficulty = '';
     } else {
       this.setState({modalOpen: true});
     }
@@ -116,9 +107,7 @@ openModal(question) {
   }
 }
 
-
 gameOver(data) {
-
   if(this.state.roomId){
     if(data.gameOver){
       audio.play('gameOver');
@@ -137,19 +126,22 @@ reset(){
   this.resetQuestion()
 }
 closeResult(){
-  this.setState({resultModal:false});
-  this.setState({modalOpen: false});
+  this.setState({
+    resultModal:false,
+    modalOpen: false,
+    p1ScoreResultModal: "0",
+    p2ScoreResultModal: "0"
+  });
 }
 closeModal() {
-
   let data = {
     roomId: this.state.roomId,
     modalOpen: !this.state.modalOpen,
-    chosenQuestion: this.state.chosenQuestion.length
+    chosenQuestion: this.state.chosenQuestion.length,
+    currentQuestion: this.state.currentQuestion,
   };
 
   if (this.state.roomId) {
-
     Socket.emit('closeModal', data);
   } else {
     let counter = 0;
@@ -216,8 +208,7 @@ renderList() {
 }
 
 getScore(data){
-  this.setState({p1ScoreResultModal: data});
-
+  this.setState({ p1ScoreResultModal: data });
   console.log('kjasdhfkasdjs', data);
 }
 render (){
@@ -237,6 +228,7 @@ render (){
   let waitingModal = (
       <Modal
         isOpen={this.props.questions ? false : true}
+        shouldCloseOnOverlayClick={false}
         onRequestClose={() => {
             this.closeModal();
           }
@@ -255,6 +247,7 @@ render (){
         }
       }
       style={customStyles}
+      shouldCloseOnOverlayClick={false}
     >
     <h1>Your score: {this.props.playerOneScore}</h1>
     <h1>Player 2: {this.state.playerTwoScore}</h1>
