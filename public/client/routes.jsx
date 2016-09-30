@@ -17,5 +17,6 @@ export default (
     <Route path="/play" component={App}  />
     <Route path="/multiplayer" component={App} />
     <Route path="/endgame" component={FinishGame} />
+    <Route path="*" component={Main} />
   </Router>
 );

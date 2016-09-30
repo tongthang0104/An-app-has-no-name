@@ -89,6 +89,9 @@ app.post('/users/signin/', (req, res) => { //
   })
 });
 
+app.get('*', function (request, response){
+  response.sendFile(path.resolve(__dirname, '../', 'index.html'))
+});
 // app.post('/users/signout/', (req, res) => { //
 //   db.User.sync().then((User) => {
 //     User.findOne({where: {token: req.body.token}})
