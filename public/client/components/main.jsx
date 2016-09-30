@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import RandamCategories from './random_categories';
+import RandomCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
 import Header from './header';
 import Signin from './auth/signin';
@@ -194,7 +194,7 @@ class Main extends Component {
       <div>
         <Header />
         <SelectCategories />
-        <RandamCategories />
+        <RandomCategories />
 
         <form >
           {this.state.roomCreated ? null : html.generateButton}
