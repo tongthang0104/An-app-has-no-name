@@ -27,7 +27,6 @@ export default class ReactDetail extends Component {
   }
 
   render() {
-    console.log("This is score", this.props.Player1)
     return (
       <div>
         {this.renderResult()}

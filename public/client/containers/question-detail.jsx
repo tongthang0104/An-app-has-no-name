@@ -21,20 +21,6 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-  close(){
-    this.setState({isModal: false});
-    this.props.closeModal();
-  }
-
-  open(){
-    audio.play('nothing');
-    this.setState({isModal:true});
-    let that = this;
-    setTimeout(()=>{
-      that.close();
-    },0);
-  };
-
   checkAnswer(event) {
     if(this.state.answeredOnce === false){
         this.setState({completed: true});
@@ -58,6 +44,10 @@ class QuestionDetail extends Component {
         clickedAnswer: event.target.id
       });
     }
+    this.setState({
+      isModal:true,
+      roomId: this.props.roomId
+    });
   }
 
   renderAnswer(array) {
