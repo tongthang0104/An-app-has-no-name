@@ -149,7 +149,7 @@ io.on('connection', function (socket) {
   gameSocket.on('closeResult', closeResult);
   gameSocket.on('trackingGame', trackingGame);
   gameSocket.on('checkRoom', checkRoom);
-
+  gameSocket.on('gameStart', gameStart);
   gameSocket.on('changingScore', function(data) {
 
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
@@ -179,7 +179,8 @@ const CreateRoom = function(host){
   };
   this.emit('newGameCreated', data);
   io.sockets.emit('newRoomCreated', data);
-  console.log('server create room', roomId, this.id)
+  console.log('server create room', roomId, this.id);
+
 };
 
 
@@ -245,3 +246,7 @@ const checkRoom = function(roomId) {
     }
   }
 };
+
+const gameStart = function(data) {
+  this.emit('turnChange', {yourTurn: true})
+}

@@ -25,7 +25,7 @@ class QuestionList extends Component {
       answerResultModal: '',
       gameOver: false,
       playerTwoScore: 0,
-      currentQuestion: null
+      yourTurn: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -79,26 +79,30 @@ componentDidMount() {
     console.log('receiveCloseOrder QL', data)
     this.setState({
       modalOpen: false,
-      resultModal: true
+      resultModal: true,
     });
   });
   Socket.on('broadcastScore', (data) => {
     console.log(" score from qL", data)
     this.setState({
       p2ScoreResultModal: data.amount,
-      playerTwoScore: data.score
+      playerTwoScore: data.score,
+      //broadcast yourTurn to be true to the other player
+      yourTurn: true
     });
   });
 
   Socket.on('gameOver', this.gameOver);
-
+  Socket.on('turnChange', (data) => {
+    console.log("TURN CHANGING IN cLIENT", data.yourTurn);
+    this.setState({yourTurn: data.yourTurn});
+  });
 }
 
 openModal(question) {
-  this.setState({
-    answerResultModal: question.correct_answer,
-  });
-  if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
+  this.setState({answerResultModal: question.correct_answer});
+  if (this.state.chosenQuestion.includes(question._id) || question.clicked === true || !this.state.yourTurn) {
+    console.log('Not available');
   } else {
     let data = {
       roomId: this.state.roomId,
@@ -107,9 +111,11 @@ openModal(question) {
       chosenQuestion: this.state.chosenQuestion.length
     };
     // Invoke openModal at the server and send data back
+    //Check if multiplayer or not
     if (this.state.roomId) {
       Socket.emit('openModal', data);
-      question.difficulty = '';
+      // Set turn to be false
+      this.setState({yourTurn: false});
     } else {
       this.setState({modalOpen: true});
     }
@@ -189,7 +195,6 @@ renderQuestion(questions) {
               }
             }
           }
-          disabled={question.clicked}
           className="list-group-item questions"
         >
           {question.difficulty}
@@ -300,6 +305,7 @@ render (){
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
+        {this.state.yourTurn ? <h1>Your turn pick a question</h1> : <h1>Player 2 picking ...</h1>}
         {waitingModal}
         {endingModal}
         {questionDetailModal}

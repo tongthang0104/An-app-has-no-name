@@ -148,9 +148,10 @@ class Main extends Component {
     //Call fetchQuestions at Server and send the data back
     let data = {
       roomId: this.state.roomCreated,
-      questions: this.props.questions
-    }
+      questions: this.props.questions,
+    };
     Socket.emit('fetchQuestions', data);
+    Socket.emit('gameStart', data.roomId);
   }
 
   receiveMultiplayerQuestions(data) {
