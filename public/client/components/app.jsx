@@ -69,7 +69,8 @@ export default class App extends Component {
 
     return (
       <div className="wrap">
-        <QuestionList/>
+        {/* <QuestionList/> */}
+        {this.props.children}
         {this.renderScore()}
         <div> {this.state.room} </div>
         <div> {messages} </div>
