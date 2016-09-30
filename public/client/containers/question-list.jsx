@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
-import { browserHistory } from 'react-router';
+import { browserHistory, withRouter, Link } from 'react-router';
 import QuestionDetail from './question-detail';
 import { selectQuestion, changeScore, resetQuestion } from '../actions/index';
 import Socket from '../socket';
@@ -45,6 +45,15 @@ class QuestionList extends Component {
     this.changeScore = this.props.changeScore.bind(this);
     this.resetQuestion = this.props.resetQuestion.bind(this);
     this.reset = this.reset.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
+  }
+
+  routerWillLeave(nextLocation) {
+    // return false to prevent a transition w/o prompting the user,
+    // or return a string to allow the user to decide:
+    if (!this.state.gameOver)
+      return 'Your work is not saved! Are you sure you want to leave?'
+      // return false;
   }
 
   componentWillMount() {
@@ -60,6 +69,7 @@ class QuestionList extends Component {
   }
 
 componentDidMount() {
+  this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
   Socket.on('receiveOpenOrder', (data) => {
     console.log(data);
     this.setState({
@@ -118,7 +128,7 @@ openModal(question) {
 
 
 gameOver(data) {
-
+  console.log("Is game over?", this.gameOver);
   if(this.state.roomId){
     if(data.gameOver){
       audio.play('gameOver');
@@ -316,4 +326,5 @@ function mapStateToProps(state){
 
 
 
-export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(QuestionList);
+export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(withRouter(QuestionList));
+
