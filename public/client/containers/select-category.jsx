@@ -47,7 +47,7 @@ class SelectCategories extends Component {
 
   submit(values) {
     this.fetchQuestions(values.categories);
-    browserHistory.push('/play/questionlist');
+    browserHistory.push('/play');
   }
 
   render() {
