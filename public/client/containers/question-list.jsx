@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import { browserHistory } from 'react-router';
 import QuestionDetail from './question-detail';
 import { selectQuestion, changeScore, resetQuestion } from '../actions/index';
+import { renderModal } from '../actions/modalHelper'
 import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
@@ -46,16 +47,15 @@ class QuestionList extends Component {
     this.changeScore = this.props.changeScore.bind(this);
     this.resetQuestion = this.props.resetQuestion.bind(this);
     this.reset = this.reset.bind(this);
+    this.renderModal = this.props.renderModal.bind(this);
   }
 
   componentWillMount() {
       Socket.on('receiveMultiplayerQuestions', (data) => {
-        console.log("roomID in QuestionList", data.roomId);
         this.setState({roomId: data.roomId});
       });
 
       Socket.on('playerJoined', (data) => {
-        console.log("roomID in QuestionList", data.roomId);
         this.setState({roomId: data.roomId});
       });
   }
@@ -69,19 +69,17 @@ componentDidMount() {
       answerResultModal: data.question.correct_answer
     });
 
-    console.log('questionId', data.question._id)
     this.props.selectQuestion(data.question);
   });
 
   Socket.on('receiveCloseOrder', (data) => {
-    console.log('receiveCloseOrder QL')
     this.setState({
       modalOpen: false,
       resultModal: true,
     });
   });
+
   Socket.on('broadcastScore', (data) => {
-    console.log(" score from qL", data)
 
     this.setState({
       p2ScoreResultModal: data.amount,
@@ -91,7 +89,6 @@ componentDidMount() {
 
   Socket.on('gameOver', this.gameOver);
   Socket.on('turnChange', (data) => {
-    console.log("TURN CHANGING IN cLIENT", data.yourTurn);
     //broadcast yourTurn to be true to the other player
     this.setState({yourTurn: data.yourTurn});
   });
@@ -100,7 +97,7 @@ componentDidMount() {
 openModal(question) {
 
   this.setState({answerResultModal: question.correct_answer});
-  if (this.state.chosenQuestion.includes(question._id) || question.clicked === true || !this.state.yourTurn) {
+  if ((this.state.chosenQuestion.includes(question._id) || question.clicked === true || !this.state.yourTurn) && this.state.roomId) {
     console.log('Not available');
   } else {
 
@@ -118,13 +115,14 @@ openModal(question) {
 
       // Set turn to be false
       this.setState({yourTurn: false});
+
     } else {
       this.setState({modalOpen: true});
     }
     question.clicked = true;
+
   }
 }
-
 
 gameOver(data) {
 
@@ -185,11 +183,15 @@ closeEndingModal(){
 
 renderQuestion(questions) {
   const { modalOpen } = this.state;
+
+
   return questions.map(question => {
+
     return (
       <div className="question-list" key={question._id}>
         <div
-          onClick={() => {
+          onClick={(e) => {
+              e.preventDefault()
               this.openModal(question)
               if (!this.state.roomId) {
                 this.props.selectQuestion(question);
@@ -198,7 +200,7 @@ renderQuestion(questions) {
           }
           className="list-group-item questions"
         >
-          {question.difficulty}
+          {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
         </div>
       </div>
     );
@@ -224,10 +226,12 @@ renderList() {
 }
 
 getScore(data){
-  this.setState({p1ScoreResultModal: data});
+  console.log('asodifioasj', data)
 
-  console.log('kjasdhfkasdjs', data);
+    this.setState({p1ScoreResultModal: data});
+
 }
+
 render (){
   console.log("roomId", this.state.roomId)
   let loadingView = {
@@ -239,7 +243,16 @@ render (){
         <h1>Waiting for host.. </h1>
         <button onClick={this.closeModal}>Exit</button>
       </div>
-    )
+    ),
+
+    playerPicking: {
+      player1: (
+        <h1>Your turn pick a question</h1>
+      ),
+      player2: (
+        <h1>Player 2 picking ...</h1>
+      )
+    }
   };
 
   let waitingModal = (
@@ -305,7 +318,7 @@ render (){
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-        {this.state.yourTurn ? <h1>Your turn pick a question</h1> : <h1>Player 2 picking ...</h1>}
+        {this.state.roomId ? (this.state.yourTurn ? loadingView.playerPicking.player1 : loadingView.playerPicking.player2) : null}
         {waitingModal}
         {endingModal}
         {questionDetailModal}
@@ -325,4 +338,4 @@ function mapStateToProps(state){
 
 
 
-export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(QuestionList);
+export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion, renderModal})(QuestionList);

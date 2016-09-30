@@ -26,22 +26,11 @@ const customStyles = {
 class QuestionDetail extends Component {
   constructor (props) {
     super(props);
+    this.state = {
+      initScore: 0,
+    };
     this.checkAnswer = this.checkAnswer.bind(this);
   }
-
-  close(){
-    this.setState({isModal: false});
-    this.props.closeModal();
-  }
-  open(){
-    audio.play('nothing');
-
-    this.setState({isModal:true});
-    let that = this;
-    setTimeout(()=>{
-      that.close();
-    },0);
-  };
 
   checkAnswer(event) {
     this.setState({completed: true});
@@ -59,7 +48,6 @@ class QuestionDetail extends Component {
       this.setState({isModal:true});
       audio.play('wrong');
     }
-    this.props.question.difficulty = '';
     this.setState({isModal:true});
     this.setState({roomId: this.props.roomId});
   }
