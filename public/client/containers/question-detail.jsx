@@ -59,9 +59,9 @@ class QuestionDetail extends Component {
       this.setState({isModal:true});
       audio.play('wrong');
     }
+    this.props.question.difficulty = '';
     this.setState({isModal:true});
     this.setState({roomId: this.props.roomId});
-    this.props.question.difficulty = '';
   }
 
   renderAnswer(array) {
