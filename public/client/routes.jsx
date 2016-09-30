@@ -19,5 +19,6 @@ export default (
         </Route>
     </Route>
     <Route path="/endgame" component={FinishGame} />
+    <Route path="*" component={Main} />
   </Router>
 );
