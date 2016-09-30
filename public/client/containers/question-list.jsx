@@ -86,14 +86,13 @@ componentDidMount() {
     this.setState({
       p2ScoreResultModal: data.amount,
       playerTwoScore: data.score,
-      //broadcast yourTurn to be true to the other player
-      yourTurn: true
     });
   });
 
   Socket.on('gameOver', this.gameOver);
   Socket.on('turnChange', (data) => {
     console.log("TURN CHANGING IN cLIENT", data.yourTurn);
+    //broadcast yourTurn to be true to the other player
     this.setState({yourTurn: data.yourTurn});
   });
 }
