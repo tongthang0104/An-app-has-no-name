@@ -26,9 +26,6 @@ const customStyles = {
 class QuestionDetail extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      newScore: 0,
-    };
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
@@ -51,14 +48,14 @@ class QuestionDetail extends Component {
     if(this.props.question.correct_answer === event.target.id) {
       this.props.incrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
       let adding = '+' + this.props.question.difficulty;
-      this.setState({newScore: adding});
+      this.props.getScore(adding);
       this.setState({isModal:true});
       audio.play('correct');
 
     } else {
       this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
       let subing = '-' + this.props.question.difficulty;
-      this.setState({newScore: subing});
+      this.props.getScore(subing);
       this.setState({isModal:true});
       audio.play('wrong');
     }

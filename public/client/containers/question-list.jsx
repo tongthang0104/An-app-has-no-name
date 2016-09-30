@@ -81,6 +81,7 @@ componentDidMount() {
   });
   Socket.on('broadcastScore', (data) => {
     console.log(" score from qL", data)
+
     this.setState({
       p2ScoreResultModal: data.amount,
       playerTwoScore: data.score
@@ -217,6 +218,7 @@ renderList() {
 getScore(data){
   this.setState({p1ScoreResultModal: data});
 
+  console.log('kjasdhfkasdjs', data);
 }
 render (){
   console.log("roomId", this.state.roomId)
