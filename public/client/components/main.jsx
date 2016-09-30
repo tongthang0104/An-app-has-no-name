@@ -12,20 +12,7 @@ import Promise from 'bluebird';
 import {browserHistory} from 'react-router';
 import { Link } from 'react-router';
 import _ from 'lodash';
-
-
-
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+import {customStyles} from '../helpers/lodashHelper.js';
 
 class Main extends Component {
 
@@ -231,6 +218,7 @@ class Main extends Component {
               }
             }
             style={customStyles}
+            shouldCloseOnOverlayClick={false}
           >
           <h1>Player joined! Press Start to Play</h1>
           <button onClick={this.closeModal}>Close</button>
