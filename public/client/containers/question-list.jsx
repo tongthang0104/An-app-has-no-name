@@ -11,6 +11,11 @@ import ResultDetail from './result-detail';
 import * as audio from '../audio';
 import {customStyles} from '../helpers/lodashHelper.js';
 
+var ReactToastr = require("react-toastr");
+var {ToastContainer} = ReactToastr;
+var ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
+
+
 class QuestionList extends Component {
 
   constructor (props) {
@@ -39,12 +44,15 @@ class QuestionList extends Component {
     this.routerWillLeave = this.routerWillLeave.bind(this);
     this.renderModal = this.renderModal.bind(this);
     this.renderAllModals = this.renderAllModals.bind(this);
+    this.addAlert = this.addAlert.bind(this);
   }
 
   routerWillLeave(nextLocation) {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
     if (!this.state.gameOver) {
+      this.reset();
+      this.changeScore(0);
       return 'Your work is not saved! Are you sure you want to leave?';
     }
       // return false;
@@ -98,6 +106,7 @@ openModal(question) {
   this.setState({answerResultModal: question.correct_answer});
   if (((this.state.chosenQuestion.includes(question._id) || !this.state.yourTurn) && this.state.roomId) || question.clicked === true) {
     console.log('Not available');
+    this.addAlert('Player 2 picking...')
   } else {
     let data = {
       roomId: this.state.roomId,
@@ -121,6 +130,7 @@ openModal(question) {
 }
 
 gameOver(data) {
+  console.log("CHECKING ROOM ID", this.state.roomId);
   if(this.state.roomId){
 
     //Multiplayer
@@ -156,6 +166,9 @@ closeResult(){
     p1ScoreResultModal: "0",
     p2ScoreResultModal: "0"
   });
+  if (!this.state.gameOver) {
+    this.state.yourTurn ? this.addAlert('My Turn') : this.addAlert('Player 2 picking...');
+  }
 }
 closeModal() {
   let data = {
@@ -266,12 +279,8 @@ renderAllModals() {
     ),
 
     playerPicking: {
-      player1: (
-        <h1>Your turn pick a question</h1>
-      ),
-      player2: (
-        <h1>Player 2 picking ...</h1>
-      )
+      player1: "Your turn pick a question",
+      player2: "Player2 picking"
     },
 
     endingView: function(callback){
@@ -333,9 +342,23 @@ renderAllModals() {
   return {allModal, loadingView}
 }
 
+addAlert (info) {
+  console.log(ToastMessageFactory.info)
+  if(this.state.roomId){
+    this.refs.container.info(
+      info)
+  }
+}
+
 render () {
     return (
       <div className="List-group" key={this.props.questions}>
+        <div>
+          <ToastContainer ref="container"
+                          toastMessageFactory={ToastMessageFactory}
+                          timeOut={10000}
+                          className="toast-top-center" />
+        </div>
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
