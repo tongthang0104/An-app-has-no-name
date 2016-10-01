@@ -8,6 +8,11 @@ import { connect } from 'react-redux';
 import * as audio from '../audio';
 
 class FinishGame extends Component {
+
+  constructor(props) {
+    super(props);
+    this.changeScore = this.props.changeScore.bind(this);
+  }
   renderFinal(){
 
     if(this.props.score < 0){
@@ -17,7 +22,7 @@ class FinishGame extends Component {
     } else {
       return (<div>Makersquare owes you ${this.props.score}</div>)
     }
-
+    this.changeScore(0)
   }
 
   render(){
@@ -37,4 +42,4 @@ function mapStateToProps(state){
     score: state.ScoreReducer
   }
 }
-export default connect(mapStateToProps)(FinishGame);
+export default connect(mapStateToProps, {changeScore})(FinishGame);

@@ -10,11 +10,14 @@ import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
 import * as audio from '../audio';
 import {customStyles} from '../helpers/lodashHelper.js';
+// import { ReactToastr, ToastContainer } from 'react-toastr';
+import path from 'path';
+//
+// const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
 
-var ReactToastr = require("react-toastr");
-var {ToastContainer} = ReactToastr;
-var ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
-
+const ReactToastr = require("react-toastr");
+const {ToastContainer} = ReactToastr;
+const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
 
 class QuestionList extends Component {
 
@@ -55,12 +58,12 @@ class QuestionList extends Component {
       this.changeScore(0);
       return 'Your work is not saved! Are you sure you want to leave?';
     }
-      // return false;
   }
 
   componentWillMount() {
       Socket.on('receiveMultiplayerQuestions', (data) => {
         this.setState({roomId: data.roomId});
+
       });
 
       Socket.on('playerJoined', (data) => {
@@ -132,7 +135,6 @@ openModal(question) {
 gameOver(data) {
   console.log("CHECKING ROOM ID", this.state.roomId);
   if(this.state.roomId){
-
     //Multiplayer
     if(data.gameOver){
       audio.play('gameOver');
@@ -142,16 +144,14 @@ gameOver(data) {
       // browserHistory.push('/endgame');
     }
   } else {
-
-    //
     this.reset();
+    console.log("GAME OVERRRR", this.state.gameOver)
     browserHistory.push('/endgame');
-
     // browserHistory.push(url);
   }
 }
 reset(){
-  this.changeScore(0);
+  // this.changeScore(0);
   this.resetQuestion();
 }
 
@@ -166,10 +166,18 @@ closeResult(){
     p1ScoreResultModal: "0",
     p2ScoreResultModal: "0"
   });
+
   if (!this.state.gameOver) {
     this.state.yourTurn ? this.addAlert('My Turn') : this.addAlert('Player 2 picking...');
   }
+
+  console.log('singleP', this.state.singleP);
+  if (!this.state.roomId && this.state.singleP.length === 24) {
+      this.setState({gameOver: true});
+      this.gameOver();
+  }
 }
+
 closeModal() {
   let data = {
     roomId: this.state.roomId,
@@ -178,41 +186,32 @@ closeModal() {
     currentQuestion: this.state.currentQuestion,
   };
 
+  // Multiplayer
   if (this.state.roomId) {
     Socket.emit('closeModal', data);
   } else {
+  // SinglePlayer
     let counter = 0;
     this.setState({
       modalOpen: false,
       singleP: [counter++, ...this.state.singleP]
     });
-    console.log('singleP', this.state.singleP);
-    if(this.state.singleP.length === 2){
-      this.setState({
-        gameOver: true
-      });
-      this.gameOver();
-    }
+
   }
   Socket.emit('trackingGame', data);
   this.setState({resultModal:true});
 }
 
+// Socket broadcasting close
 closeEndingModal(){
   this.reset();
   const url = path.resolve(__dirname, '../../', 'index.html')
   browserHistory.push(url);
-  this.setState({
-    gameOver: false,
-  });
 }
 
 renderQuestion(questions) {
   const { modalOpen } = this.state;
-
-
   return questions.map(question => {
-
     return (
       <div className="question-list" key={question._id}>
         <div
