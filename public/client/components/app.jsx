@@ -10,7 +10,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      roomId: null,
+      roomId: null
     };
   }
 
@@ -38,7 +38,6 @@ export default class App extends Component {
         </div>
       );
     }
-
   }
 
   render(){
