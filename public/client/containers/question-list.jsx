@@ -25,7 +25,7 @@ class QuestionList extends Component {
       answerResultModal: '',
       gameOver: false,
       playerTwoScore: 0,
-      currentQuestion: null
+      yourTurn: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -37,24 +37,25 @@ class QuestionList extends Component {
     this.resetQuestion = this.props.resetQuestion.bind(this);
     this.reset = this.reset.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
+    this.renderModal = this.renderModal.bind(this);
+    this.renderAllModals = this.renderAllModals.bind(this);
   }
 
   routerWillLeave(nextLocation) {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
-    if (!this.state.gameOver)
-      return 'Your work is not saved! Are you sure you want to leave?'
+    if (!this.state.gameOver) {
+      return 'Your work is not saved! Are you sure you want to leave?';
+    }
       // return false;
   }
 
   componentWillMount() {
       Socket.on('receiveMultiplayerQuestions', (data) => {
-        console.log("roomID in QuestionList", data.roomId);
         this.setState({roomId: data.roomId});
       });
 
       Socket.on('playerJoined', (data) => {
-        console.log("roomID in QuestionList", data.roomId);
         this.setState({roomId: data.roomId});
       });
   }
@@ -69,36 +70,34 @@ componentDidMount() {
       answerResultModal: data.question.correct_answer,
       currentQuestion: data.question
     });
-
-    // data.question.difficulty = '';
-    console.log('questionId', data.question._id)
     this.props.selectQuestion(data.question);
   });
 
   Socket.on('receiveCloseOrder', (data) => {
-    console.log('receiveCloseOrder QL', data)
     this.setState({
       modalOpen: false,
-      resultModal: true
+      resultModal: true,
     });
   });
+
   Socket.on('broadcastScore', (data) => {
-    console.log(" score from qL", data)
     this.setState({
       p2ScoreResultModal: data.amount,
-      playerTwoScore: data.score
+      playerTwoScore: data.score,
     });
   });
 
   Socket.on('gameOver', this.gameOver);
-
+  Socket.on('turnChange', (data) => {
+    //broadcast yourTurn to be true to the other player
+    this.setState({yourTurn: data.yourTurn});
+  });
 }
 
 openModal(question) {
-  this.setState({
-    answerResultModal: question.correct_answer,
-  });
-  if (this.state.chosenQuestion.includes(question._id) || question.clicked === true) {
+  this.setState({answerResultModal: question.correct_answer});
+  if (((this.state.chosenQuestion.includes(question._id) || !this.state.yourTurn) && this.state.roomId) || question.clicked === true) {
+    console.log('Not available');
   } else {
     let data = {
       roomId: this.state.roomId,
@@ -107,18 +106,24 @@ openModal(question) {
       chosenQuestion: this.state.chosenQuestion.length
     };
     // Invoke openModal at the server and send data back
+    //Check if multiplayer or not
     if (this.state.roomId) {
       Socket.emit('openModal', data);
-      question.difficulty = '';
+      // Set turn to be false
+      this.setState({yourTurn: false});
+
     } else {
       this.setState({modalOpen: true});
     }
     question.clicked = true;
+
   }
 }
 
 gameOver(data) {
   if(this.state.roomId){
+
+    //Multiplayer
     if(data.gameOver){
       audio.play('gameOver');
       this.setState({
@@ -127,14 +132,23 @@ gameOver(data) {
       // browserHistory.push('/endgame');
     }
   } else {
+
+    //
     this.reset();
     browserHistory.push('/endgame');
+
+    // browserHistory.push(url);
   }
 }
 reset(){
   this.changeScore(0);
-  this.resetQuestion()
+  this.resetQuestion();
 }
+
+getScore(data){
+  this.setState({p1ScoreResultModal: data});
+}
+
 closeResult(){
   this.setState({
     resultModal:false,
@@ -160,17 +174,21 @@ closeModal() {
       singleP: [counter++, ...this.state.singleP]
     });
     console.log('singleP', this.state.singleP);
-    if(this.state.singleP.length === 5){
+    if(this.state.singleP.length === 2){
+      this.setState({
+        gameOver: true
+      });
       this.gameOver();
     }
   }
   Socket.emit('trackingGame', data);
-  this.setState({resultModal:true})
+  this.setState({resultModal:true});
 }
 
 closeEndingModal(){
   this.reset();
-  browserHistory.push('/');
+  const url = path.resolve(__dirname, '../../', 'index.html')
+  browserHistory.push(url);
   this.setState({
     gameOver: false,
   });
@@ -178,21 +196,24 @@ closeEndingModal(){
 
 renderQuestion(questions) {
   const { modalOpen } = this.state;
+
+
   return questions.map(question => {
+
     return (
       <div className="question-list" key={question._id}>
         <div
-          onClick={() => {
+          onClick={(e) => {
+              e.preventDefault()
               this.openModal(question)
               if (!this.state.roomId) {
                 this.props.selectQuestion(question);
               }
             }
           }
-          disabled={question.clicked}
           className="list-group-item questions"
         >
-          {question.difficulty}
+          {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
         </div>
       </div>
     );
@@ -217,12 +238,22 @@ renderList() {
   });
 }
 
-getScore(data){
-  this.setState({ p1ScoreResultModal: data });
-  console.log('kjasdhfkasdjs', data);
+renderModal(condition, html) {
+  return (<Modal
+    isOpen={condition}
+    onRequestClose={() => {
+        this.closeModal() || this.closeResult();
+      }
+    }
+    shouldCloseOnOverlayClick={false}
+    style={customStyles}
+  >
+  {html}
+  </Modal>)
 }
-render (){
-  console.log("roomId", this.state.roomId)
+
+renderAllModals() {
+
   let loadingView = {
     loading: (
       <h1>Loading... </h1>
@@ -232,78 +263,87 @@ render (){
         <h1>Waiting for host.. </h1>
         <button onClick={this.closeModal}>Exit</button>
       </div>
-    )
+    ),
+
+    playerPicking: {
+      player1: (
+        <h1>Your turn pick a question</h1>
+      ),
+      player2: (
+        <h1>Player 2 picking ...</h1>
+      )
+    },
+
+    endingView: function(callback){
+      return (
+        <div>
+          <h1>Your score: {this.props.playerOneScore}</h1>
+          <h1>Player 2: {this.state.playerTwoScore}</h1>
+          {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
+          <button onClick={callback}>Go to home page</button>
+        </div>
+        )
+      }.bind(this),
+
+    questionDetailView: function(callback) {
+      return (
+        <div>
+          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
+          <button onClick={callback}>Close</button>
+        </div>
+      )
+    }.bind(this),
+
+    questionResultView: function(callback) {
+      return (
+        <div>
+          <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
+          <ReactCountDownClock
+            seconds={5}
+            color="blue"
+            alpha={1.5}
+            showMilliseconds={false}
+            size={75}
+            onComplete={callback}
+          />
+        <button onClick={callback}>Close</button>
+        </div>
+      )
+    }.bind(this)
   };
 
-  let waitingModal = (
-      <Modal
-        isOpen={this.props.questions ? false : true}
-        shouldCloseOnOverlayClick={false}
-        onRequestClose={() => {
-            this.closeModal();
-          }
-        }
-        style={customStyles}
-      >
-      {this.state.roomId ? loadingView.waitingHost : loadingView.loading}
+  let allModal = {
+    waitingModal: this.renderModal(
+      this.props.questions ? false : true,
+      this.state.roomId ? loadingView.waitingHost : loadingView.loading
+    ),
+    endingModal: this.renderModal(
+      this.state.gameOver,
+      loadingView.endingView(this.closeEndingModal)
+    ),
+    questionDetailModal: this.renderModal(
+      this.state.modalOpen,
+      loadingView.questionDetailView(this.closeModal)
+    ),
+    questionResultModal: this.renderModal(
+      this.state.resultModal,
+      loadingView.questionResultView(this.closeResult)
+    )
+  }
+  return {allModal, loadingView}
+}
 
-      </Modal>
-  );
-  let endingModal = (
-    <Modal
-      isOpen={this.state.gameOver}
-      onRequestClose={() => {
-          this.closeModal();
-        }
-      }
-      style={customStyles}
-      shouldCloseOnOverlayClick={false}
-    >
-    <h1>Your score: {this.props.playerOneScore}</h1>
-    <h1>Player 2: {this.state.playerTwoScore}</h1>
-    {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
-    <button onClick={this.closeEndingModal}>Go to home page</button>
-    </Modal>
-  );
-
-  let questionDetailModal = (
-    <Modal
-      isOpen={this.state.modalOpen}
-      shouldCloseOnOverlayClick={false}
-      onRequestClose={() => this.closeModal()}
-      style={customStyles} >
-      <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
-      <button onClick={this.closeModal}>Close</button>
-    </Modal>
-  );
-
-  let questionResultModal = (
-    <Modal
-      isOpen={this.state.resultModal}
-      shouldCloseOnOverlayClick={false}
-      onRequestClose={() => this.closeResult()}
-      style={customStyles} >
-      <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
-      <ReactCountDownClock
-        seconds={5}
-        color="blue"
-        alpha={1.5}
-        showMilliseconds={false}
-        size={75}
-        onComplete={this.closeResult}
-      />
-      <button onClick={this.closeResult}>Close</button>
-    </Modal>
-  );
+render () {
     return (
       <div className="List-group" key={this.props.questions}>
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-        {waitingModal}
-        {endingModal}
-        {questionDetailModal}
-        {questionResultModal}
+        {this.state.roomId ? (this.state.yourTurn ? this.renderAllModals().loadingView.playerPicking.player1 : this.renderAllModals().loadingView.playerPicking.player2) : null}
+        {this.renderAllModals().allModal.waitingModal}
+        {this.renderAllModals().allModal.endingModal}
+        {this.renderAllModals().allModal.questionDetailModal}
+        {this.renderAllModals().allModal.questionResultModal}
       </div>
     );
   }
@@ -316,7 +356,5 @@ function mapStateToProps(state){
     playerOneScore: state.ScoreReducer
   };
 }
-
-
 
 export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(withRouter(QuestionList));;
