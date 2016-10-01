@@ -51,16 +51,14 @@ class QuestionDetail extends Component {
   }
 
   renderAnswer(array) {
-    var linkStyle;
-    if (this.state.hover) {
-      linkStyle = {backgroundColor: 'blue'}
-    }
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
-        <div id={answer} onClick={this.checkAnswer} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+        <ColorfulLink id={answer}>
+          <div onClick={this.checkAnswer} >
             {answer}
-        </div>
+          </div>
+        </ColorfulLink>
       );
     });
   }
@@ -88,7 +86,7 @@ class QuestionDetail extends Component {
         <div>
           <h3>Question:</h3>
           <h3>{question}</h3>
-            {this.renderAnswer(answerArray)}
+          {this.renderAnswer(answerArray)}
             <ReactCountDownClock
               seconds={5}
               color="blue"
@@ -116,3 +114,36 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionDetail)
+
+var ColorfulLink = React.createClass({
+  getInitialState: function(){
+    return {
+      hover: false,
+      active: false
+    }
+  },
+  toggleHover: function(){
+    this.setState({hover: !this.state.hover})
+  },
+  toggleActive: function(){
+    this.setState({active: !this.state.active})
+  },
+	render: function() {
+    var id = _.uniqueId("ColorfulLink");
+    var activeStyle;
+    if(this.state.active){
+      activeStyle = {backgroundColor: 'lightgrey'}
+    } else {
+      activeStyle = {backgroundColor: 'white'}
+    }
+    var linkStyle;
+    if (this.state.hover) {
+      linkStyle = {backgroundColor: 'lightgrey'}
+    } else {
+      linkStyle = {backgroundColor: 'white'}
+    }
+		return <div id={id} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+			{this.props.children}
+		</div>
+	}
+})

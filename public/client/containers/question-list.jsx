@@ -81,6 +81,7 @@ componentDidMount() {
       answerResultModal: data.question.correct_answer,
       currentQuestion: data.question
     });
+
     this.props.selectQuestion(data.question);
   });
 
