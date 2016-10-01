@@ -21,6 +21,7 @@ export default class App extends Component {
   }
   renderScore() {
     if (this.state.roomId) {
+      // console.log('Multiplayer', this.state.roomId)
       return (
         <table  className="Score-Table" >
           <td className="Right-Score">

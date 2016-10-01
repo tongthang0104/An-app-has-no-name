@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
 import RandomCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
+import Multiplayer from './multiplayer';
 import Header from './header';
 import Signin from './auth/signin';
 import Singup from './auth/signup';
 import Socket from '../socket';
 import { connect } from 'react-redux';
 import { fetchQuestionsRandCat, fetchQuestionsMultiplayer } from '../actions/index';
-import Modal from 'react-modal';
+import Modals from 'react-modal';
 import Promise from 'bluebird';
 import {browserHistory} from 'react-router';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import {customStyles} from '../helpers/lodashHelper.js';
 import Chatbox from './chatbox';
+import { Button, Card, Collapsible, CollapsibleItem, Modal} from 'react-materialize';
 
 class Main extends Component {
 
@@ -99,7 +101,11 @@ class Main extends Component {
           console.log(this.state.roomValid);
 
     } else {
-      alert('This room not available');
+      this.setState({
+        roomId: ''
+      });
+      Materialize.toast('This room is not available', 4000);
+      // alert('This room not available');
     }
   }
 
@@ -171,61 +177,74 @@ class Main extends Component {
   render(){
 
     let html = {
-      roomCreated: (<div>
-        <h1>YOUR ROOM NUMBER IS:</h1>
-          <h2>{this.state.roomCreated}</h2>
-      </div>),
-      generateButton: (
-        <button onClick={this.roomGenerator}>Generate room</button>
-      ),
 
       startGameButton: (
         <Link to="/multiplayer" onClick={this.start}>
-          <button >Start Game</button>
+          <Button waves='light'>Start Game</Button>
         </Link>
       ),
+      singlePayer: (
+        <Button waves="light">Single Player</Button>
+      ),
 
-      joinButton : (
-        <Link to={this.state.roomValid ? "/multiplayer" : "/"} onClick={this.joinRoom}>
-          <button>Join room</button>
-        </Link>
+      multiplayer: (
+        <Button waves="light">Multiplayer</Button>
       )
     }
 
     return (
       <div>
         <Header />
-        <SelectCategories />
-        <RandomCategories />
-        <form >
-          {this.state.roomCreated ? null : html.generateButton}
-          {this.state.roomCreated ? html.roomCreated : null}
-        </form>
-        <input
-          type="text"
-          placeholder="Enter a room"
-          value={this.state.roomId}
-          onChange={this.getInput}>
-        </input>
+        <h1>Trivardy</h1>
 
-        {(this.state.host.room !== this.state.roomId) && this.state.roomId ? html.joinButton : null}
+        <Modal
+          id="modal1"
+          header='Single Player mode'
+          bottomSheet
+          trigger={
+            <Button waves='light'>Single Player</Button>
+          }>
 
+          <Collapsible className="container main" popout accordion>
+            <CollapsibleItem header='Select 5 Categories to Play'>
+              <SelectCategories />
+            </CollapsibleItem>
+          </Collapsible>
+
+          <RandomCategories />
+        </Modal>
+
+        <Modal
+          id="modal2"
+          header='Create or Join a room'
+          bottomSheet
+          trigger={
+            <Button waves='light'>Multiplayer</Button>
+          }>
+          <Multiplayer
+            roomCreated={this.state.roomCreated}
+            roomId={this.state.roomId} host={this.state.host}
+            roomGenerator={this.roomGenerator}
+            roomValid={this.state.roomValid}
+            joinRoom={this.joinRoom}
+            getInput={this.getInput}/>
+        </Modal>
         <div>
-          <Modal
+          <Modals
             isOpen={this.state.modalOpen}
             onRequestClose={() => {
                 this.closeModal();
               }
             }
             style={customStyles}
-            shouldCloseOnOverlayClick={false}
-          >
-          <h1>Player joined! Press Start to Play</h1>
-          <button onClick={this.closeModal}>Close</button>
-          {this.state.roomCreated ? html.startGameButton : null}
-          </Modal>
+            shouldCloseOnOverlayClick={false}>
+            <h1>Player joined! Press Start to Play</h1>
+            <button onClick={this.closeModal}>Close</button>
+            {this.state.roomCreated ? html.startGameButton : null}
+          </Modals>
         </div>
         <Chatbox />
+
       </div>
     );
   }

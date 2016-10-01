@@ -1,5 +1,6 @@
 body {
   background-color: #7FDBFF;
+  text-align: center;
 }
 
 #container {
@@ -7,6 +8,7 @@ body {
   text-align: center;
   position: relative;
 }
+
 .navbar {
   margin: 0 auto;
 }
@@ -79,6 +81,7 @@ margin: auto;
 width: 50%;
 margin: auto;
 }
+
 .Left-Score {
 width: 50%;
 margin: auto;
@@ -107,6 +110,7 @@ ul {
   width: 95%;
 }
 
-.chats li:nth-child(even) {
-  background: grey;
+input {
+  text-align: center;
+  font-size: 1em;
 }
