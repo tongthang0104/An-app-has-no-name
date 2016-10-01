@@ -37,7 +37,8 @@ class QuestionList extends Component {
     this.resetQuestion = this.props.resetQuestion.bind(this);
     this.reset = this.reset.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
-    this.renderModal = this.props.renderModal.bind(this);
+    this.renderModal = this.renderModal.bind(this);
+    this.renderAllModals = this.renderAllModals.bind(this);
   }
 
   routerWillLeave(nextLocation) {
@@ -136,6 +137,11 @@ reset(){
   this.changeScore(0);
   this.resetQuestion();
 }
+
+getScore(data){
+  this.setState({p1ScoreResultModal: data});
+}
+
 closeResult(){
   this.setState({
     resultModal:false,
@@ -221,12 +227,22 @@ renderList() {
   });
 }
 
-getScore(data){
-    this.setState({p1ScoreResultModal: data});
+renderModal(condition, html) {
+  return (<Modal
+    isOpen={condition}
+    onRequestClose={() => {
+        this.closeModal() || this.closeResult();
+      }
+    }
+    shouldCloseOnOverlayClick={false}
+    style={customStyles}
+  >
+  {html}
+  </Modal>)
 }
 
-render (){
-  console.log("roomId", this.state.roomId)
+renderAllModals() {
+
   let loadingView = {
     loading: (
       <h1>Loading... </h1>
@@ -245,79 +261,78 @@ render (){
       player2: (
         <h1>Player 2 picking ...</h1>
       )
-    }
+    },
+
+    endingView: function(callback){
+      return (
+        <div>
+          <h1>Your score: {this.props.playerOneScore}</h1>
+          <h1>Player 2: {this.state.playerTwoScore}</h1>
+          {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
+          <button onClick={callback}>Go to home page</button>
+        </div>
+        )
+      }.bind(this),
+
+    questionDetailView: function(callback) {
+      return (
+        <div>
+          <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
+          <button onClick={callback}>Close</button>
+        </div>
+      )
+    }.bind(this),
+
+    questionResultView: function(callback) {
+      return (
+        <div>
+          <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
+          <ReactCountDownClock
+            seconds={5}
+            color="blue"
+            alpha={1.5}
+            showMilliseconds={false}
+            size={75}
+            onComplete={callback}
+          />
+        <button onClick={callback}>Close</button>
+        </div>
+      )
+    }.bind(this)
   };
 
-  let waitingModal = (
-      <Modal
-        isOpen={this.props.questions ? false : true}
-        shouldCloseOnOverlayClick={false}
-        onRequestClose={() => {
-            this.closeModal();
-          }
-        }
-        style={customStyles}
-      >
-      {this.state.roomId ? loadingView.waitingHost : loadingView.loading}
+  let allModal = {
+    waitingModal: this.renderModal(
+      this.props.questions ? false : true,
+      this.state.roomId ? loadingView.waitingHost : loadingView.loading
+    ),
+    endingModal: this.renderModal(
+      this.state.gameOver,
+      loadingView.endingView(this.closeEndingModal)
+    ),
+    questionDetailModal: this.renderModal(
+      this.state.modalOpen,
+      loadingView.questionDetailView(this.closeModal)
+    ),
+    questionResultModal: this.renderModal(
+      this.state.resultModal,
+      loadingView.questionResultView(this.closeResult)
+    )
+  }
+  return allModal
+}
 
-      </Modal>
-  );
-  let endingModal = (
-    <Modal
-      isOpen={this.state.gameOver}
-      onRequestClose={() => {
-          this.closeModal();
-        }
-      }
-      style={customStyles}
-      shouldCloseOnOverlayClick={false}
-    >
-    <h1>Your score: {this.props.playerOneScore}</h1>
-    <h1>Player 2: {this.state.playerTwoScore}</h1>
-    {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
-    <button onClick={this.closeEndingModal}>Go to home page</button>
-    </Modal>
-  );
-
-  let questionDetailModal = (
-    <Modal
-      isOpen={this.state.modalOpen}
-      shouldCloseOnOverlayClick={false}
-      onRequestClose={() => this.closeModal()}
-      style={customStyles} >
-      <QuestionDetail  closeModal={this.closeModal} roomId={this.state.roomId} getScore={this.getScore}/>
-      <button onClick={this.closeModal}>Close</button>
-    </Modal>
-  );
-
-  let questionResultModal = (
-    <Modal
-      isOpen={this.state.resultModal}
-      shouldCloseOnOverlayClick={false}
-      onRequestClose={() => this.closeResult()}
-      style={customStyles} >
-      <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
-      <ReactCountDownClock
-        seconds={5}
-        color="blue"
-        alpha={1.5}
-        showMilliseconds={false}
-        size={75}
-        onComplete={this.closeResult}
-      />
-      <button onClick={this.closeResult}>Close</button>
-    </Modal>
-  );
+render () {
     return (
       <div className="List-group" key={this.props.questions}>
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
         {this.state.roomId ? (this.state.yourTurn ? loadingView.playerPicking.player1 : loadingView.playerPicking.player2) : null}
-        {waitingModal}
-        {endingModal}
-        {questionDetailModal}
-        {questionResultModal}
+        {this.renderAllModals().waitingModal}
+        {this.renderAllModals().endingModal}
+        {this.renderAllModals().questionDetailModal}
+        {this.renderAllModals().questionResultModal}
       </div>
     );
   }
@@ -330,7 +345,5 @@ function mapStateToProps(state){
     playerOneScore: state.ScoreReducer
   };
 }
-
-
 
 export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(withRouter(QuestionList));;
