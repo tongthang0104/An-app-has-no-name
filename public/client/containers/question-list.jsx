@@ -44,8 +44,9 @@ class QuestionList extends Component {
   routerWillLeave(nextLocation) {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
-    if (!this.state.gameOver)
-      return 'Your work is not saved! Are you sure you want to leave?'
+    if (!this.state.gameOver) {
+      return 'Your work is not saved! Are you sure you want to leave?';
+    }
       // return false;
   }
 
@@ -95,7 +96,7 @@ componentDidMount() {
 
 openModal(question) {
   this.setState({answerResultModal: question.correct_answer});
-  if ((this.state.chosenQuestion.includes(question._id) || question.clicked === true || !this.state.yourTurn) && this.state.roomId) {
+  if (((this.state.chosenQuestion.includes(question._id) || !this.state.yourTurn) && this.state.roomId) || question.clicked === true) {
     console.log('Not available');
   } else {
     let data = {
@@ -121,6 +122,8 @@ openModal(question) {
 
 gameOver(data) {
   if(this.state.roomId){
+
+    //Multiplayer
     if(data.gameOver){
       audio.play('gameOver');
       this.setState({
@@ -129,8 +132,12 @@ gameOver(data) {
       // browserHistory.push('/endgame');
     }
   } else {
+
+    //
     this.reset();
     browserHistory.push('/endgame');
+
+    // browserHistory.push(url);
   }
 }
 reset(){
@@ -167,7 +174,10 @@ closeModal() {
       singleP: [counter++, ...this.state.singleP]
     });
     console.log('singleP', this.state.singleP);
-    if(this.state.singleP.length === 5){
+    if(this.state.singleP.length === 2){
+      this.setState({
+        gameOver: true
+      });
       this.gameOver();
     }
   }
@@ -177,7 +187,8 @@ closeModal() {
 
 closeEndingModal(){
   this.reset();
-  browserHistory.push('/');
+  const url = path.resolve(__dirname, '../../', 'index.html')
+  browserHistory.push(url);
   this.setState({
     gameOver: false,
   });
@@ -319,7 +330,7 @@ renderAllModals() {
       loadingView.questionResultView(this.closeResult)
     )
   }
-  return allModal
+  return {allModal, loadingView}
 }
 
 render () {
@@ -328,11 +339,11 @@ render () {
         <table className="table">
           <td>{this.renderList()}</td>
         </table>
-        {this.state.roomId ? (this.state.yourTurn ? loadingView.playerPicking.player1 : loadingView.playerPicking.player2) : null}
-        {this.renderAllModals().waitingModal}
-        {this.renderAllModals().endingModal}
-        {this.renderAllModals().questionDetailModal}
-        {this.renderAllModals().questionResultModal}
+        {this.state.roomId ? (this.state.yourTurn ? this.renderAllModals().loadingView.playerPicking.player1 : this.renderAllModals().loadingView.playerPicking.player2) : null}
+        {this.renderAllModals().allModal.waitingModal}
+        {this.renderAllModals().allModal.endingModal}
+        {this.renderAllModals().allModal.questionDetailModal}
+        {this.renderAllModals().allModal.questionResultModal}
       </div>
     );
   }
