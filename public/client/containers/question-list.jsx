@@ -198,6 +198,8 @@ closeModal() {
     });
 
   }
+
+  //Send the data back to Server to broadcast
   Socket.emit('trackingGame', data);
   this.setState({resultModal:true});
 }
@@ -235,9 +237,10 @@ renderQuestion(questions) {
 renderList() {
   if(!this.props.questions){
     return (
-      <div> Loading...</div>
+      <div>Loading...</div>
     )
   }
+
   return Object.keys(this.props.questions).map(cate => {
     return (
        <td id="customTable">
@@ -268,11 +271,20 @@ renderAllModals() {
 
   let loadingView = {
     loading: (
-      <h1>Loading... </h1>
+      <div className="loading singleP">
+        <h1>Loading the questions, be ready, calm down, sit tight!...</h1>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
+      </div>
+
     ),
     waitingHost: (
-      <div>
-        <h1>Waiting for host.. </h1>
+      <div className="waitingHost">
+        <h1>Waiting for host, calm down, sit tight... </h1>
+        <div className="progress">
+          <div className="indeterminate"></div>
+        </div>
         <button onClick={this.closeModal}>Exit</button>
       </div>
     ),

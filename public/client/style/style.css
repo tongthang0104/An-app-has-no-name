@@ -1,12 +1,17 @@
-/*body {
-  background-color: #373A3C;
-}*/
+body {
+  text-align: center;
+}
 
 #container {
   width: 100%;
   text-align: center;
   position: relative;
 }
+
+.container {
+
+}
+
 .navbar {
   margin: 0 auto;
 }
@@ -64,7 +69,7 @@ th {
 }
 
 label {
-  color: #ffffff;
+  color: #362f2f;
   margin: 20px;
 }
 
@@ -72,7 +77,13 @@ button {
   margin: 20px;
 }
 
+
 .customForm {
   border: 1px solid white;
   margin: 20px;
+}
+
+input {
+  text-align: center;
+  font-size: 1em;
 }

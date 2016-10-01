@@ -16,6 +16,7 @@ class FetchBar extends Component {
   submit() {
     this.fetchQuestionsRandCat();
     browserHistory.push('/play/questionlist');
+     $('#modal1').closeModal();
   }
   reset() {
     this.fetchQuestionsRandCat();
@@ -25,8 +26,7 @@ class FetchBar extends Component {
     return (
       <div>
         <button onClick={this.submit}>Get Random Categories Instead</button>
-        {/* <Link to="/play" onClick={this.fetchQuestionsRandCat} className="btn btn-primary btn-lg btn-block navbar" data-loading-text="Loading...">Get Random Categories Instead</Link> */}
-      </div> 
+      </div>
     );
   }
 }
