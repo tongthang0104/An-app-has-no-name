@@ -1,11 +1,12 @@
-const User  = require('../models/psql.config').PSQL_DB;
+const User  = require('../models/psql.config');
 const jwt  = require('jwt-simple');
 
 module.exports = {
   signup: (req, res) => { //
     User.sync()
     .then((User) => {
-      const { username, password } = req.body;
+      const username = req.body;
+      const password = req.body;
       if (!username || !password) {
         return res.json({ data: "All fields are required." });
       }
