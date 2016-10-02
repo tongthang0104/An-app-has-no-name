@@ -10,7 +10,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      roomId: null,
+      roomId: null
     };
   }
 
@@ -21,6 +21,7 @@ export default class App extends Component {
   }
   renderScore() {
     if (this.state.roomId) {
+      // console.log('Multiplayer', this.state.roomId)
       return (
         <table  className="Score-Table" >
           <td className="Right-Score">
@@ -38,7 +39,6 @@ export default class App extends Component {
         </div>
       );
     }
-
   }
 
   render(){
