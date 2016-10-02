@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
-// const bcrypt = require('bcrypt-nodejs');
-const { PSQL_DB } = require('./../../config');
+const path = require('path');
 
-const PSQLDB = process.env.DATABASE_URL || PSQL_DB ;
+const PSQLDB = process.env.DATABASE_URL || require('../config/config').PSQL_DB;
+
 const sequelize = new Sequelize(PSQLDB, {
   native: true,
 });
@@ -16,11 +16,12 @@ sequelize
   console.log('Unable to connect to the database:', err);
 });
 
+const userPath = path.resolve(__dirname, 'user');
 
 const db = {
   Sequelize: Sequelize,
   sequelize: sequelize,
-  User:  sequelize.import(__dirname + '/user'),
+  User:  sequelize.import(userPath),
 };
 
 module.exports = db;

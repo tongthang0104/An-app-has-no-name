@@ -1,14 +1,8 @@
 'use strict';
-const jwt  = require('jwt-simple');
 //proxy between express and webpack-dev-server
 const express = require('express');
 const httpProxy = require('http-proxy');
-
-require('./models/mongo.config');
-const db = require('./models/users/index');
-
-require('./models/questionRoutes');
-
+const path = require('path');
 
 let gameSocket;
 
@@ -25,7 +19,7 @@ let port = isProduction ? process.env.PORT : 9999;
 // When not in production ==> run workflow
 
 if (!isProduction) {
-  const bundle = require('./bundle.js');
+  const bundle = require('./config/bundle.js');
 
   bundle();
 
@@ -50,7 +44,7 @@ proxy.on('error', function(err) {
   console.log('Could not connect to proxy, please try again...');
 });
 
-require('./middleware')(app, express);
+require('./config/middleware')(app, express);
 
 app.post('/users/signup/', (req, res) => { //
   db.User.sync().then((User) => {
@@ -69,67 +63,13 @@ app.post('/users/signup/', (req, res) => { //
   })
 });
 
-
-app.post('/users/signin/', (req, res) => { //
-  db.User.sync().then((User) => {
-    User.findOne({where: {username: req.body.username}})
-    .then((user) => {
-      user.authenticate(req.body.password, (err, match) => {
-        if (match) {
-          const token = jwt.encode(user, 'secret');
-          user.update({token, token}).then(() => {
-            res.status(200).json({token, data:"You have been logged in!"});
-          })
-        } else {
-          console.log('Invalid password!', err);
-          res.status(200).json('Invalid password.')
-        }
-      })
-    })
-  })
-});
-
-// app.post('/users/signout/', (req, res) => { //
-//   db.User.sync().then((User) => {
-//     User.findOne({where: {token: req.body.token}})
-//     .then((user) => {
-//       const token = '';
-//       user.update({token, token}).then(() => {
-//         res.status(200).json({token, data:"You have been successfully logged out!"});
-//       })
-//     })
-//   })
-// });
-  // checkAuth: function (req, res, next) {
-  //   var token = req.headers['x-access-token'];
-  //   if (!token) {
-  //     next(new Error('No token'));
-  //   } else {
-  //     var user = jwt.decode(token, 'secret');
-  //     var findUser = Q.nbind(User.findOne, User);
-  //     findUser({username: user.username})
-  //       .then(function (foundUser) {
-  //         if (foundUser) {
-  //           res.status(200).send();
-  //         } else {
-  //           res.status(401).send();
-  //         }
-  //       })
-  //       .fail(function (error) {
-  //         next(error);
-  //       });
-  //   }
-  // }
+app.get('*', function (request, response){
+  response.sendFile(path.resolve(__dirname, '../', 'index.html'))
+})  
 
 const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
 });
-
-// const server = db.sequelize.sync().then(function() {
-//   app.listen(port, function(){
-//     console.log(`Server is running on ${port}`);
-//   });
-// });
 
 const io = require('socket.io')(server);
 
@@ -140,12 +80,15 @@ io.on('connection', function (socket) {
   gameSocket.on('JoinRoom', JoinRoom);
   gameSocket.on('CreateRoom', CreateRoom);
   gameSocket.on('fetchQuestions', fetchQuestions);
-  gameSocket.on('openModal', openModal);
+  gameSocket.on('openModal', (data) => {
+    io.sockets.in(data.roomId).emit('receiveOpenOrder', data);
+    socket.broadcast.to(data.roomId).emit('turnChange', {yourTurn: true});
+  });
   gameSocket.on('closeModal', closeModal);
   gameSocket.on('closeResult', closeResult);
   gameSocket.on('trackingGame', trackingGame);
   gameSocket.on('checkRoom', checkRoom);
-
+  gameSocket.on('gameStart', gameStart);
   gameSocket.on('changingScore', function(data) {
 
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
@@ -175,7 +118,8 @@ const CreateRoom = function(host){
   };
   this.emit('newGameCreated', data);
   io.sockets.emit('newRoomCreated', data);
-  console.log('server create room', roomId, this.id)
+  console.log('server create room', roomId, this.id);
+
 };
 
 
@@ -208,7 +152,7 @@ const openModal = function(data) {
 
   //Invoke the receiveOpenOrder at Client and send back data.modalOpen
     console.log('opening', data.roomId, data.question);
-  io.sockets.in(data.roomId).emit('receiveOpenOrder', data);
+
 };
 
 const closeModal = function(data) {
@@ -222,7 +166,7 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 24) {
+  if (data.chosenQuestion === 2) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
   } else {
     console.log('game is going', data.chosenQuestion);
@@ -241,3 +185,7 @@ const checkRoom = function(roomId) {
     }
   }
 };
+
+const gameStart = function(data) {
+  this.emit('turnChange', {yourTurn: true})
+}
