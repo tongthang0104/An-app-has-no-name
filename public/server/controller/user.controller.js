@@ -1,4 +1,4 @@
-const { User } = require('../models/psql.config');
+const User  = require('../models/psql.config').PSQL_DB;
 const jwt  = require('jwt-simple');
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
           if (match) {
             const copyUser = JSON.parse(JSON.stringify(user));
             copyUser.token = '';
-            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead. 
+            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead.
             const token = jwt.encode(copyUser, 'secret');
             user.update({token, token})
             .then(() => {
