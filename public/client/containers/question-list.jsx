@@ -214,20 +214,17 @@ renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div className="question-list" key={question._id}>
-        <div
-          onClick={(e) => {
-              e.preventDefault()
-              this.openModal(question)
-              if (!this.state.roomId) {
-                this.props.selectQuestion(question);
-              }
+      <div  className="list-question"
+        onClick={(e) => {
+            e.preventDefault()
+            this.openModal(question)
+            if (!this.state.roomId) {
+              this.props.selectQuestion(question);
             }
           }
-          className="list-group-item questions"
-        >
-          {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
-        </div>
+        }
+      >
+        {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
       </div>
     );
   })
@@ -239,13 +236,31 @@ renderList() {
       <div> Loading...</div>
     )
   }
+  let Entertainment = [
+    'Entertainment: Books',
+    'Entertainment: Film',
+    'Entertainment: Music',
+    'Entertainment: Television',
+    'Entertainment: Video Games',
+    'Entertainment: Board Games',
+    'Entertainment: Japanese Anime & Manga',
+    'Entertainment: Cartoon & Animations'
+  ];
+  let cutCate;
   return Object.keys(this.props.questions).map(cate => {
+    if(Entertainment.includes(cate)){
+      cutCate = cate.slice(15);
+    } else {
+      cutCate = cate;
+    }
     return (
-       <td id="customTable">
-         <th  className="list-group-item" key={cate} >
-           {cate}
-         </th>
-         {this.renderQuestion(this.props.questions[cate])}
+       <td id="Table-col">
+        <div className="list-header-item">
+          {cutCate}
+        </div>
+         <div key={cate} >
+          {this.renderQuestion(this.props.questions[cate])}
+         </div>
        </td>
     );
   });
@@ -359,8 +374,8 @@ render () {
                           timeOut={10000}
                           className="toast-top-center" />
         </div>
-        <table className="table">
-          <td>{this.renderList()}</td>
+        <table className="table-question">
+          {this.renderList()}
         </table>
         {this.state.roomId ? (this.state.yourTurn ? this.renderAllModals().loadingView.playerPicking.player1 : this.renderAllModals().loadingView.playerPicking.player2) : null}
         {this.renderAllModals().allModal.waitingModal}

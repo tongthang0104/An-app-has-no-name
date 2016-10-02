@@ -21,6 +21,20 @@ class QuestionDetail extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
+  close(){
+    this.setState({isModal: false});
+    this.props.closeModal();
+  }
+
+  open(){
+    audio.play('nothing');
+    this.setState({isModal:true});
+    let that = this;
+    setTimeout(()=>{
+      that.close();
+    },0);
+  };
+
   checkAnswer(event) {
     if(this.state.answeredOnce === false){
         this.setState({completed: true});
@@ -41,30 +55,22 @@ class QuestionDetail extends Component {
         isModal:true,
         answeredOnce: true,
         roomId: this.props.roomId,
-        clickedAnswer: event.target.id
+        clickedAnswer: true
       });
     }
-    this.setState({
-      isModal:true,
-      roomId: this.props.roomId
-    });
   }
 
   renderAnswer(array) {
     const shuffle = _.shuffle(array);
     return shuffle.map((answer) => {
       return (
-        <ColorfulLink id={answer}>
-          <div onClick={this.checkAnswer} >
+        <div id={answer} onClick={this.checkAnswer} >
+        <ColorfulLink answerClicked={this.state.clickedAnswer} >
             {answer}
-          </div>
         </ColorfulLink>
+        </div>
       );
     });
-  }
-
-  toggleHover(){
-    this.setState({hover: !this.state.hover})
   }
 
   render() {
@@ -123,12 +129,20 @@ var ColorfulLink = React.createClass({
     }
   },
   toggleHover: function(){
-    this.setState({hover: !this.state.hover})
+    if(!this.state.active && !this.props.answerClicked){
+      this.setState({hover: !this.state.hover})
+    } else {
+      console.log("Already answer");
+    }
   },
   toggleActive: function(){
-    this.setState({active: !this.state.active})
+    this.setState({
+      active: !this.state.active,
+      hover: null
+    });
   },
 	render: function() {
+    console.log('iojwaofijawf', this.state, this.props)
     var id = _.uniqueId("ColorfulLink");
     var activeStyle;
     if(this.state.active){
