@@ -156,8 +156,14 @@ var ColorfulLink = React.createClass({
     } else {
       linkStyle = {backgroundColor: 'white'}
     }
-		return <div id={id} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
-			{this.props.children}
-		</div>
+		return (
+      <div
+        id={id}
+        onClick={this.toggleActive}
+        style={linkStyle}
+        onMouseEnter={this.toggleHover}
+        onMouseLeave={this.toggleHover}>
+  			{this.props.children}
+  		</div>)
 	}
 })

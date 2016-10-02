@@ -216,7 +216,7 @@ renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div  className="list-question"
+      <div className="list-question"
         onClick={(e) => {
             e.preventDefault()
             this.openModal(question)
@@ -224,8 +224,7 @@ renderQuestion(questions) {
               this.props.selectQuestion(question);
             }
           }
-        }
-      >
+        }>
         {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
       </div>
     );
@@ -260,7 +259,7 @@ renderList() {
         <div className="list-header-item">
           {cutCate}
         </div>
-         <div key={cate} >
+         <div key={cate}>
           {this.renderQuestion(this.props.questions[cate])}
          </div>
        </td>
@@ -269,17 +268,17 @@ renderList() {
 }
 
 renderModal(condition, html) {
-  return (<Modal
-    isOpen={condition}
-    onRequestClose={() => {
-        this.closeModal() || this.closeResult();
+  return (
+    <Modal
+      isOpen={condition}
+      onRequestClose={() => {
+          this.closeModal() || this.closeResult();
+        }
       }
-    }
-    shouldCloseOnOverlayClick={false}
-    style={customStyles}
-  >
-  {html}
-  </Modal>)
+      shouldCloseOnOverlayClick={false}
+      style={customStyles}>
+      {html}
+    </Modal>)
 }
 
 renderAllModals() {
