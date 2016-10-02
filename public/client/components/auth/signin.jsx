@@ -44,7 +44,6 @@ class Signin extends Component {
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
         <Field name="username" type="text" component={renderField} label="Username"/>
         <Field name="password" type="password" component={renderField} label="Password"/>
-        {/* {error && <strong>{error}</strong>} */}
         <div>
           <button type="submit" disabled={submitting}>Log In</button>
           <button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>

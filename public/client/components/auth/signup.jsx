@@ -25,7 +25,7 @@ class Signup extends Component {
   handleFormSubmit(values) {
     this.props.signupUser(values);
     browserHistory.push('/');
-  }  
+  }
   renderSignupStatus() {
     if(!this.props.signupStatus){
       return (
@@ -44,7 +44,6 @@ class Signup extends Component {
         <Field name="username" type="text" component={renderField} label="Username"/>
         <Field name="password" type="password" component={renderField} label="Password"/>
         <Field name="repassword" type="password" component={renderField} label="Repeat Password"/>
-        {/* {error && <strong>{error}</strong>} */}
         <div>
           <button type="submit" disabled={submitting}>Signup</button>
           <button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
@@ -95,4 +94,3 @@ const SignupForm = reduxForm({
 })(Signup);
 
 export default connect(mapStateToProps, actions)(SignupForm);
-
