@@ -1,6 +1,6 @@
-/*body {
-  background-color: #373A3C;
-}*/
+body {
+  background-color: #7FDBFF;
+}
 
 #container {
   width: 100%;
@@ -10,26 +10,44 @@
 .navbar {
   margin: 0 auto;
 }
-#table{
- position: absolute;
- top: 0;
- bottom: 0;
- left: 0;
- right: 0;
- height:100%;
+/*this is for the big table*/
+.table-question{
  width:100%;
+ border: 0px;
 }
-#customTable {
-  height:20%;
-  width:20%;
-  padding: 10px;
-}
-
-th {
-  display: inline-block;
-  height: 75px;
+/*this is for each column in the table*/
+#Table-col {
+    width: 18%;
+    color: #7FDBFF;
+    font-size: 30px;
 }
 
+/*this is for category*/
+.list-header-item {
+    border-top-right-radius: 0.25rem;
+    border-top-left-radius: 0.25rem;
+    background-color:  #0074D9;
+    box-shadow: 0px 3px 3px 3px rgba(0,0,0,0.75);
+    text-align: center;
+    height: 130px;
+    margin-bottom: 15px;
+    font-size: 40px;
+}
+
+/* this is for each individial question */
+.list-question:before {
+  content: '$'
+}
+.list-question {
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+  background-color: #0074D9;
+  margin: 5px 5px;
+  text-align: center;
+  font-size: 75px;
+  border: 2px solid black;
+}
+/*this is for scores*/
 .panel {
   margin-bottom: 20px;
   background-color: #ffffff;
@@ -42,37 +60,34 @@ th {
   padding: 15px;
 }
 .panel-heading {
-  padding: 10px 15px;
-  border-bottom: 1px solid grey;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
+    padding: 10px 15px;
+    border: 5px solid black;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    background-color: #0074D9;
+    color: #7FDBFF;
+    font-size: 30px;
 }
-
-.questions{
-  background-color: #DAEDBD;
-  min-height: 50px !important;
-  color: #E6A164;
-  margin: 5px;
-  font-size: 2em;
+.Score-Table {
+  width: 100%;
 }
-
-.questions:before {
-  content: '$'
+.Center-Score {
+width: 50%;
+margin: auto;
 }
-.clicked {
-
+.Right-Score {
+width: 50%;
+margin: auto;
 }
-
-label {
-  color: #ffffff;
-  margin: 20px;
+.Left-Score {
+width: 50%;
+margin: auto;
 }
-
-button {
-  margin: 20px;
-}
-
-.customForm {
-  border: 1px solid white;
-  margin: 20px;
+.panel-body {
+    padding: 15px;
+    border: 5px solid black;
+    border-top: 0px;
+    background-color: #0074d9;
+    color: #7FDBFF;
+    font-size: 30px;
 }
