@@ -65,7 +65,7 @@ app.post('/users/signup/', (req, res) => { //
 
 app.get('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '../', 'index.html'))
-})  
+})
 
 const server = app.listen(port, function(){
   console.log(`Server is running on ${port}`);
@@ -166,7 +166,7 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 2) {
+  if (data.chosenQuestion === 24) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
   } else {
     console.log('game is going', data.chosenQuestion);
