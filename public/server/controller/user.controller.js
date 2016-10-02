@@ -28,7 +28,8 @@ module.exports = {
   signin: (req, res) => {  //
     User.sync()
     .then((User) => {
-      const { username, password } = req.body;
+      const username = req.body;
+      const password = req.body;
       User.findOne({ where: { username }})
       .then((user) => {
         user.authenticate(password, (err, match) => {
