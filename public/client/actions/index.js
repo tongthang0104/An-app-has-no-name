@@ -2,13 +2,45 @@
 
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION } from '../constants/index';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION, USER_INFO, SCORE_SAVE_SUCCESS } from '../constants/index';
+
+// export function getUserInfo() {
+//   return {
+//     type: USER_INFO,
+//   }
+// }
+// export function saveUserInfo(userInfo) {
+//   return {
+//     type: USER_INFO,
+//     payload: userInfo
+//   }
+// }
+
+export function saveScore(props) {
+  const url = `/score/save`;
+  const serverResponse = axios.post(url, props)
+    .then((response) => {
+      return {
+        type: SCORE_SAVE_SUCCESS,
+        payload:response
+      }
+    })
+    .catch(function (error) {
+    console.log(error);
+  });
+  return serverResponse;
+}
 
 export function checkLogin(props) {
   const url = `/users/signin`;
   const serverResponse = axios.post(url, props)
     .then((response) => {
+      const username = response.data.username;
+      const id = response.data.id;
+      const userInfo = {username, id}
       localStorage.setItem('user', JSON.stringify(response.data.token));
+      localStorage.setItem('username', username);
+      localStorage.setItem('id', id);
       return {
         type: LOGIN_USER_REQUEST,
         payload:response

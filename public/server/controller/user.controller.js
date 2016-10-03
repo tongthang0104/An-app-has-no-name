@@ -38,7 +38,7 @@ module.exports = {
             const token = jwt.encode(copyUser, 'secret');
             user.update({token, token})
             .then(() => {
-              res.status(200).json({token, data:"You have been logged in!"});
+              res.status(200).json({token, username, id: user.id, data:"You have been logged in!"});
             });
           } else {
             console.log('Invalid password!', err);

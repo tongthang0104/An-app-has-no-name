@@ -11,5 +11,7 @@ module.exports = createConstants(
   'FETCH_MULTI_QUESTIONS',
   'SIGNUP_SUCCESS',
   'UNAUTH_USER',
-  'RESET_QUESTION'
+  'RESET_QUESTION',
+  'USER_INFO',
+  'SCORE_SAVE_SUCCESS'
 );

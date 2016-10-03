@@ -43,13 +43,13 @@ class QuestionDetail extends Component {
         let adding = '+' + this.props.question.difficulty;
         this.props.getScore(adding);
         this.setState({isModal:true});
-        audio.play('correct');
+        // audio.play('correct');
       } else {
         this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
         let subing = '-' + this.props.question.difficulty;
         this.props.getScore(subing);
         this.setState({isModal:true});
-        audio.play('wrong');
+        // audio.play('wrong');
       }
       this.setState({
         isModal:true,

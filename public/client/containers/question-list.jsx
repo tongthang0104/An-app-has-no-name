@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
 import { browserHistory, withRouter, Link } from 'react-router';
 import QuestionDetail from './question-detail';
-import { selectQuestion, changeScore, resetQuestion } from '../actions/index';
+import { selectQuestion, changeScore, resetQuestion, saveScore } from '../actions/index';
 import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
@@ -48,6 +48,7 @@ class QuestionList extends Component {
     this.renderModal = this.renderModal.bind(this);
     this.renderAllModals = this.renderAllModals.bind(this);
     this.addAlert = this.addAlert.bind(this);
+    this.sendScore = this.sendScore.bind(this);
   }
 
   routerWillLeave(nextLocation) {
@@ -133,6 +134,14 @@ openModal(question) {
   }
 }
 
+  sendScore() {
+    const id = localStorage.getItem('id');
+    const score = this.props.playerOneScore;
+    const scoreData = { score, id }
+    console.log(scoreData, "HERE'S THE SCORE");
+    this.props.saveScore(scoreData)
+  }
+
 gameOver(data) {
   console.log("CHECKING ROOM ID", this.state.roomId);
   if(this.state.roomId){
@@ -145,6 +154,7 @@ gameOver(data) {
       // browserHistory.push('/endgame');
     }
   } else {
+    this.sendScore();
     this.reset();
     console.log("GAME OVERRRR", this.state.gameOver)
     browserHistory.push('/endgame');
@@ -173,7 +183,7 @@ closeResult(){
   }
 
   console.log('singleP', this.state.singleP);
-  if (!this.state.roomId && this.state.singleP.length === 24) {
+  if (!this.state.roomId && this.state.singleP.length === 2) {
       this.setState({gameOver: true});
       this.gameOver();
   }
@@ -406,4 +416,4 @@ function mapStateToProps(state){
   };
 }
 
-export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(withRouter(QuestionList));;
+export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion, saveScore})(withRouter(QuestionList));;
