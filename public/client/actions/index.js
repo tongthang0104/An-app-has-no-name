@@ -17,7 +17,7 @@ import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM,
 // }
 
 export function saveScore(props) {
-  const url = `/score/save`;
+  const url = `/scores/save`;
   const serverResponse = axios.post(url, props)
     .then((response) => {
       return {

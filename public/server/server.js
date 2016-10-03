@@ -6,24 +6,6 @@ const path = require('path');
 const db = require('./models/psql.config')
 let gameSocket;
 
-// db.Score.sync().then((Score)=>{
-//   Score.create({score: -100.0, userId: 2})
-// })
-// db.Score.sync().then((Score)=>{
-//   Score.findAll({order:'score DESC'}).then((scores)=>{
-//     scores.forEach((score)=>{console.log(score.dataValues.id, score.dataValues.score);})
-//     console.log("HERER DA STUFFZ";
-//   })
-// })
-// db.User.sync().then((User)=>{
-//   User.findOne({ where: { username: 'random' }}).then((user)=>{
-//     user.getScores().then((scores)=>{
-//       console.log('user : ', user.username);
-//       scores.forEach((score)=>{console.log(score.dataValues.id, score.dataValues.score);})
-//       console.log("THIS BE SCORES");
-//     })
-//   })
-// }) 
 const app = express();
 
 const proxy = httpProxy.createProxyServer({
@@ -63,37 +45,6 @@ proxy.on('error', function(err) {
 });
 
 require('./config/middleware')(app, express);
-app.post('/score/save', (req, res) => {
-  const score = req.body.score
-  const id = req.body.id
-  db.Score.sync().then((Score)=>{
-    Score.create({score: score, userId: id})
-  })
-  .spread((score, created) => {
-    if (created) {
-      res.status(200).json({data: "Your score has been saved!"});
-    } else {
-      res.status(200).json({data: "Sorry your score was not able to be saved!"});
-    }
-  })
-})
-
-app.post('/users/signup/', (req, res) => { //
-  db.User.sync().then((User) => {
-    const user = {username: req.body.username}
-    User.findOrCreate({where: {username: req.body.username}, defaults: {password: req.body.password}})
-    .spread(function(user, created) {
-      if (created) {
-        const token = jwt.encode(user, 'secret');
-        user.update({token, token}).then(() => {
-          res.status(200).json({token, data: "You have been signed up!"});
-        })
-      } else {
-        res.status(200).json('Username already exists.')
-      }
-    })
-  })
-});
 
 app.get('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '../', 'index.html'))
@@ -198,7 +149,7 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 24) {
+  if (data.chosenQuestion === 2) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
   } else {
     console.log('game is going', data.chosenQuestion);

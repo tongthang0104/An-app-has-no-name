@@ -55,8 +55,8 @@ class QuestionList extends Component {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
     if (!this.state.gameOver) {
-      this.reset();
-      this.changeScore(0);
+      // this.reset();
+      // this.changeScore(0);
       return 'Your work is not saved! Are you sure you want to leave?';
     }
   }
@@ -154,7 +154,7 @@ gameOver(data) {
       // browserHistory.push('/endgame');
     }
   } else {
-    this.sendScore();
+    // this.sendScore();
     this.reset();
     console.log("GAME OVERRRR", this.state.gameOver)
     browserHistory.push('/endgame');
@@ -217,6 +217,8 @@ closeModal() {
 
 // Socket broadcasting close
 closeEndingModal(){
+  this.sendScore();
+console.log(this.props.playerOneScore, "Final Score being saved into leaderboard...");
   this.reset();
   const url = path.resolve(__dirname, '../../', 'index.html')
   browserHistory.push(url);

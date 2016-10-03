@@ -9,6 +9,7 @@ module.exports = function(app, express) {
 
   const questionRouter = express.Router();
   const userRouter = express.Router();
+  const scoreRouter = express.Router();
 
   app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({extended: true}));
@@ -17,6 +18,9 @@ module.exports = function(app, express) {
 
   app.use('/api/questions', questionRouter);
   app.use('/users', userRouter);
+  app.use('/scores', scoreRouter);
+
   require('../routes/question.routes')(questionRouter);
   require('../routes/user.routes')(userRouter);
+  require('../routes/score.routes')(scoreRouter);
 };
