@@ -5,7 +5,7 @@ module.exports = {
     const score = req.body.score
     const id = req.body.id
     const username = req.body.username
-    Score.sync().then((Score)=>{
+    Score.sync().then((Score) => {
       Score.create({score: score, userId: id, username })
     })
     .then((score) => {
@@ -18,36 +18,27 @@ module.exports = {
   },
   getLeaderboard: (req, res) => {
     const scoresToSend = [];
-    Score.sync().then((Score)=>{
+    Score.sync().then((Score) => {
       Score.findAll({order:'score DESC'})
       .then((scores) => {
         if (!scores) {
           res.status(200).json({data: "Sorry we couldn't fetch the scores for you."});
         } else {
-          scores.forEach((score)=>{
+          scores.forEach((score, i) => {
             const username = score.dataValues.username;
             const scoreVal = score.dataValues.score;
-            scoresToSend.push({username, scoreVal});
+            const position = i+1;
+            scoresToSend.push({position, username, scoreVal});
           });
           return scoresToSend;
         }
-      }).then((scoresToSend)=> {
+      }).then((scoresToSend) => {
         res.status(200).json({scores:scoresToSend, data: "Scores have been successfully fetched."});
       })
     })
   },
 }
 
-
-// db.Score.sync().then((Score)=>{
-//   Score.create({score: -100.0, userId: 2})
-// })
-// db.Score.sync().then((Score)=>{
-//   Score.findAll({order:'score DESC'}).then((scores)=>{
-//     scores.forEach((score)=>{console.log(score.dataValues.id, score.dataValues.score);})
-//     console.log("HERER DA STUFFZ";
-//   })
-// })
 // db.User.sync().then((User)=>{
 //   User.findOne({ where: { username: 'random' }}).then((user)=>{
 //     user.getScores().then((scores)=>{

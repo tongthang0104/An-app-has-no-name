@@ -1,4 +1,5 @@
 const bcrypt   = require('bcrypt-nodejs');
+
 const hashPassword = function (user, options, callback) {
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return callback(err); }
@@ -13,7 +14,7 @@ const hashPassword = function (user, options, callback) {
 }
 
 const authenticate = function(passwordToCheck, callback) {
-  bcrypt.compare(passwordToCheck, this.getDataValue('password'),(err, isMatch) => {
+  bcrypt.compare(passwordToCheck, this.getDataValue('password'), (err, isMatch) => {
       if(err) {
         return callback(err);
       }
