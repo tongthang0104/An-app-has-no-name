@@ -137,7 +137,9 @@ openModal(question) {
   sendScore() {
     const id = localStorage.getItem('id');
     const score = this.props.playerOneScore;
-    const scoreData = { score, id }
+    const username = localStorage.getItem('username');
+
+    const scoreData = { score, id, username }
     console.log(scoreData, "HERE'S THE SCORE");
     this.props.saveScore(scoreData)
   }
@@ -147,14 +149,13 @@ gameOver(data) {
   if(this.state.roomId){
     //Multiplayer
     if(data.gameOver){
-      audio.play('gameOver');
+      // audio.play('gameOver');
       this.setState({
         gameOver: true
       });
       // browserHistory.push('/endgame');
     }
   } else {
-    // this.sendScore();
     this.reset();
     console.log("GAME OVERRRR", this.state.gameOver)
     browserHistory.push('/endgame');

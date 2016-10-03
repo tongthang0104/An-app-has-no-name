@@ -26,7 +26,7 @@ class FinishGame extends Component {
   }
 
   render(){
-    audio.play('gameOver');
+    // audio.play('gameOver');
     return (
       <div>
         <h1>Game Over</h1>

@@ -13,5 +13,6 @@ module.exports = createConstants(
   'UNAUTH_USER',
   'RESET_QUESTION',
   'USER_INFO',
-  'SCORE_SAVE_SUCCESS'
+  'SCORE_SAVE_SUCCESS',
+  'FETCH_LEADERBOARD'
 );

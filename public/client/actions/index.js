@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION, USER_INFO, SCORE_SAVE_SUCCESS } from '../constants/index';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION, USER_INFO, SCORE_SAVE_SUCCESS, FETCH_LEADERBOARD } from '../constants/index';
 
 // export function getUserInfo() {
 //   return {
@@ -15,6 +15,21 @@ import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM,
 //     payload: userInfo
 //   }
 // }
+export function getLeaderboard() {
+  const url = `/scores/leaderboard`;
+  const serverResponse = axios.get(url)
+    .then((response) => {
+      console.log(response, "Here is the leaderboard...");
+      return {
+        type: FETCH_LEADERBOARD,
+        payload:response
+      }
+    })
+    .catch(function (error) {
+    console.log(error);
+  });
+  return serverResponse;
+}
 
 export function saveScore(props) {
   const url = `/scores/save`;

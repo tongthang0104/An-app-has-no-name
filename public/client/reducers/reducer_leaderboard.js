@@ -1,13 +1,12 @@
 'user strict';
 import {
-  USER_INFO,
+  FETCH_LEADERBOARD,
 } from '../constants/index';
 
 
 export default function(state = null, action) {
   switch(action.type) {
-  case USER_INFO:
-      console.log('jhgjhgjhgjgjhgjghjh', action.payload);
+  case FETCH_LEADERBOARD:
     if (action.payload) {
       return action.payload;
     } 

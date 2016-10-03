@@ -39,6 +39,7 @@ class Header extends Component {
         </span>
         <span>
           <Link to="/users/signout">  Signout  </Link>
+          <Link to="/scores/leaderboard">  Leaderboard  </Link>
         </span>
         <span>{this.forceUpdate()}</span>
       </div>
