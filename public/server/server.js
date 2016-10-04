@@ -93,10 +93,17 @@ io.on('connection', function (socket) {
 
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
+
+  gameSocket.on('leaveRoomInMiddle', leaveRoomInMiddle);
+
+  gameSocket.on('leaveRoomAndEndGame', function(roomId) {
+    gameSocket.leave(roomId);
+  });
   gameSocket.on('disconnect', function(){
     console.log("User disconnected");
 
   });
+
   console.log('client connected ', socket.id);
 });
 
@@ -166,9 +173,11 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 24) {
+  if (data.chosenQuestion === 2) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
+    gameSocket.leave(data.roomId);
   } else {
+
     console.log('game is going', data.chosenQuestion);
   }
 };
@@ -188,4 +197,10 @@ const checkRoom = function(roomId) {
 
 const gameStart = function(data) {
   this.emit('turnChange', {yourTurn: true})
-}
+};
+
+const leaveRoomInMiddle = function(roomId) {
+  console.log('sadfhaoisdf', roomId);
+  gameSocket.leave(roomId);
+  io.sockets.in(roomId).emit('userleaving', {gameOver: true, roomId: roomId});
+};
