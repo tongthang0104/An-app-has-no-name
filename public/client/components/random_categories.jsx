@@ -16,7 +16,7 @@ class FetchBar extends Component {
   submit() {
     this.fetchQuestionsRandCat();
     browserHistory.push('/play/questionlist');
-     $('#modal1').closeModal();
+     $('#singlePlayerModal').closeModal();
   }
   reset() {
     this.fetchQuestionsRandCat();
