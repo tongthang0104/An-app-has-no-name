@@ -10,10 +10,7 @@ import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
 import * as audio from '../audio';
 import {customStyles} from '../helpers/lodashHelper.js';
-// import { ReactToastr, ToastContainer } from 'react-toastr';
 import path from 'path';
-//
-// const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
 
 const ReactToastr = require("react-toastr");
 const {ToastContainer} = ReactToastr;
@@ -49,14 +46,21 @@ class QuestionList extends Component {
     this.renderAllModals = this.renderAllModals.bind(this);
     this.addAlert = this.addAlert.bind(this);
     this.sendScore = this.sendScore.bind(this);
+    this.leaveRoomInMiddle = this.leaveRoomInMiddle.bind(this);
+  }
+
+  componentWillUnmount() {
+    console.log(this.state.roomId)
+    if (this.state.roomId) {
+      this.changeScore(0);
+      this.leaveRoomInMiddle();
+    }
   }
 
   routerWillLeave(nextLocation) {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
     if (!this.state.gameOver) {
-      // this.reset();
-      // this.changeScore(0);
       return 'Your work is not saved! Are you sure you want to leave?';
     }
   }
@@ -64,7 +68,6 @@ class QuestionList extends Component {
   componentWillMount() {
       Socket.on('receiveMultiplayerQuestions', (data) => {
         this.setState({roomId: data.roomId});
-
       });
 
       Socket.on('playerJoined', (data) => {
@@ -105,20 +108,39 @@ componentDidMount() {
     //broadcast yourTurn to be true to the other player
     this.setState({yourTurn: data.yourTurn});
   });
+
+
+//When a user left
+  Socket.on('userleaving', (data) => {
+    console.log('LEaving');
+    Materialize.toast('The other player left', 4000);
+    //Call gameOver with data
+    this.setState({gameOver: true});
+    this.gameOver(data);
+  });
 }
 
+// Open Answer Modal
 openModal(question) {
+
   this.setState({answerResultModal: question.correct_answer});
+
+  // Check if question was answered or it is not the correct turn
   if (((this.state.chosenQuestion.includes(question._id) || !this.state.yourTurn) && this.state.roomId) || question.clicked === true) {
-    console.log('Not available');
-    this.addAlert('Player 2 picking...')
+
+    // If it is alert
+    this.addAlert('Player 2 picking...');
+
   } else {
+
+    // Create data variable to send back to server to broadcast
     let data = {
       roomId: this.state.roomId,
       modalOpen: this.state.modalOpen,
       question: question,
       chosenQuestion: this.state.chosenQuestion.length
     };
+
     // Invoke openModal at the server and send data back
     //Check if multiplayer or not
     if (this.state.roomId) {
@@ -127,10 +149,13 @@ openModal(question) {
       this.setState({yourTurn: false});
 
     } else {
+
+      //Single Player mode
       this.setState({modalOpen: true});
     }
-    question.clicked = true;
 
+    //set it to keep track in Single Player mode
+    question.clicked = true;
   }
 }
 
@@ -144,33 +169,37 @@ openModal(question) {
     this.props.saveScore(scoreData)
   }
 
+leaveRoomInMiddle() {
+  Socket.emit('leaveRoomInMiddle', this.state.roomId);
+}
+// Broadcasting when in multiplayer mode or just push endgame route
 gameOver(data) {
-  console.log("CHECKING ROOM ID", this.state.roomId);
   if(this.state.roomId){
+
     //Multiplayer
     if(data.gameOver){
       // audio.play('gameOver');
       this.setState({
         gameOver: true
       });
-      // browserHistory.push('/endgame');
     }
   } else {
     this.reset();
-    console.log("GAME OVERRRR", this.state.gameOver)
-    browserHistory.push('/endgame');
-    // browserHistory.push(url);
   }
 }
+
+// Reset questions to be null
 reset(){
   // this.changeScore(0);
   this.resetQuestion();
 }
 
+// Get the score
 getScore(data){
   this.setState({p1ScoreResultModal: data});
 }
 
+// Close the result Modal
 closeResult(){
   this.setState({
     resultModal:false,
@@ -183,13 +212,15 @@ closeResult(){
     this.state.yourTurn ? this.addAlert('My Turn') : this.addAlert('Player 2 picking...');
   }
 
-  console.log('singleP', this.state.singleP);
-  if (!this.state.roomId && this.state.singleP.length === 2) {
+  // Single Player mode
+
+  if (!this.state.roomId && this.state.singleP.length === 26) {
       this.setState({gameOver: true});
       this.gameOver();
   }
 }
 
+// Close the Answer Modal, Not the result
 closeModal() {
   let data = {
     roomId: this.state.roomId,
@@ -208,7 +239,6 @@ closeModal() {
       modalOpen: false,
       singleP: [counter++, ...this.state.singleP]
     });
-
   }
 
   //Send the data back to Server to broadcast
@@ -216,20 +246,21 @@ closeModal() {
   this.setState({resultModal:true});
 }
 
-// Socket broadcasting close
+// Final modal close
 closeEndingModal(){
   this.sendScore();
-console.log(this.props.playerOneScore, "Final Score being saved into leaderboard...");
+  Socket.emit('leaveRoomAndEndGame', this.state.roomId);
   this.reset();
   const url = path.resolve(__dirname, '../../', 'index.html')
   browserHistory.push(url);
 }
 
+// Questions render
 renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div  className="list-question"
+      <div className="list-question"
         onClick={(e) => {
             e.preventDefault()
             this.openModal(question)
@@ -237,14 +268,14 @@ renderQuestion(questions) {
               this.props.selectQuestion(question);
             }
           }
-        }
-      >
+        }>
         {(this.state.chosenQuestion.includes(question._id) || question.clicked) ? null : question.difficulty}
       </div>
     );
   })
 }
 
+// render the categories title with the questions list below
 renderList() {
   if(!this.props.questions){
     return (
@@ -262,6 +293,8 @@ renderList() {
     'Entertainment: Cartoon & Animations'
   ];
   let cutCate;
+
+  // get rid of 'Entertainment'
   return Object.keys(this.props.questions).map(cate => {
     if(Entertainment.includes(cate)){
       cutCate = cate.slice(15);
@@ -273,7 +306,7 @@ renderList() {
         <div className="list-header-item">
           {cutCate}
         </div>
-         <div key={cate} >
+         <div key={cate}>
           {this.renderQuestion(this.props.questions[cate])}
          </div>
        </td>
@@ -282,20 +315,31 @@ renderList() {
 }
 
 renderModal(condition, html) {
-  return (<Modal
-    isOpen={condition}
-    onRequestClose={() => {
-        this.closeModal() || this.closeResult();
+  return (
+    <Modal
+      isOpen={condition}
+      onRequestClose={() => {
+          this.closeModal() || this.closeResult();
+        }
       }
-    }
-    shouldCloseOnOverlayClick={false}
-    style={customStyles}
-  >
-  {html}
-  </Modal>)
+      shouldCloseOnOverlayClick={false}
+      style={customStyles}>
+      {html}
+    </Modal>)
 }
 
+// All Modals
 renderAllModals() {
+
+  // Render who win or draw
+  let showWinner;
+  if (this.state.playerTwoScore === this.props.playerOneScore) {
+    showWinner = <h3>Draw!</h3>
+  } else if (this.state.playerTwoScore > this.props.playerOneScore) {
+    showWinner = <h3>Player 2 wins!</h3>
+  } else {
+    showWinner = <h3>You Win!</h3>
+  }
 
   let loadingView = {
     loading: (
@@ -326,8 +370,12 @@ renderAllModals() {
       return (
         <div>
           <h1>Your score: {this.props.playerOneScore}</h1>
-          <h1>Player 2: {this.state.playerTwoScore}</h1>
-          {this.state.playerTwoScore > this.props.playerOneScore ? <h3>Player 2 wins!</h3> : <h3>You Win!</h3>}
+          {/* check if Multiplayer mode or not */}
+          {this.state.roomId ?
+            <div><h1>Player 2: {this.state.playerTwoScore}</h1>
+            {showWinner}</div> : null
+          }
+
           <button onClick={callback}>Go to home page</button>
         </div>
         )
@@ -381,6 +429,7 @@ renderAllModals() {
   return {allModal, loadingView}
 }
 
+// Toast
 addAlert (info) {
   if(this.state.roomId){
     this.refs.container.info(
@@ -388,6 +437,7 @@ addAlert (info) {
   }
 }
 
+//react render
 render () {
     return (
       <div className="List-group" key={this.props.questions}>

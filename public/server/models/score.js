@@ -4,6 +4,4 @@ module.exports = function(sequelize, DataTypes) {
     score: DataTypes.INTEGER,
     username: DataTypes.STRING,
   });
-}
-
-
+};

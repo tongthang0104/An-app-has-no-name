@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { changeScore, incrementScore, decrementScore } from '../actions/index';
 import { unescapeHelper } from '../helpers/lodashHelper';
 import Socket from '../socket';
-import FinishGame from '../components/finish-game';
 import * as audio from '../audio';
 
 class QuestionDetail extends Component {
@@ -20,20 +19,6 @@ class QuestionDetail extends Component {
     }
     this.checkAnswer = this.checkAnswer.bind(this);
   }
-
-  close(){
-    this.setState({isModal: false});
-    this.props.closeModal();
-  }
-
-  open(){
-    audio.play('nothing');
-    this.setState({isModal:true});
-    let that = this;
-    setTimeout(()=>{
-      that.close();
-    },0);
-  };
 
   checkAnswer(event) {
     if(this.state.answeredOnce === false){
@@ -65,6 +50,7 @@ class QuestionDetail extends Component {
     return shuffle.map((answer) => {
       return (
         <div id={answer} onClick={this.checkAnswer} >
+
         <ColorfulLink data={answer} answerClicked={this.state.clickedAnswer} >
             {answer}
         </ColorfulLink>
@@ -77,9 +63,7 @@ class QuestionDetail extends Component {
     const props = this.props.question;
       console.log('props in render qd',this.props)
       if(!props){
-        return (
-          <div />
-        );
+        return null
       }
       const question = unescapeHelper(props.question);
       const answerArray = [unescapeHelper(props.correct_answer)]
@@ -99,7 +83,7 @@ class QuestionDetail extends Component {
             {this.state.answeredOnce ? finalAnswer : this.renderAnswer(answerArray)}
           </div>
             <ReactCountDownClock
-              seconds={5}
+              seconds={12}
               color="#26a69a"
               alpha={1.5}
               showMilliseconds={false}
@@ -145,8 +129,8 @@ var ColorfulLink = React.createClass({
       hover: null
     });
   },
-  render: function() {
-    console.log('iojwaofijawf', this.state, this.props)
+
+	render: function() {
     var id = _.uniqueId("ColorfulLink");
     var activeStyle;
     if(this.state.active){
@@ -160,6 +144,7 @@ var ColorfulLink = React.createClass({
     } else {
       linkStyle = {backgroundColor: '#eee'}
     }
+
     return <div id={id} data={this.props.data} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
       {this.props.children}
     </div>

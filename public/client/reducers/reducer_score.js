@@ -20,7 +20,7 @@ export default function(state = null, action) {
         roomId: action.roomId,
         amount: plus,
       };
-      console.log("dataInc", dataInc);
+      // console.log("dataInc", dataInc);
       Socket.emit('changingScore', dataInc);
 
       return dataInc.score;
@@ -34,7 +34,7 @@ export default function(state = null, action) {
         roomId: action.roomId,
         amount: minus
       };
-      console.log("dataDec", dataDec);
+      // console.log("dataDec", dataDec);
       Socket.emit('changingScore', dataDec);
 
       return dataDec.score;
