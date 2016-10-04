@@ -9,17 +9,17 @@ export default class ReactDetail extends Component {
     if(this.props.roomId){
       return (
         <div>
-          <h1>Player1 Score: {this.props.Player1}</h1>
-          <h1>Player2 Score:  {this.props.Player2}</h1>
-          <h1>Correct Answer: {this.props.Correct}</h1>
+          <h2>Player1 Score: {this.props.Player1}</h2>
+          <h2>Player2 Score:  {this.props.Player2}</h2>
+          <h2>Correct Answer: {this.props.Correct}</h2>
         </div>
       );
 
     } else {
       return (
         <div>
-          <h1>Player1 Score: {this.props.Player1}</h1>
-          <h1>Correct Answer: {this.props.Correct}</h1>
+          <h2>Player1 Score: {this.props.Player1}</h2>
+          <h2>Correct Answer: {this.props.Correct}</h2>
         </div>
       );
     }
@@ -28,7 +28,7 @@ export default class ReactDetail extends Component {
 
   render() {
     return (
-      <div>
+      <div className="result-modal">
         {this.renderResult()}
       </div>
     );

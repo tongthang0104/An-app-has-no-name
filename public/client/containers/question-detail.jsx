@@ -15,7 +15,7 @@ class QuestionDetail extends Component {
     this.state = {
       answeredOnce: false,
       question: null,
-      clickedAnswer: false,
+      clickedAnswer: null,
       hover: false
     }
     this.checkAnswer = this.checkAnswer.bind(this);
@@ -38,25 +38,24 @@ class QuestionDetail extends Component {
   checkAnswer(event) {
     if(this.state.answeredOnce === false){
         this.setState({completed: true});
-      if(this.props.question.correct_answer === event.target.id) {
-        console.log("correct", event.target.id)
+      if(this.props.question.correct_answer === event.target.getAttribute('data')) {
         this.props.incrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
         let adding = '+' + this.props.question.difficulty;
         this.props.getScore(adding);
         this.setState({isModal:true});
-        // audio.play('correct');
+        audio.play('correct');
       } else {
         this.props.decrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
         let subing = '-' + this.props.question.difficulty;
         this.props.getScore(subing);
         this.setState({isModal:true});
-        // audio.play('wrong');
+         audio.play('wrong');
       }
       this.setState({
         isModal:true,
         answeredOnce: true,
         roomId: this.props.roomId,
-        clickedAnswer: true
+        clickedAnswer: event.target.getAttribute('data'),
       });
     }
   }
@@ -66,7 +65,7 @@ class QuestionDetail extends Component {
     return shuffle.map((answer) => {
       return (
         <div id={answer} onClick={this.checkAnswer} >
-        <ColorfulLink answerClicked={this.state.clickedAnswer} >
+        <ColorfulLink data={answer} answerClicked={this.state.clickedAnswer} >
             {answer}
         </ColorfulLink>
         </div>
@@ -76,7 +75,6 @@ class QuestionDetail extends Component {
 
   render() {
     const props = this.props.question;
-    if(!this.state.answeredOnce){
       console.log('props in render qd',this.props)
       if(!props){
         return (
@@ -88,12 +86,18 @@ class QuestionDetail extends Component {
       for(let i = 0; i < props.incorrect_answers.length; i++){
         answerArray.push(unescapeHelper(props.incorrect_answers[i]))
       }
-
+      let finalAnswer = (
+        <div>
+          <div>Your answer: </div>
+          <div>{this.state.clickedAnswer}</div>
+        </div>
+      )
       return (
         <div>
-          <h3>Question:</h3>
           <h3>{question}</h3>
-          {this.renderAnswer(answerArray)}
+          <div className="question-answer">
+            {this.state.answeredOnce ? finalAnswer : this.renderAnswer(answerArray)}
+          </div>
             <ReactCountDownClock
               seconds={5}
               color="#26a69a"
@@ -104,7 +108,6 @@ class QuestionDetail extends Component {
             />
         </div>
       );
-    }
   }
 }
 
@@ -130,7 +133,7 @@ var ColorfulLink = React.createClass({
     }
   },
   toggleHover: function(){
-    if(!this.state.active && !this.props.answerClicked){
+    if(!this.state.active ){
       this.setState({hover: !this.state.hover})
     } else {
       console.log("Already answer");
@@ -142,23 +145,23 @@ var ColorfulLink = React.createClass({
       hover: null
     });
   },
-	render: function() {
+  render: function() {
     console.log('iojwaofijawf', this.state, this.props)
     var id = _.uniqueId("ColorfulLink");
     var activeStyle;
     if(this.state.active){
-      activeStyle = {backgroundColor: 'lightgrey'}
+      activeStyle = {backgroundColor: '#26a69a'}
     } else {
-      activeStyle = {backgroundColor: 'white'}
+      activeStyle = {backgroundColor: '#eee'}
     }
     var linkStyle;
     if (this.state.hover) {
-      linkStyle = {backgroundColor: 'lightgrey'}
+      linkStyle = {backgroundColor: '#26a69a'}
     } else {
-      linkStyle = {backgroundColor: 'white'}
+      linkStyle = {backgroundColor: '#eee'}
     }
-		return <div id={id} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
-			{this.props.children}
-		</div>
-	}
+    return <div id={id} data={this.props.data} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
+      {this.props.children}
+    </div>
+  }
 })
