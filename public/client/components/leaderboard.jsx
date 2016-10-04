@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 
 class Leaderboard extends Component {
-  
+
   componentWillMount() {
     this.props.getLeaderboard();
   }
@@ -15,12 +15,12 @@ class Leaderboard extends Component {
           Leaderboard is loading...
         </div>
       )
-    } else {    
+    } else {
       return (
         <table className="table-question">
           <tr>
             <th>Position</th>
-            <th>Username</th> 
+            <th>Username</th>
             <th>Score</th>
           </tr>
           {this.props.leaderboard.scores.map((score) => {

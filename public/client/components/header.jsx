@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class Header extends Component {
-  
+
   forceUpdate() {
     return this.renderStatus();
   }
@@ -45,7 +45,7 @@ class Header extends Component {
 }
 
 function mapStateToProps(state) {
-  return { 
+  return {
     loginStatus: state.SigninReducer,
     signupStatus: state.AuthReducer,
   };
