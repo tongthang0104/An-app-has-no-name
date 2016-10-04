@@ -214,7 +214,7 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 2) {
+  if (!this.state.roomId && this.state.singleP.length === 26) {
       this.setState({gameOver: true});
       this.gameOver();
   }
