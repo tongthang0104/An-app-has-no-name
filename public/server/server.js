@@ -86,14 +86,18 @@ io.on('connection', function (socket) {
   gameSocket.on('trackingGame', trackingGame);
   gameSocket.on('checkRoom', checkRoom);
   gameSocket.on('gameStart', gameStart);
+  gameSocket.on('message', getMessages);
   gameSocket.on('changingScore', function(data) {
 
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
+
+
   gameSocket.on('disconnect', function(){
     console.log("User disconnected");
 
   });
+
   console.log('client connected ', socket.id);
 });
 
@@ -160,7 +164,7 @@ const closeModal = function(data) {
 const closeResult = function(data) {
   console.log(data);
   io.sockets.in(data.roomId).emit('closeResultOrder', data);
-}
+};
 
 const trackingGame = function(data) {
   if (data.chosenQuestion === 2) {
@@ -184,5 +188,10 @@ const checkRoom = function(roomId) {
 };
 
 const gameStart = function(data) {
-  this.emit('turnChange', {yourTurn: true})
-}
+  this.emit('turnChange', {yourTurn: true});
+};
+
+const getMessages = function(data){
+  console.log(data);
+  io.sockets.emit('message', data);
+};

@@ -188,6 +188,7 @@ class Main extends Component {
 
       multiplayer: (
         <Button waves="light">Multiplayer</Button>
+      ),
       joinButton : (
         <Link to={this.state.roomValid ? "/multiplayer" : "/"} onClick={this.joinRoom}>
           <button>Join room</button>
@@ -196,7 +197,7 @@ class Main extends Component {
     }
 
     return (
-      <div>
+      <div className="page-wrap">
         <Header />
         <h1>Trivardy</h1>
 
@@ -232,20 +233,6 @@ class Main extends Component {
             joinRoom={this.joinRoom}
             getInput={this.getInput}/>
         </Modal>
-        <SelectCategories />
-        <RandomCategories />
-        <form >
-          {this.state.roomCreated ? null : html.generateButton}
-          {this.state.roomCreated ? html.roomCreated : null}
-        </form>
-        <input
-          type="text"
-          placeholder="Enter a room"
-          value={this.state.roomId}
-          onChange={this.getInput}>
-        </input>
-
-        {(this.state.host.room !== this.state.roomId) && this.state.roomId ? html.joinButton : null}
 
         <div>
           <Modals
@@ -257,7 +244,6 @@ class Main extends Component {
             style={customStyles}
             shouldCloseOnOverlayClick={false}>
             <h1>Player joined! Press Start to Play</h1>
-            <button onClick={this.closeModal}>Close</button>
             {this.state.roomCreated ? html.startGameButton : null}
           </Modals>
         </div>

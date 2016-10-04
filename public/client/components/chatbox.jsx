@@ -7,42 +7,46 @@ export default class Chatbox extends Component {
     super(props);
     this.state = {
       messages: [],
-      username: null
+      username: null,
+      canEdit: true
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.addUser = this.addUser.bind(this);
   }
 
   componentDidMount(){
-    Socket.on('message', message => {
-     this.setState({messages: [message, ...this.state.messages]});
+    Socket.on('message', data => {
+     this.setState({messages: [data, ...this.state.messages]});
     });
   }
 
 
   addUser(a){
     a.preventDefault();
-    this.setState({username: a.target.value});
+    if (this.state.canEdit) {
+      this.setState({username: a.target.value});
+      Socket.emit('username', this.state.username);
+
+    }
   }
   handleSubmit(e) {
     e.preventDefault();
     const body = e.target.value;
 
     if (e.keyCode === 13 && body) {
-      const message = {
-        body,
+      const data = {
+        message: body,
+        from: this.state.username
       };
-
-     this.setState({messages: [message, ...this.state.messages]});
-     Socket.emit('message', body);
-     e.target.value = '';
+    Socket.emit('message', data);
+    e.target.value = '';
+    this.setState({canEdit: false});
    }
  }
 
   render(){
-    const messages = this.state.messages.map((message, index) => {
-      console.log(message.body)
-      return <li key={index}>{this.state.username}: {message.body}</li>
+    const messages = this.state.messages.map((data, index) => {
+      return <li key={index}>{data.from ? data.from : "Guest"}: {data.message}</li>
     });
     return (
       <div>

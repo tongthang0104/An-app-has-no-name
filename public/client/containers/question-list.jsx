@@ -348,7 +348,7 @@ renderAllModals() {
           <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
           <ReactCountDownClock
             seconds={5}
-            color="blue"
+            color="#26a69a"
             alpha={1.5}
             showMilliseconds={false}
             size={75}
@@ -382,7 +382,6 @@ renderAllModals() {
 }
 
 addAlert (info) {
-  console.log(ToastMessageFactory.info)
   if(this.state.roomId){
     this.refs.container.info(
       info)
@@ -401,7 +400,6 @@ render () {
         <table className="table-question">
           {this.renderList()}
         </table>
-        {this.state.roomId ? (this.state.yourTurn ? this.renderAllModals().loadingView.playerPicking.player1 : this.renderAllModals().loadingView.playerPicking.player2) : null}
         {this.renderAllModals().allModal.waitingModal}
         {this.renderAllModals().allModal.endingModal}
         {this.renderAllModals().allModal.questionDetailModal}

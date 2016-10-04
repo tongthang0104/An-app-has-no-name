@@ -86,16 +86,16 @@ margin: auto;
 }
 
 .Left-Score {
-width: 50%;
-margin: auto;
+  width: 50%;
+  margin: auto;
 }
 .panel-body {
-    padding: 15px;
-    border: 5px solid black;
-    border-top: 0px;
-    background-color: #0074d9;
-    color: #7FDBFF;
-    font-size: 30px;
+  padding: 15px;
+  border: 5px solid black;
+  border-top: 0px;
+  background-color: #0074d9;
+  color: #7FDBFF;
+  font-size: 30px;
 }
 
 .message-container {
