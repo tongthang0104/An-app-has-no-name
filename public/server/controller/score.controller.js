@@ -1,4 +1,4 @@
-const Score  = require('../models/psql.config');
+const { Score } = require('../models/psql.config');
 
 module.exports = {
   saveScore: (req, res) => {
@@ -47,4 +47,4 @@ module.exports = {
 //       console.log("THIS BE SCORES");
 //     })
 //   })
-// })
+// }) 

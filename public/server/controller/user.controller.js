@@ -1,12 +1,11 @@
-const User  = require('../models/psql.config');
+const { User } = require('../models/psql.config');
 const jwt  = require('jwt-simple');
 
 module.exports = {
   signup: (req, res) => { //
     User.sync()
     .then((User) => {
-      const username = req.body;
-      const password = req.body;
+      const { username, password } = req.body;
       if (!username || !password) {
         return res.json({ data: "All fields are required." });
       }
@@ -28,15 +27,14 @@ module.exports = {
   signin: (req, res) => {  //
     User.sync()
     .then((User) => {
-      const username = req.body;
-      const password = req.body;
+      const { username, password } = req.body;
       User.findOne({ where: { username }})
       .then((user) => {
         user.authenticate(password, (err, match) => {
           if (match) {
             const copyUser = JSON.parse(JSON.stringify(user));
             copyUser.token = '';
-            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead.
+            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead. 
             const token = jwt.encode(copyUser, 'secret');
             user.update({token, token})
             .then(() => {

@@ -2,6 +2,10 @@
   "name": "An-app-has-no-name",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "6.0.0",
+    "npm": "3.10.3"
+  },
   "main": "index.jsx",
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
