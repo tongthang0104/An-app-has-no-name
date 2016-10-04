@@ -3,7 +3,6 @@
 const express = require('express');
 const httpProxy = require('http-proxy');
 const path = require('path');
-const db = require('./models/psql.config')
 let gameSocket;
 
 const app = express();
