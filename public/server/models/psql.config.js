@@ -17,11 +17,18 @@ sequelize
 });
 
 const userPath = path.resolve(__dirname, 'user');
+const scorePath = path.resolve(__dirname, 'score');
+
+const User = sequelize.import(userPath);
+const Score = sequelize.import(scorePath);
+
+User.hasMany(Score, {as: 'Scores'});
 
 const db = {
   Sequelize: Sequelize,
   sequelize: sequelize,
-  User:  sequelize.import(userPath),
+  User,
+  Score,
 };
 
 module.exports = db;

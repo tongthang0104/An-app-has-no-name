@@ -3,10 +3,24 @@
 const express = require('express');
 const httpProxy = require('http-proxy');
 const path = require('path');
-
+const db = require('./models/psql.config')
 let gameSocket;
 
 const app = express();
+
+ 
+// db.Score.sync().then((Score)=>{
+//   Score.create({score: 100, userId: 2, username: 'snape'})
+// })
+// db.Score.sync().then((Score)=>{
+//   Score.findAll({order:'score DESC'}).then((scores)=>{
+//     scores.forEach((score)=>{
+//       console.log('--------');
+//       console.log(score.dataValues.id, score.dataValues.score);
+//     })
+//     console.log("HERER DA STUFFZ");
+//   })
+// })
 
 const proxy = httpProxy.createProxyServer({
   changeOrigin: true
@@ -45,23 +59,6 @@ proxy.on('error', function(err) {
 });
 
 require('./config/middleware')(app, express);
-
-app.post('/users/signup/', (req, res) => { //
-  db.User.sync().then((User) => {
-    const user = {username: req.body.username}
-    User.findOrCreate({where: {username: req.body.username}, defaults: {password: req.body.password}})
-    .spread(function(user, created) {
-      if (created) {
-        const token = jwt.encode(user, 'secret');
-        user.update({token, token}).then(() => {
-          res.status(200).json({token, data: "You have been signed up!"});
-        })
-      } else {
-        res.status(200).json('Username already exists.')
-      }
-    })
-  })
-});
 
 app.get('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '../', 'index.html'))
@@ -166,7 +163,7 @@ const closeResult = function(data) {
 }
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 24) {
+  if (data.chosenQuestion === 2) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
   } else {
     console.log('game is going', data.chosenQuestion);

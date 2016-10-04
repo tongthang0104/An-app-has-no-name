@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    // this.renderStatus = this.renderStatus.bind(this);
-  }
+  
   forceUpdate() {
     return this.renderStatus();
   }
@@ -38,7 +35,8 @@ class Header extends Component {
           <Link to="/users/signin">  Sign in    |</Link>
         </span>
         <span>
-          <Link to="/users/signout">  Signout  </Link>
+          <Link to="/users/signout">  Signout    |</Link>
+          <Link to="/scores/leaderboard">  Leaderboard  </Link>
         </span>
         <span>{this.forceUpdate()}</span>
       </div>

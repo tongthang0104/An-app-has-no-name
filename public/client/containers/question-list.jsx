@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Modal from 'react-modal';
 import { browserHistory, withRouter, Link } from 'react-router';
 import QuestionDetail from './question-detail';
-import { selectQuestion, changeScore, resetQuestion } from '../actions/index';
+import { selectQuestion, changeScore, resetQuestion, saveScore } from '../actions/index';
 import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
@@ -48,14 +48,15 @@ class QuestionList extends Component {
     this.renderModal = this.renderModal.bind(this);
     this.renderAllModals = this.renderAllModals.bind(this);
     this.addAlert = this.addAlert.bind(this);
+    this.sendScore = this.sendScore.bind(this);
   }
 
   routerWillLeave(nextLocation) {
     // return false to prevent a transition w/o prompting the user,
     // or return a string to allow the user to decide:
     if (!this.state.gameOver) {
-      this.reset();
-      this.changeScore(0);
+      // this.reset();
+      // this.changeScore(0);
       return 'Your work is not saved! Are you sure you want to leave?';
     }
   }
@@ -133,12 +134,22 @@ openModal(question) {
   }
 }
 
+  sendScore() {
+    const id = localStorage.getItem('id');
+    const score = this.props.playerOneScore;
+    const username = localStorage.getItem('username');
+
+    const scoreData = { score, id, username }
+    console.log(scoreData, "HERE'S THE SCORE");
+    this.props.saveScore(scoreData)
+  }
+
 gameOver(data) {
   console.log("CHECKING ROOM ID", this.state.roomId);
   if(this.state.roomId){
     //Multiplayer
     if(data.gameOver){
-      audio.play('gameOver');
+      // audio.play('gameOver');
       this.setState({
         gameOver: true
       });
@@ -173,7 +184,7 @@ closeResult(){
   }
 
   console.log('singleP', this.state.singleP);
-  if (!this.state.roomId && this.state.singleP.length === 24) {
+  if (!this.state.roomId && this.state.singleP.length === 2) {
       this.setState({gameOver: true});
       this.gameOver();
   }
@@ -207,6 +218,8 @@ closeModal() {
 
 // Socket broadcasting close
 closeEndingModal(){
+  this.sendScore();
+console.log(this.props.playerOneScore, "Final Score being saved into leaderboard...");
   this.reset();
   const url = path.resolve(__dirname, '../../', 'index.html')
   browserHistory.push(url);
@@ -406,4 +419,4 @@ function mapStateToProps(state){
   };
 }
 
-export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion})(withRouter(QuestionList));;
+export default connect(mapStateToProps, {selectQuestion, changeScore, resetQuestion, saveScore})(withRouter(QuestionList));;
