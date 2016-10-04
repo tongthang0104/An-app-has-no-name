@@ -21,7 +21,7 @@ export default class FetchBar extends Component {
             <h6>Invite your friend to play !!!</h6>
           </div>),
         generateButton: (
-          <Button tooltip="Click here to create new room" onClick={this.roomGenerator}>Generate room</Button>
+          <Button onClick={this.roomGenerator}>Generate room</Button>
         ),
 
         joinButton : (
