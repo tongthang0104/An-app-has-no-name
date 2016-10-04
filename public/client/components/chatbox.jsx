@@ -51,16 +51,20 @@ export default class Chatbox extends Component {
     return (
       <div>
         <div className="message-container">
-          <ul className="chat">{messages}</ul>
-        </div>
-        <form onSubmit={this.handleSubmit} className="form-inline">
-          <div className="form-group">
-            <div className="input-group">
-              <input type="text" className="form-control" placeholder="Enter Username" onKeyUp={this.addUser}/>
-              <input type="text" className="form-control" placeholder="Enter Message" onKeyUp={this.handleSubmit}/>
-            </div>
+          <div className="Messages">
+            <ul className="chat">{messages}</ul>
           </div>
-        </form>
+        </div>
+          <div className="user-input">
+            <form onSubmit={this.handleSubmit} className="form-inline">
+              <div className="form-group">
+              <input type="text" className="form-control" id="input-group" placeholder="Enter Username" onKeyUp={this.addUser}/>
+                <div>
+                  <input type="text" className="form-control" id="input-group" placeholder="Enter Message" onKeyUp={this.handleSubmit}/>
+                </div>
+              </div>
+            </form>
+          </div>
       </div>
     );
   }

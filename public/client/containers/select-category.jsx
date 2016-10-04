@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router'
 import Multiselect from 'react-widgets/lib/Multiselect';
 import 'react-widgets/dist/css/react-widgets.css';
 import { fetchQuestions } from '../actions/index';
+import { Button, Card, Collapsible, CollapsibleItem, Modal} from 'react-materialize';
 
 const renderMultiselect = ({ input, ...rest }) =>
   <Multiselect {...input}
@@ -65,10 +66,10 @@ class SelectCategories extends Component {
               component={renderMultiselect}
               data={categoriesList} />
           </div>
-          <div>
-            <button type="submit" disabled={pristine || submitting}>Play</button>
-            <button type="button" disabled={pristine || submitting} onClick={reset}>Reset Values
-            </button>
+          <div className="select-category-button-group">
+            <Button className="select-category-button" type="submit" disabled={pristine || submitting}>Play</Button>
+            <Button className="select-category-button" type="Button" disabled={pristine || submitting} onClick={reset}>Reset Values
+            </Button>
           </div>
         </form>
       </div>

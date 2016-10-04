@@ -200,7 +200,6 @@ class Main extends Component {
       <div className="page-wrap">
         <Header />
         <h1>Trivardy</h1>
-
         <Modal
           id="modal1"
           header='Single Player mode'
@@ -219,6 +218,7 @@ class Main extends Component {
         </Modal>
 
         <Modal
+          className="room-input"
           id="modal2"
           header='Create or Join a room'
           bottomSheet
@@ -248,7 +248,6 @@ class Main extends Component {
           </Modals>
         </div>
         <Chatbox />
-
       </div>
     );
   }

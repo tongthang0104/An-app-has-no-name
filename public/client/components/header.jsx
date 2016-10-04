@@ -27,7 +27,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div>
+      <div className="footer">
         <span>
           <Link to="/users/signup">  Sign up    |</Link>
         </span>

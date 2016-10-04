@@ -17,8 +17,8 @@ export default class FetchBar extends Component {
       roomCreated: (
           <div>
             <br></br>
-            <h5>You Joined Room: {this.props.roomCreated}</h5>
-            <h6>Invite your friend to play !!!</h6>
+            <h4>You Joined Room: {this.props.roomCreated}</h4>
+            <h5>Invite your friend to play !!!</h5>
           </div>),
         generateButton: (
           <Button tooltip="Click here to create new room" onClick={this.roomGenerator}>Generate room</Button>
@@ -31,12 +31,13 @@ export default class FetchBar extends Component {
         ),
     }
     return (
-      <div>
+      <div className="room-input">
         <form >
           {this.props.roomCreated ? null : html.generateButton}
           {this.props.roomCreated ? html.roomCreated : null}
         </form>
         <input
+
           type="text"
           placeholder="Enter a room"
           value={this.props.roomId}
