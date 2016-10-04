@@ -39,6 +39,7 @@ class QuestionDetail extends Component {
     if(this.state.answeredOnce === false){
         this.setState({completed: true});
       if(this.props.question.correct_answer === event.target.id) {
+        console.log("correct", event.target.id)
         this.props.incrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
         let adding = '+' + this.props.question.difficulty;
         this.props.getScore(adding);
@@ -95,7 +96,7 @@ class QuestionDetail extends Component {
           {this.renderAnswer(answerArray)}
             <ReactCountDownClock
               seconds={5}
-              color="blue"
+              color="#26a69a"
               alpha={1.5}
               showMilliseconds={false}
               size={75}

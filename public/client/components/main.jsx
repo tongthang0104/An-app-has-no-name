@@ -59,7 +59,6 @@ class Main extends Component {
 
   getInput(e) {
     let roomId = e.target.value;
-
     this.setState({roomId: e.target.value});
     if (this.state.roomValid) {
       this.setState({roomValid: true});
@@ -189,11 +188,16 @@ class Main extends Component {
 
       multiplayer: (
         <Button waves="light">Multiplayer</Button>
+      ),
+      joinButton : (
+        <Link to={this.state.roomValid ? "/multiplayer" : "/"} onClick={this.joinRoom}>
+          <button>Join room</button>
+        </Link>
       )
     }
 
     return (
-      <div>
+      <div className="page-wrap">
         <Header />
         <h1>Trivardy</h1>
 
@@ -229,6 +233,7 @@ class Main extends Component {
             joinRoom={this.joinRoom}
             getInput={this.getInput}/>
         </Modal>
+
         <div>
           <Modals
             isOpen={this.state.modalOpen}
@@ -239,7 +244,6 @@ class Main extends Component {
             style={customStyles}
             shouldCloseOnOverlayClick={false}>
             <h1>Player joined! Press Start to Play</h1>
-            <button onClick={this.closeModal}>Close</button>
             {this.state.roomCreated ? html.startGameButton : null}
           </Modals>
         </div>
