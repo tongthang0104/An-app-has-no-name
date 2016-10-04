@@ -83,7 +83,7 @@ class QuestionDetail extends Component {
             {this.state.answeredOnce ? finalAnswer : this.renderAnswer(answerArray)}
           </div>
             <ReactCountDownClock
-              seconds={5}
+              seconds={12}
               color="#26a69a"
               alpha={1.5}
               showMilliseconds={false}
