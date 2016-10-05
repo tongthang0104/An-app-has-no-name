@@ -283,4 +283,18 @@ img {
 }
 .names{
   color: #26a69a;
+  text-align: center;
+}
+.pictures {
+  display: inline-block;
+  margin: 0 30px 0 30px;
+  text-align: center;
+}
+
+.logo {
+  margin-top: 20px;
+}
+
+.about {
+  text-align: center;
 }
