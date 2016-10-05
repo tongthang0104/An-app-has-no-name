@@ -27,7 +27,16 @@ h1 {
 tr.score-leaderboard:nth-child(even) {
   background-color: #818a91;
 }
-tr.score-leaderboard {
+.table-leaderboard {
+  width: 60%;
+  margin-left: 20%;
+}
+.table-auth {
+  text-align: center;
+  width: 60%;
+  margin: 50px 20%;
+  border: solid #adadad;
+  background-color: #55595c
 
 }
 .wrap {
@@ -239,9 +248,10 @@ ul {
   margin: 40px;
   background-color: #55595c;
   border: solid #adadad;
+  text-align: center;
   }
 
-input {
+.auth-input {
   text-align: center;
   font-size: 30px;
   color: #26a69a;
@@ -253,8 +263,11 @@ label {
 li:nth-child(odd){
   color: #26a69a;
 }
-
+input {
+  text-align: center;
+}
 #input-group {
   color: #26a69a;
   font-size: 30px;
+  text-align: center;
 }

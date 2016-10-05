@@ -46,15 +46,17 @@ class Signin extends Component {
     return (
       <div>
         <Header />
-        <form className="form-sign" onSubmit={handleSubmit(this.handleFormSubmit)}>
-          <Field className="auth-input" name="username" type="text" component={renderField} label="Username"/>
-          <Field className="auth-input" name="password" type="password" component={renderField} label="Password"/>
-          <div>
-            <Button type="submit" disabled={submitting}>Log In</Button>
-            <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-            <div>{this.renderLoginStatus()}</div>
-          </div>
-        </form>
+        <div className="table-auth" >
+          <form  onSubmit={handleSubmit(this.handleFormSubmit)}>
+            <Field id="input-group" name="username" type="text" component={renderField} label="Username"/>
+            <Field id="input-group" name="password" type="password" component={renderField} label="Password"/>
+            <div>
+              <Button type="submit" disabled={submitting}>Log In</Button>
+              <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+              <div>{this.renderLoginStatus()}</div>
+            </div>
+          </form>
+        </div>
       </div>
     )
   }

@@ -18,7 +18,7 @@ class Header extends Component {
         <div>{this.props.signupStatus.data}</div>
       )
     }
-    return <h3>Signin or Signup to save score!</h3>
+    return <h5>Signin or Signup to save score!</h5>
   }
 
   // shouldComponentUpdate() {
