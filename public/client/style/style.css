@@ -10,8 +10,26 @@ h1 {
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: white;
 }
+.table-question {
+    width: 50%;
+    margin: 5% 25%;
+    font-size: 30px;
+    color: #eee;
+    background-color: #55595c;
+    border: solid #adadad;
+}
+.header-leaderboard {
+  color: #26a69a;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+  border: solid #adadad;
+}
+tr.score-leaderboard:nth-child(even) {
+  background-color: #818a91;
+}
+tr.score-leaderboard {
 
-
+}
 .wrap {
   height: 110%;
   position: absolute;
@@ -217,10 +235,19 @@ ul {
   width: 95%;
   margin-left: 20px;
 }
+.form-sign {
+  margin: 40px;
+  background-color: #55595c;
+  border: solid #adadad;
+  }
 
 input {
   text-align: center;
-  font-size: 1em;
+  font-size: 30px;
+  color: #26a69a;
+}
+label {
+  font-size: 3rem
 }
 
 li:nth-child(odd){
