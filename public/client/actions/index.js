@@ -16,7 +16,7 @@ import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM,
 //   }
 // }
 export function getLeaderboard() {
-  const url = `/scores/leaderboard`;
+  const url = `/scores/get/leaderboard`;
   const serverResponse = axios.get(url)
     .then((response) => {
       console.log(response, "Here is the leaderboard...");
@@ -28,6 +28,7 @@ export function getLeaderboard() {
     .catch(function (error) {
     console.log(error);
   });
+    browserHistory.push('/scores/leaderboard');
   return serverResponse;
 }
 

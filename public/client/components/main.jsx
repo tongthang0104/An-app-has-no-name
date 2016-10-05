@@ -3,8 +3,6 @@ import RandomCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
 import Multiplayer from './multiplayer';
 import Header from './header';
-import Signin from './auth/signin';
-import Singup from './auth/signup';
 import Socket from '../socket';
 import { connect } from 'react-redux';
 import { fetchQuestionsRandCat, fetchQuestionsMultiplayer, resetQuestion, changeScore } from '../actions/index';
