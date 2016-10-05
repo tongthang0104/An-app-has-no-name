@@ -53,6 +53,10 @@ h1 {
 }
 .waves-effect {
   margin: 0 10px;
+  position: initial;
+}
+.close-result-button {
+  padding: 5px;
 }
 /*this is for category*/
 .list-header-item {
