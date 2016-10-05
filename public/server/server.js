@@ -197,9 +197,7 @@ const gameStart = function(data) {
 };
 
 const getMessages = function(data){
-  console.log(data);
   io.sockets.emit('message', data);
-  this.emit('turnChange', {yourTurn: true})
 };
 
 const leaveRoomInMiddle = function(roomId) {
