@@ -7,6 +7,7 @@ import Signup from './components/auth/signup';
 import Signin from './components/auth/signin';
 import QuestionList from './containers/question-list';
 import Leaderboard from './components/leaderboard';
+import About from './components/about-us';
 
 export default (
   <Router history={browserHistory}>
@@ -20,6 +21,7 @@ export default (
             <Route path="/multiplayer" component={App} />
         </Route>
     </Route>
+    <Route path="/about" component={About} />
     <Route path="*" component={Main} />
   </Router>
 );
