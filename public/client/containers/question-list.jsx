@@ -164,10 +164,15 @@ openModal(question) {
     const id = localStorage.getItem('id');
     const score = this.props.playerOneScore;
     const username = localStorage.getItem('username');
-
-    const scoreData = { score, id, username }
-    console.log(scoreData, "HERE'S THE SCORE");
-    this.props.saveScore(scoreData)
+    localStorage.setItem('score', score);
+    if (username) {
+      console.log('Username from sendScore(): ', username);
+      const scoreData = { score, id, username }
+      this.props.saveScore(scoreData)
+      console.log(scoreData, "Score being saved: " ,scoreData);
+    } else {
+     console.log("Score can't be saved without username. Username: ", username, score);
+    }
   }
 
 leaveRoomInMiddle() {
@@ -215,7 +220,7 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 25) {
+  if (!this.state.roomId && this.state.singleP.length === 3) {
       this.setState({gameOver: true});
       this.gameOver();
   }
