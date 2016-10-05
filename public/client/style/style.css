@@ -20,16 +20,22 @@ h1 {
 }
 .header-leaderboard {
   color: #26a69a;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: white;
+  font-size: 24px;
   border: solid #adadad;
 }
 tr.score-leaderboard:nth-child(even) {
-  background-color: #818a91;
+  background-color: #adadad;
+}
+tr.score-leaderboard:nth-child(odd) {
+  background-color: #ccc;
 }
 .table-leaderboard {
   width: 60%;
   margin-left: 20%;
+  border: solid #adadad;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
 }
 .table-auth {
   text-align: center;
