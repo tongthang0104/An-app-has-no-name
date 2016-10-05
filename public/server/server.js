@@ -170,7 +170,7 @@ const closeResult = function(data) {
 };
 
 const trackingGame = function(data) {
-  if (data.chosenQuestion === 24) {
+  if (data.chosenQuestion === 25) {
     io.sockets.in(data.roomId).emit('gameOver', {gameOver: true});
     gameSocket.leave(data.roomId);
   } else {

@@ -7,7 +7,7 @@ import Signin from './auth/signin';
 import Singup from './auth/signup';
 import Socket from '../socket';
 import { connect } from 'react-redux';
-import { fetchQuestionsRandCat, fetchQuestionsMultiplayer } from '../actions/index';
+import { fetchQuestionsRandCat, fetchQuestionsMultiplayer, resetQuestion, changeScore } from '../actions/index';
 import Modals from 'react-modal';
 import Promise from 'bluebird';
 import {browserHistory} from 'react-router';
@@ -43,6 +43,8 @@ class Main extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.validateRoom = this.validateRoom.bind(this);
     this.newRoomCreated = this.newRoomCreated.bind(this);
+    this.resetQuestion = this.props.resetQuestion.bind(this);
+    this.changeScore = this.props.changeScore.bind(this);
   }
 
 
@@ -55,7 +57,11 @@ class Main extends Component {
     Socket.on('playerJoined', this.playerJoined);
     Socket.on('receiveMultiplayerQuestions', this.receiveMultiplayerQuestions);
     Socket.on('newRoomCreated', this.newRoomCreated);
+    this.resetQuestion();
+    this.changeScore(0);
+
   }
+
 
   getInput(e) {
     let roomId = e.target.value;
@@ -93,6 +99,8 @@ class Main extends Component {
 
     if (this.state.roomValid) {
       //Call JoinRoom at server and send the data Object .
+        $('#multiplayerModal').closeModal();
+
         Socket.emit('JoinRoom', data);
         this.setState({
           roomId: ''
@@ -108,20 +116,17 @@ class Main extends Component {
     }
   }
 
-  fetchQuestionFromServer() {
-    // this.fetchQuestionsMultiplayer();
-    console.log('TOUCHING JOIN ROOM')
-  }
-
   playerJoined(data) {
 
-    console.log('Player Joining:', data);
-    // browserHistory.push('/multiplayer');
+    // console.log('Player Joining:', data);
 
     this.setState({
       modalOpen: true,
       roomList: data.roomList
     });
+
+    $('#multiplayerModal').closeModal();
+    Materialize.toast('New Player Joined', 4000);
   //At this point ,reset the state to data.roomId.
 
     // **** At this point, user already joined
@@ -134,11 +139,11 @@ class Main extends Component {
   validateRoom(flag) {
     if (flag.valid) {
       this.setState({roomValid: true});
-      console.log("valid", this.state.roomValid);
+      // console.log("valid", this.state.roomValid);
 
     } else {
       this.setState({roomValid: false});
-      console.log("not valid");
+      // console.log("not valid");
     }
   }
 
@@ -175,6 +180,7 @@ class Main extends Component {
 
   render(){
 
+
     let html = {
 
       startGameButton: (
@@ -183,11 +189,11 @@ class Main extends Component {
         </Link>
       ),
       singlePayer: (
-        <Button id="games" waves="light">Single Player</Button>
+        <Button waves="light">Single Player</Button>
       ),
 
       multiplayer: (
-        <Button id="games" waves="light">Multiplayer</Button>
+        <Button waves="light">Multiplayer</Button>
       ),
       joinButton : (
         <Link to={this.state.roomValid ? "/multiplayer" : "/"} onClick={this.joinRoom}>
@@ -201,11 +207,11 @@ class Main extends Component {
         <Header />
         <h1>Trivardy</h1>
         <Modal
-          id="modal1"
-          header='Single Player Mode'
+          id="singlePlayerModal"
+          header='Single Player mode'
           bottomSheet
           trigger={
-            <Button id='games' waves='light'>Single Player</Button>
+            <Button waves='light'>Single Player</Button>
           }>
 
           <Collapsible className="container main" popout accordion>
@@ -219,11 +225,11 @@ class Main extends Component {
 
         <Modal
           className="room-input"
-          id="modal2"
-          header={this.state.roomCreated ?  null : 'Create or Join a room'}
+          id="multiplayerModal"
+          header='Create or Join a room'
           bottomSheet
           trigger={
-            <Button id='games' waves='light'>Multiplayer</Button>
+            <Button waves='light'>Multiplayer</Button>
           }>
           <Multiplayer
             roomCreated={this.state.roomCreated}
@@ -259,4 +265,4 @@ function mapStateToProps(state){
   };
 }
 
-export default connect(mapStateToProps, {fetchQuestionsRandCat, fetchQuestionsMultiplayer})(Main);
+export default connect(mapStateToProps, {fetchQuestionsRandCat, fetchQuestionsMultiplayer, changeScore, resetQuestion})(Main);
