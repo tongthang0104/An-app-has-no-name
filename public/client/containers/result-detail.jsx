@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { unescapeHelper } from '../helpers/lodashHelper';
+import he from 'he';
 
 export default class ReactDetail extends Component {
   constructor (props) {
@@ -27,7 +27,7 @@ export default class ReactDetail extends Component {
   }
 
   render() {
-    const correctAnswer = unescapeHelper(this.props.Correct)
+    const correctAnswer = he.decode(this.props.Correct)
     return (
       <div className="result-modal">
         {this.renderResult(correctAnswer)}

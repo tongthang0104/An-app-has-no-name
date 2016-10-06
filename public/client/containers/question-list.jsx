@@ -9,7 +9,7 @@ import Socket from '../socket';
 import ReactCountDownClock from 'react-countdown-clock';
 import ResultDetail from './result-detail';
 import * as audio from '../audio';
-import {customStyles} from '../helpers/lodashHelper.js';
+import {customStyles} from '../helpers/modalStyle.js';
 import path from 'path';
 import { Button } from 'react-materialize';
 
