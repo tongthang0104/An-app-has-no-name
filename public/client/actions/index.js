@@ -9,14 +9,17 @@ import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM,
 //     type: USER_INFO,
 //   }
 // }
-// export function saveUserInfo(userInfo) {
-//   return {
-//     type: USER_INFO,
-//     payload: userInfo
-//   }
-// }
+export function saveUserInfo(username, roomId) {
+  // console.log('Username from saveUserInfo actions: ', username, roomId);
+
+  const userInfo = { username, roomId }
+  return {
+    type: USER_INFO,
+    payload: userInfo
+  }
+}
 export function getLeaderboard() {
-  const url = `/scores/leaderboard`;
+  const url = `/scores/get/leaderboard`;
   const serverResponse = axios.get(url)
     .then((response) => {
       console.log(response, "Here is the leaderboard...");

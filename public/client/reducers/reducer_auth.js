@@ -3,6 +3,7 @@ import {
   SIGNUP_SUCCESS,
   AUTH_USER,
   UNAUTH_USER,
+  USER_INFO
 } from '../constants/index';
 
 export default function(state = null, action) {
@@ -20,6 +21,12 @@ export default function(state = null, action) {
     case UNAUTH_USER:
       console.log('unauth');
       return {state, authenticated: false};
+    case USER_INFO:
+    if (action.payload.userInfo) {
+      console.log("Userinfo to send to chatroom", action.payload.userInfo);
+      Socket.emit('fetchUserInfo', action.payload.userInfo)
+      return {userInfo: action.payload.userInfo}
+    }
   }
   return state;
 }

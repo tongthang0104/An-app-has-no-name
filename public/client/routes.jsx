@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexRoute, Route, Router, browserHistory } from 'react-router';
+import { browserHistory, IndexRoute, Redirect, Route, Router} from 'react-router';
 import App from './components/app';
 import Main, { leaveRoom } from './components/main';
 import Singout from './components/auth/signout';
@@ -22,6 +22,7 @@ export default (
         </Route>
     </Route>
     <Route path="/about" component={About} />
-    <Route path="*" component={Main} />
+    <Redirect from="*" to="/" /> {/*Redirect changes the url from home.com/dslffdsf to home.com*/}
+    <Route path="*" component={Main} /> {/* Will only redirect to home but path stays home.com/dslffdsf */}
   </Router>
 );

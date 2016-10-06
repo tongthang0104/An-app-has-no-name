@@ -3,8 +3,6 @@ import RandomCategories from './random_categories';
 import SelectCategories from '../containers/select-category';
 import Multiplayer from './multiplayer';
 import Header from './header';
-import Signin from './auth/signin';
-import Singup from './auth/signup';
 import Socket from '../socket';
 import { connect } from 'react-redux';
 import { fetchQuestionsRandCat, fetchQuestionsMultiplayer, resetQuestion, changeScore } from '../actions/index';
@@ -29,7 +27,8 @@ class Main extends Component {
       host: {
         room: null,
         id: null
-      }
+      },
+      username: localStorage.getItem('username'),
     };
     this.getInput = this.getInput.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
@@ -50,7 +49,7 @@ class Main extends Component {
 
 
   componentDidMount(){
-
+    
     // this.setState({socket: Socket})
     Socket.on('newGameCreated', this.newGameCreated);
     Socket.on('validateRoom', this.validateRoom)
@@ -93,9 +92,9 @@ class Main extends Component {
   }
 
   joinRoom(e){
-
     let data =  {
       roomId: this.state.roomId,
+      // username: this.state.username
     };
 
     if (this.state.roomValid) {
@@ -119,7 +118,7 @@ class Main extends Component {
 
   playerJoined(data) {
 
-    // console.log('Player Joining:', data);
+    console.log('Player Joining:', data);
 
     this.setState({
       modalOpen: true,
@@ -166,7 +165,7 @@ class Main extends Component {
     Socket.emit('gameStart', data.roomId);
   }
 
-  receiveMultiplayerQuestions(data) {
+  receiveMultiplayerQuestions(data) { 
     console.log("broadcasting", data);
       this.fetchQuestionsMultiplayer(data.questions);
   }

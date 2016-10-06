@@ -74,6 +74,9 @@ io.on('connection', function (socket) {
 
   gameSocket = socket;
   gameSocket.on('JoinRoom', JoinRoom);
+  gameSocket.on('fetchUserInfo', (data) => {
+    socket.broadcast.to(data.roomId).emit('gotUserInfo', data);
+  });
   gameSocket.on('CreateRoom', CreateRoom);
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', (data) => {
@@ -86,17 +89,17 @@ io.on('connection', function (socket) {
   gameSocket.on('checkRoom', checkRoom);
   gameSocket.on('gameStart', gameStart);
   gameSocket.on('message', getMessages);
-  gameSocket.on('changingScore', function(data) {
+  gameSocket.on('changingScore', (data) => {
 
     socket.broadcast.to(data.roomId).emit('broadcastScore', data);
   });
 
   gameSocket.on('leaveRoomInMiddle', leaveRoomInMiddle);
 
-  gameSocket.on('leaveRoomAndEndGame', function(roomId) {
+  gameSocket.on('leaveRoomAndEndGame', (roomId) => {
     gameSocket.leave(roomId);
   });
-  gameSocket.on('disconnect', function(){
+  gameSocket.on('disconnect', () => {
     console.log("User disconnected");
 
   });
@@ -118,18 +121,21 @@ const CreateRoom = function(host){
   let data = {
     room: roomId,
     mySocketId: this.id,
-    roomList: roomId.toString()
+    roomList: roomId.toString(),
+
   };
   this.emit('newGameCreated', data);
+
+  //Broadcast to everone in the room including you
   io.sockets.emit('newRoomCreated', data);
   console.log('server create room', roomId, this.id);
 
 };
 
-
 const JoinRoom = function(data){
 
     let room = gameSocket.nsp.adapter.rooms[data.roomId];
+
     if (room !== undefined) {
 
       if (room.length <= 1) {
