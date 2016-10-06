@@ -4,8 +4,17 @@ body {
 }
 
 h1 {
+  font-family: 'Bevan', cursive;
   margin: 40px;
   color: #26a69a;
+  font-size: 130px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
+.title {
+  font-family: 'Bevan', cursive;
+  color: #26a69a;
+  margin: 40px;
   font-size: 130px;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: white;
@@ -27,7 +36,7 @@ tr.score-leaderboard:nth-child(odd) {
 }
 .table-leaderboard {
   width: 60%;
-  margin-left: 20%;
+  margin: 0 0 5% 20%;
   border: solid #adadad;
   color: #333;
   font-size: 20px;

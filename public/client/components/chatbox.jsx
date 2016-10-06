@@ -60,7 +60,7 @@ export default class Chatbox extends Component {
       <div>
 
         <div className="chat-container">
-          <h4 className="chat-room">Trivardy Chatroom</h4>
+          <h3 className="chat-room">Trivardy Chatroom</h3>
         </div>
         <div className="message-container">
           <div className="Messages">
