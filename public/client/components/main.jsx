@@ -17,6 +17,7 @@ import {customStyles} from '../helpers/lodashHelper.js';
 import Chatbox from './chatbox';
 import { Button, Card, Collapsible, CollapsibleItem, Modal} from 'react-materialize';
 
+
 class Main extends Component {
 
   constructor(props) {
@@ -254,6 +255,7 @@ class Main extends Component {
           </Modals>
         </div>
         <Chatbox />
+        <Link to="/about">About us</Link>
       </div>
     );
   }

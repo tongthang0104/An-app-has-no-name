@@ -1,5 +1,4 @@
 import React, { Component }  from 'react';
-import Header from './header';
 
 
 export default class About extends Component {
@@ -7,8 +6,8 @@ export default class About extends Component {
 
     return (
       <div>
-      <Header />
       <h1>Trivardy Developers</h1>
+
       <div className='row'>
         <div className='col-xs-6 col-md-3'>
           <h3 className="names">Spencer B.</h3>
@@ -45,6 +44,10 @@ export default class About extends Component {
             <a href='https://www.linkedin.com/in/mrinalini-manandhar-a518b326' target='_blank'><img className='logo' src='../../assets/pictures/linkedin.png' /></a>
           </div>
         </div>
+      </div>
+      <div className='bottom-align-text'>
+        <h4 className="names">Our GitHub Repository</h4>
+        <a href="https://github.com/An-App-Has-No-Name/Trivardy" target="_blank"><img src="../../assets/pictures/github.png" /></a>
       </div>
     </div>
     );

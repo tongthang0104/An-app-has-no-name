@@ -31,13 +31,10 @@ class Header extends Component {
         <div className="container-fluid">
           <ul className="nav navbar-nav">
             <li >
-              <Link className="li-header" to="/">Trivardy</Link>
+              <Link className="li-header" to="/">Home</Link>
             </li>
             <li>
               <Link to="/scores/leaderboard">Leaderboard</Link>
-            </li>
-            <li>
-              <Link to="/about"> About Us </Link>
             </li>
             <div className="auth-nav">
             <li>
