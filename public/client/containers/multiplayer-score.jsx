@@ -37,7 +37,7 @@ componentDidMount(){
     return (
       <div className="multiplayerScore">
         <div className="panel panel-default">
-          <div className="panel-heading">{this.state.player2name}'s Score</div>
+          <div className="panel-heading" style={this.props.turnStyle}>{this.state.player2name}'s Score</div>
           <div className="panel-body">
             {this.state.score}
           </div>

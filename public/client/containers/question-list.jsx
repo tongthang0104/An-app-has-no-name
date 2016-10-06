@@ -266,7 +266,7 @@ renderQuestion(questions) {
   const { modalOpen } = this.state;
   return questions.map(question => {
     return (
-      <div className="list-question"
+      <div className="well list-question"
         onClick={(e) => {
             e.preventDefault()
             this.openModal(question)
