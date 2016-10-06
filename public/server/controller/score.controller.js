@@ -19,7 +19,7 @@ module.exports = {
   getLeaderboard: (req, res) => {
     const scoresToSend = [];
     Score.sync().then((Score) => {
-      Score.findAll({order:'score DESC'})
+      Score.findAll({order:'score DESC', limit: 20})
       .then((scores) => {
         if (!scores) {
           res.status(200).json({data: "Sorry we couldn't fetch the scores for you."});

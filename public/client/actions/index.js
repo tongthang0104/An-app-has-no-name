@@ -28,7 +28,6 @@ export function getLeaderboard() {
     .catch(function (error) {
     console.log(error);
   });
-    browserHistory.push('/scores/leaderboard');
   return serverResponse;
 }
 
