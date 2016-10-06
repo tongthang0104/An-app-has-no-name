@@ -18,7 +18,7 @@ class Header extends Component {
         <div>{this.props.signupStatus.data}</div>
       )
     }
-    return <h5>Signin or Signup to save score!</h5>
+    return <h5 className="auth-nav">Signin or Signup to save score!</h5>
   }
 
   // shouldComponentUpdate() {
@@ -27,23 +27,33 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="footer">
-        <span>
-          <Link to="/">  Home    |</Link>
-        </span>
-        <span>
-          <Link to="/users/signup">  Sign up    |</Link>
-        </span>
-        <span>
-          <Link to="/users/signin">  Sign in    |</Link>
-        </span>
-        <span>
-          <Link to="/users/signout">  Signout    |</Link>
-          <Link to="/scores/leaderboard">  Leaderboard  |</Link>
-          <Link to="/about"> About Us </Link>
-        </span>
-        <span>{this.forceUpdate()}</span>
-      </div>
+      <nav className="navbar navbar-default navbar-top">
+        <div className="container-fluid">
+          <ul className="nav navbar-nav">
+            <li >
+              <Link className="li-header" to="/">Trivardy</Link>
+            </li>
+            <li>
+              <Link to="/scores/leaderboard">Leaderboard</Link>
+            </li>
+            <li>
+              <Link to="/about"> About Us </Link>
+            </li>
+            <div className="auth-nav">
+            <li>
+              <Link to="/users/signup">Create Account</Link>
+            </li>
+            <li>
+              <Link to="/users/signin">Signin</Link>
+            </li>
+            <li>
+              <Link to="/users/signout">Signout</Link>
+            </li>
+            </div>
+            <span >{this.forceUpdate()}</span>
+          </ul>
+        </div>
+      </nav>
     )
   }
 }
