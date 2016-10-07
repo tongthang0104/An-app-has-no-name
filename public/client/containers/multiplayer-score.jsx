@@ -20,7 +20,9 @@ componentDidMount(){
 
   Socket.on('gotUserInfo', (data) => {
     // console.log("in gotUserInfo score", data)
-    this.setState({player2name:data.username})
+    if (data.username) {
+      this.setState({player2name:data.username})
+    }
   });
   Socket.on('broadcastScore', (data) => {
     console.log("in broadcast score", data)
