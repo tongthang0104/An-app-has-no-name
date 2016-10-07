@@ -53,12 +53,12 @@ class App extends Component {
       let opponentStyle;
 
       if (this.state.yourTurn) {
-        turnStyle = {backgroundColor: '#f47142'};
-        opponentStyle = {backgroundColor: '#0e2a27'};
+        turnStyle = {backgroundColor: '#2fd0c0'};
+        opponentStyle = {backgroundColor: '#d5f6f2'};
         console.log('This is your Turn:', this.state.yourTurn);
       } else {
-        turnStyle = {backgroundColor: '#0e2a27'};
-        opponentStyle = {backgroundColor: '#f47142'}
+        turnStyle = {backgroundColor: '#d5f6f2'};
+        opponentStyle = {backgroundColor: '#2fd0c0'}
         console.log('This is your Turn:', this.state.yourTurn);
       }
       // console.log('Multiplayer', this.state.roomId)

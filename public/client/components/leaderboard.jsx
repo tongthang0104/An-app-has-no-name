@@ -32,7 +32,7 @@ class Leaderboard extends Component {
                 <td>{score.position}</td>
                 <td>{score.username}</td>
                 <td>{score.scoreVal}</td>
-                <td><span className="time">{Moment.utc(score.time).format('LLL')}</span></td>
+                <td><span className="time">{Moment(score.time).format('ll')}</span></td>
               </tr>
             )
           })}
