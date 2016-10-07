@@ -30,9 +30,6 @@ class App extends Component {
       // console.log('Multiplayer', this.state.roomId)
       return (
         <table  className="Score-Table" >
-        <td>
-            <div>{this.props.userInfo}</div>
-          </td>
           <td className="Right-Score">
             <Score />
           </td>
