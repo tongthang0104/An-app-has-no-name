@@ -17,18 +17,12 @@ class Header extends Component {
         <h5 className="auth-nav">You're signed in as {this.props.username}</h5>
       )
     }
-    // return (
-    //   <h5 className="auth-nav">Signin or Signup to save score!</h5>
-    // )
   }
   renderLogoutStatus() {
     return (
       <h5 className="auth-nav">Signin or Signup to save score!</h5>
     )
   }
-  // shouldComponentUpdate() {
-  //   this.renderStatus();
-  // }
 
   render() {
     return (

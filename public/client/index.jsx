@@ -14,11 +14,11 @@ import { AUTH_USER } from './constants/index';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
-const user = JSON.parse(localStorage.getItem('username'));
-const token = JSON.parse(localStorage.getItem('user'));
+const username = localStorage.getItem('username');
+const token = localStorage.getItem('user');
 
-if (user && token) {
-  store.dispatch({ type: AUTH_USER, payload: { username: user } });
+if (username && token) {
+  store.dispatch({ type: AUTH_USER, payload: { username } });
 }
 
 ReactDOM.render(
