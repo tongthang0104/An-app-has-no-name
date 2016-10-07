@@ -53,7 +53,7 @@ class Signup extends Component {
             <div>
             <div>
               { this.props.errorMessage && this.props.errorMessage.signup &&
-                  <div className="error-container">Oops! { this.props.errorMessage.signup }</div> }
+                  <div className="error-container">{ this.props.errorMessage.signup }</div> }
             </div>
               <Button type="submit" disabled={submitting}>Signup</Button>
               <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>

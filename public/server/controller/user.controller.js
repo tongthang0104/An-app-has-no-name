@@ -49,9 +49,9 @@ module.exports = {
               console.log("why is it going int errr too?");
               res.status(200).send({token, username, id: user.id, data:"You have been logged in!"});
             });
-          // } else {
-          //   console.log("why is it going int errr too?");
-          //   res.status(422).send({error:"Oops! Email or password isn't right"});
+          } else {
+            console.log("why is it going int errr too?");
+            res.status(422).send({error:"Oops! Email or password isn't right"});
           }
         })
       });

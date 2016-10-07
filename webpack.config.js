@@ -24,8 +24,8 @@ const config = {
   },
   debug: true,
   cache: true,
-  // devtool: 'inline-eval-cheap-source-map',
-  devtool: 'source-map',
+  devtool: 'inline-eval-cheap-source-map',
+  // devtool: 'source-map',
   module: {
     loaders: [
       {

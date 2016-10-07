@@ -71,7 +71,7 @@ export function signinUser(props) {
         });
         browserHistory.push('/');
       })
-      .catch((response) => dispatch(authError(SIGNIN_FAILURE, "Email or password isn't right")));
+      .catch((response) => dispatch(authError(SIGNIN_FAILURE, response.response.data.error)));
   }
 }
 
