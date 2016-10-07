@@ -20,8 +20,13 @@ class QuestionDetail extends Component {
 
   checkAnswer(event) {
     if(this.state.answeredOnce === false){
+
+      if (this.props.question.dailyDouble) {
+        this.props.question.difficulty = this.props.question.dailyDouble;
+      }
         this.setState({answeredOnce: true});
       if(this.props.question.correct_answer === event.target.getAttribute('data')) {
+
         this.props.incrementScore(this.props.score, this.props.question.difficulty, this.props.roomId);
         let adding = '+' + this.props.question.difficulty;
         this.props.getScore(adding);
@@ -53,9 +58,12 @@ class QuestionDetail extends Component {
   }
 
   render() {
+    let dailyTripleStyle = {
+      color: 'red',
+      animation: 'blinker 3s linear infinite'
+    }
     if(!this.state.answeredOnce){
       const props = this.props.question;
-      console.log('props in render qd',this.props)
       if(!props){
         return null
       }
@@ -68,6 +76,7 @@ class QuestionDetail extends Component {
       return (
         <div>
           <h3>{question}</h3>
+          {props.dailyDouble ? <h2 style={dailyTripleStyle}> Trivardy Triple </h2> : null }
           <div className="question-answer">
             {this.renderAnswer(answerArray)}
           </div>
@@ -119,7 +128,6 @@ var ColorfulLink = React.createClass({
     });
   },
 	render: function() {
-    console.log('iojwaofijawf', this.state, this.props)
     var id = _.uniqueId("ColorfulLink");
     var activeStyle;
     if(this.state.active){
