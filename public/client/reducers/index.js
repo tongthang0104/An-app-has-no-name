@@ -6,7 +6,6 @@ import activeQuestion from './reducer_active_question';
 import AuthReducer from './reducer_auth';
 import QuestionReducer from './reducer_post';
 import ScoreReducer from './reducer_score';
-import SigninReducer from './reducer_signin';
 import Leaderboard from './reducer_leaderboard';
 import UserInfoReducer from './reducer_userinfo';
 
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
   QuestionReducer,
   Leaderboard,
   ScoreReducer,
-  SigninReducer,
   UserInfoReducer,
 });
 

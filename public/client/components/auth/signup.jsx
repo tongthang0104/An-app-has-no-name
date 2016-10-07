@@ -27,18 +27,18 @@ class Signup extends Component {
 
   handleFormSubmit(values) {
     this.props.signupUser(values);
-    browserHistory.push('/');
+    // browserHistory.push('/');
   }
-  renderSignupStatus() {
-    if(!this.props.signupStatus){
-      return (
-        <h4> Signup here</h4>
-      )
-    }
-    return (
-      <div>{this.props.signupStatus.data}</div>
-    )
-  }
+  // renderSignupStatus() {
+  //   if(!this.props.signupStatus){
+  //     return (
+  //       <h4> Signup here</h4>
+  //     )
+  //   }
+  //   return (
+  //     <div>{this.props.signupStatus.data}</div>
+  //   )
+  // }
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
@@ -51,9 +51,13 @@ class Signup extends Component {
             <Field className="auth-input" name="password" type="password" component={renderField} label="Password"/>
             <Field className="auth-input" name="repassword" type="password" component={renderField} label="Repeat Password"/>
             <div>
+            <div>
+              { this.props.errorMessage && this.props.errorMessage.signup &&
+                  <div className="error-container">Oops! { this.props.errorMessage.signup }</div> }
+            </div>
               <Button type="submit" disabled={submitting}>Signup</Button>
               <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-              <div>{this.renderSignupStatus()}</div>
+              {/* <div>{this.renderSignupStatus()}</div> */}
             </div>
           </form>
         </div>
@@ -93,6 +97,7 @@ const validate = props => {
 function mapStateToProps(state){
   return {
     signupStatus: state.AuthReducer,
+    errorMessage: state.AuthReducer.error,
   };
 }
 
