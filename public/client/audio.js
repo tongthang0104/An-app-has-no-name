@@ -3,7 +3,7 @@ sounds.correct = new Audio("assets/Correct-answer.mp3");
 sounds.gameOver = new Audio("assets/Game-over-yeah.mp3");
 sounds.wrong = new Audio("assets/Wrong-answer-sound-effect.mp3");
 sounds.nothing = new Audio("assets/times-up.mp3");
-sounds.nothing = new Audio("assets/jdaily2x.wav");
+sounds.daily = new Audio("assets/jdaily2x.wav");
 
 export let play = sound => {
     if (sounds[sound]) {

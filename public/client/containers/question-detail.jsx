@@ -77,6 +77,7 @@ class QuestionDetail extends Component {
         <div>
           <h3>{question}</h3>
           {props.dailyDouble ? <h2 style={dailyTripleStyle}> Trivardy Triple </h2> : null }
+          {props.dailyDouble ? audio.play('daily') : null}
           <div className="question-answer">
             {this.renderAnswer(answerArray)}
           </div>
