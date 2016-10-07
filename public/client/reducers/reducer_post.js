@@ -11,7 +11,6 @@ export default function(state = null, action) {
 
     case FETCH_QUESTIONS_RANDOM:
       if(action.payload.data){
-        console.log('questions', action.payload.data)
           return action.payload.data;
       }
 

@@ -164,8 +164,6 @@ export const incrementScore = (score, difficulty, roomId) => {
 };
 
 export const decrementScore = (score, difficulty, roomId) => {
-  console.log('THIS IS DECREMENT_SCORE', score, "difficulty:", difficulty);
-
   return {
     type: DECREMENT_SCORE,
     roomId: roomId,
