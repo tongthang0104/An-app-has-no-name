@@ -11,6 +11,11 @@ h1 {
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: white;
 }
+h2, h3, h4, h5{
+  font-family: 'Bevan', cursive;
+  color: #26a69a;
+}
+
 .title {
   font-family: 'Bevan', cursive;
   color: #26a69a;
@@ -323,6 +328,10 @@ img {
 
 .about {
   text-align: center;
+}
+
+.row {
+  margin-top: 40px;
 }
 
 .bottom-align-text {

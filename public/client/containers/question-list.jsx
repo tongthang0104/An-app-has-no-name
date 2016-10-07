@@ -220,7 +220,7 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 3) {
+  if (!this.state.roomId && this.state.singleP.length === 25) {
       this.setState({gameOver: true});
       this.gameOver();
   }
@@ -350,7 +350,7 @@ renderAllModals() {
   let loadingView = {
     loading: (
       <div className="loading singleP">
-        <h1>Loading the questions, be ready, calm down, sit tight!...</h1>
+        <h2>Loading the questions, be ready, calm down, sit tight!...</h2>
         <div className="progress">
           <div className="indeterminate"></div>
         </div>
@@ -358,7 +358,7 @@ renderAllModals() {
     ),
     waitingHost: (
       <div className="waitingHost">
-        <h1>Waiting for host, calm down, sit tight... </h1>
+        <h2>Waiting for host, calm down, sit tight... </h2>
         <div className="progress">
           <div className="indeterminate"></div>
         </div>
@@ -374,7 +374,7 @@ renderAllModals() {
     endingView: function(callback){
       return (
         <div>
-          <h1>Your score: {this.props.playerOneScore}</h1>
+          <h2>Your score: {this.props.playerOneScore}</h2>
           {/* check if Multiplayer mode or not */}
           {this.state.roomId ?
             <div><h1>Player 2: {this.state.playerTwoScore}</h1>
