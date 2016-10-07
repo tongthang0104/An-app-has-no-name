@@ -250,12 +250,12 @@ class Main extends Component {
             }
             style={customStyles}
             shouldCloseOnOverlayClick={false}>
-            <h1>Player joined! Press Start to Play</h1>
+            <h2>Player joined! Press Start to Play</h2>
             {this.state.roomCreated ? html.startGameButton : null}
           </Modals>
         </div>
         <Chatbox />
-        <Link to="/about">About us</Link>
+        <Link to="/about"><h5>About us</h5></Link>
       </div>
     );
   }
