@@ -24,7 +24,6 @@ export default class ReactDetail extends Component {
         </div>
       );
     }
-
   }
 
   render() {
