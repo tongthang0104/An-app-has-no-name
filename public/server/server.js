@@ -81,6 +81,7 @@ io.on('connection', function (socket) {
   gameSocket.on('fetchQuestions', fetchQuestions);
   gameSocket.on('openModal', (data) => {
     io.sockets.in(data.roomId).emit('receiveOpenOrder', data);
+    this.emit('myTurn', false);
     socket.broadcast.to(data.roomId).emit('turnChange', {yourTurn: true});
   });
   gameSocket.on('closeModal', closeModal);

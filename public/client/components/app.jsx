@@ -14,10 +14,13 @@ class App extends Component {
     this.state = {
       roomId: null,
       username: localStorage.getItem('username'),
+      yourTurn: false,
+      opponentTurn: true
     };
   }
 
   componentWillMount() {
+    //Get the room id
     Socket.on('receiveMultiplayerQuestions', (data) => {
       this.setState({roomId: data.roomId});
       if (this.state.username) {
@@ -29,17 +32,44 @@ class App extends Component {
     });
     // console.log('Username from joinRoom: ', this.state.username);
   }
+
+  componentDidMount() {
+    Socket.on('turnChange', (data) => {
+      //broadcast yourTurn to be true to the other player
+      console.log('THis is your turn', data)
+      this.setState({yourTurn: data.yourTurn});
+    });
+
+    Socket.on('myTurn', (bool) => {
+      this.setState({yourTurn: bool});
+    });
+  }
+
+
   renderScore() {
     // console.log('this.props.userInfo', this.props.userInfo);
     if (this.state.roomId) {
+      let turnStyle;
+      let opponentStyle;
+
+      if (this.state.yourTurn) {
+        turnStyle = {backgroundColor: '#f47142'};
+        opponentStyle = {backgroundColor: '#0e2a27'};
+        console.log('This is your Turn:', this.state.yourTurn);
+      } else {
+        turnStyle = {backgroundColor: '#0e2a27'};
+        opponentStyle = {backgroundColor: '#f47142'}
+        console.log('This is your Turn:', this.state.yourTurn);
+      }
       // console.log('Multiplayer', this.state.roomId)
+
       return (
         <table  className="Score-Table" >
           <td className="Right-Score">
-            <Score />
+            <Score turnStyle={turnStyle}/>
           </td>
           <td className="Left-Score">
-            <MultiplayerScore />
+            <MultiplayerScore turnStyle={opponentStyle}/>
           </td>
         </table>
       );

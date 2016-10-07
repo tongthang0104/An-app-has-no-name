@@ -21,7 +21,7 @@ class Score extends Component {
       return (
         <div>
           <div className="panel panel-default">
-            <div className="panel-heading">Your score</div>
+            <div className="panel-heading" style={this.props.turnStyle}>Your score</div>
             <div className="panel-body">
               {this.props.score}
             </div>
