@@ -34,7 +34,7 @@ class Header extends Component {
               <Link className="li-header" to="/">Home</Link>
             </li>
             <li>
-              <Link to="/scores/leaderboard">Leaderboard</Link>
+              <Link className="li-header" to="/scores/leaderboard">Leaderboard</Link>
             </li>
             <div className="auth-nav">
             <li>
