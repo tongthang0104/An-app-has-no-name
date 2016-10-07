@@ -20,7 +20,12 @@ class App extends Component {
   componentWillMount() {
     Socket.on('receiveMultiplayerQuestions', (data) => {
       this.setState({roomId: data.roomId});
-      this.props.saveUserInfo(this.state.username, data.roomId)
+      if (this.state.username) {
+        this.props.saveUserInfo(this.state.username, data.roomId)
+      } else {
+        this.setState({username: 'Guest'})
+        this.props.saveUserInfo(this.state.username, data.roomId)
+      }
     });
     // console.log('Username from joinRoom: ', this.state.username);
   }
@@ -65,5 +70,3 @@ function mapStateToProps(state){
 
 
 export default connect(mapStateToProps, { saveUserInfo})(App);
-
-

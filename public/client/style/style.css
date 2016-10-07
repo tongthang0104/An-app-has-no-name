@@ -4,8 +4,17 @@ body {
 }
 
 h1 {
+  font-family: 'Bevan', cursive;
   margin: 40px;
   color: #26a69a;
+  font-size: 130px;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
+.title {
+  font-family: 'Bevan', cursive;
+  color: #26a69a;
+  margin: 40px;
   font-size: 130px;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: white;
@@ -25,9 +34,16 @@ tr.score-leaderboard:nth-child(even) {
 tr.score-leaderboard:nth-child(odd) {
   background-color: #ccc;
 }
+
+.time{
+  float: right;
+}
+.timeHeader {
+  text-align: center;
+}
 .table-leaderboard {
-  width: 60%;
-  margin-left: 20%;
+  width: 40%;
+  margin: 5% 0 5% 30%;
   border: solid #adadad;
   color: #333;
   font-size: 20px;
@@ -112,6 +128,9 @@ nav ul a {
   justify-content: center;
 }
 
+td, th {
+  border-radius: 0 !important;
+}
 /* this is for each individial question */
 .list-question:before {
   content: '$'
@@ -259,7 +278,7 @@ ul {
   background-color: #55595c;
   border: solid #adadad;
   text-align: center;
-  }
+}
 
 .auth-input {
   text-align: center;

@@ -1,12 +1,12 @@
 const { Score } = require('../models/psql.config');
-
+const Moment = require('moment');
 module.exports = {
   saveScore: (req, res) => {
     const score = req.body.score
     const id = req.body.id
     const username = req.body.username
     Score.sync().then((Score) => {
-      Score.create({score: score, userId: id, username })
+      Score.create({score: score, userId: id, username})
     })
     .then((score) => {
       if (score) {
@@ -28,7 +28,9 @@ module.exports = {
             const username = score.dataValues.username;
             const scoreVal = score.dataValues.score;
             const position = i+1;
-            scoresToSend.push({position, username, scoreVal});
+            const time = new Date(score.createdAt + "UTC");
+
+            scoresToSend.push({position, username, scoreVal, time});
           });
           return scoresToSend;
         }
@@ -47,4 +49,4 @@ module.exports = {
 //       console.log("THIS BE SCORES");
 //     })
 //   })
-// }) 
+// })

@@ -2,6 +2,7 @@ import React, { Component }  from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import Header from './header';
+import Moment from 'moment';
 
 class Leaderboard extends Component {
 
@@ -23,6 +24,7 @@ class Leaderboard extends Component {
             <th>Rank</th>
             <th>Username</th>
             <th>Score</th>
+            <th className="timeHeader">Time</th>
           </tr>
           {this.props.leaderboard.scores.map((score) => {
             return (
@@ -30,6 +32,7 @@ class Leaderboard extends Component {
                 <td>{score.position}</td>
                 <td>{score.username}</td>
                 <td>{score.scoreVal}</td>
+                <td><span className="time">{Moment.utc(score.time).format('LLL')}</span></td>
               </tr>
             )
           })}
