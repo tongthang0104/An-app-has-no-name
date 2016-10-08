@@ -129,16 +129,14 @@ export function fetchQuestions(categories){
   console.log(categories[0], "CHECKING CAT");
   const url = `/api/questions/${categories[0]}/${categories[1]}/${categories[2]}/${categories[3]}/${categories[4]}`;
   return function (dispatch) {
-    axios.get('/api/questions').then((response) => {    
+    axios.get(url).then((response) => {    
       dispatch({
-        type: FETCH_QUESTIONS_RANDOM,
+        type: FETCH_QUESTIONS,
         payload:response
       });
     })
   }
 }
-
-
 
 export function fetchQuestionsMultiplayer(questions) {
 
