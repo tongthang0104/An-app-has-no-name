@@ -55,6 +55,7 @@ class QuestionList extends Component {
     if (this.state.roomId) {
       this.changeScore(0);
       this.leaveRoomInMiddle();
+      this.reset();
     }
   }
 
@@ -258,10 +259,9 @@ closeModal() {
 // Final modal close
 closeEndingModal(){
   this.sendScore();
-  Socket.emit('leaveRoomAndEndGame', this.state.roomId);
-  this.reset();
-  // const url = path.resolve(__dirname, '../../', 'index.html');
-  // browserHistory.push(url);
+
+  const url = path.resolve(__dirname, '../../', 'index.html');
+  browserHistory.push(url);
 }
 
 // Questions render
@@ -408,16 +408,14 @@ renderAllModals() {
         <div>
           <ResultDetail  playerTwoName={this.state.playerTwoName} roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
           <ReactCountDownClock
-            seconds={3}
+            seconds={2.5}
             color="#26a69a"
             alpha={1.5}
             showMilliseconds={false}
             size={75}
             onComplete={callback}
           />
-          <div className="close-result-button" >
-            <Button  onClick={callback}>Close</Button>
-          </div>
+
         </div>
       )
     }.bind(this)
