@@ -340,3 +340,11 @@ img {
   right: 0;
   left: 0;
 }
+.error-container {
+  font-size: 21;
+  color: #d9534f;
+}
+
+.auth-nav {
+  color: red;
+}

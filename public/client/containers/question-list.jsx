@@ -51,7 +51,6 @@ class QuestionList extends Component {
   }
 
   componentWillUnmount() {
-    console.log(this.state.roomId)
     if (this.state.roomId) {
       this.changeScore(0);
       this.leaveRoomInMiddle();
@@ -79,7 +78,6 @@ class QuestionList extends Component {
 componentDidMount() {
   this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
   Socket.on('receiveOpenOrder', (data) => {
-    console.log(data);
     this.setState({
       modalOpen: !data.modalOpen,
       chosenQuestion: [data.question._id, ...this.state.chosenQuestion],
@@ -113,7 +111,6 @@ componentDidMount() {
 
 //When a user left
   Socket.on('userleaving', (data) => {
-    console.log('LEaving');
     Materialize.toast('The other player left', 4000);
     //Call gameOver with data
     this.setState({gameOver: true});
@@ -166,10 +163,10 @@ openModal(question) {
     const username = localStorage.getItem('username');
     localStorage.setItem('score', score);
     if (username) {
-      console.log('Username from sendScore(): ', username);
+      // console.log('Username from sendScore(): ', username);
       const scoreData = { score, id, username }
       this.props.saveScore(scoreData)
-      console.log(scoreData, "Score being saved: " ,scoreData);
+      // console.log(scoreData, "Score being saved: " ,scoreData);
     } else {
      console.log("Score can't be saved without username. Username: ", username, score);
     }
@@ -377,7 +374,7 @@ renderAllModals() {
           <h2>Your score: {this.props.playerOneScore}</h2>
           {/* check if Multiplayer mode or not */}
           {this.state.roomId ?
-            <div><h1>Player 2: {this.state.playerTwoScore}</h1>
+            <div><h2>Opponent: {this.state.playerTwoScore}</h2>
             {showWinner}</div> : null
           }
 

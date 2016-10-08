@@ -3,6 +3,7 @@ const jwt  = require('jwt-simple');
 
 module.exports = {
   signup: (req, res) => { //
+    console.log("signup check fro server");
     User.sync()
     .then((User) => {
       const { username, password } = req.body;
@@ -15,12 +16,19 @@ module.exports = {
           const token = jwt.encode(user, 'secret');
           user.update({token, token})
             .then(() => {
-              res.status(200).json({token, data: "You have been signed up!"});
+              res.status(200).send({token, username, id: user.id, data: "You have been signed up!"});
             });
         } else {
-          res.json({ data: 'Username already exists.' });
+          console.log("sdsfsdfwelrwerwerwerwe");
+          console.log("sdsfsdfwelrwerwerwerwe");
+          console.log("sdsfsdfwelrwerwerwerwe");
+          res.status(422).send({error: "Oops! Username already exists!"});
         }
-      });
+      })
+      // .catch((error)=>{
+      //   console.log(error, 'error');
+      //   res.status(422).send({error});
+      // })
     });
   },
 
@@ -38,17 +46,24 @@ module.exports = {
             const token = jwt.encode(copyUser, 'secret');
             user.update({token, token})
             .then(() => {
-              res.status(200).json({token, username, id: user.id, data:"You have been logged in!"});
+              console.log("why is it going int errr too?");
+              res.status(200).send({token, username, id: user.id, data:"You have been logged in!"});
             });
           } else {
-            console.log('Invalid password!', err);
-            res.json({ data: 'Invalid password.' })
+            console.log("why is it going int errr too?");
+            res.status(422).send({error:"Oops! Email or password isn't right"});
           }
         })
       });
     });
-  }
+  },
+
+  signout: (req, res) => {
+    console.log('You have been logged out');
+    res.sendFile(path.resolve(__dirname, '../', 'index.html'));
+  },
 }
+
 
   // checkAuth: function (req, res, next) {
   //   var token = req.headers['x-access-token'];

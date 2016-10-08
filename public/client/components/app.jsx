@@ -26,7 +26,7 @@ class App extends Component {
       if (this.state.username) {
         this.props.saveUserInfo(this.state.username, data.roomId)
       } else {
-        this.setState({username: 'Guest'})
+        this.setState({username: 'Opponent'})
         this.props.saveUserInfo(this.state.username, data.roomId)
       }
     });
@@ -47,7 +47,7 @@ class App extends Component {
 
 
   renderScore() {
-    // console.log('this.props.userInfo', this.props.userInfo);
+    console.log('this.props.userInfo', this.props.userInfo);
     if (this.state.roomId) {
       let turnStyle;
       let opponentStyle;
