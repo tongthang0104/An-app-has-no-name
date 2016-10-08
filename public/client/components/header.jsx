@@ -38,7 +38,7 @@ class Header extends Component {
             <div className="auth-nav"> {this.props.authenticated}
             { this.props.authenticated ?
               <li>
-                {this.renderSigninStatus()}
+                <li>{this.renderSigninStatus()}</li>
                 <Link to="/users/signout">Signout</Link>
               </li>
                 :

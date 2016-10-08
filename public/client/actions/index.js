@@ -2,7 +2,15 @@
 
 import axios from 'axios';
 import { browserHistory } from 'react-router';
-import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION, USER_INFO, SCORE_SAVE_SUCCESS, SIGNUP_FAILURE, SIGNIN_FAILURE, FETCH_LEADERBOARD,AUTH_USER, SIGNIN_SUCCESS, GET_USER_INFO } from '../constants/index';
+import { CHANGE_SCORE, DECREMENT_SCORE, FETCH_QUESTIONS, FETCH_QUESTIONS_RANDOM, INCREMENT_SCORE, QUESTION_SELECTED, LOGIN_USER_REQUEST, FETCH_MULTI_QUESTIONS, SIGNUP_SUCCESS, UNAUTH_USER, RESET_QUESTION, USER_INFO, SCORE_SAVE_SUCCESS, SIGNUP_FAILURE, SIGNIN_FAILURE, FETCH_LEADERBOARD,AUTH_USER, SIGNIN_SUCCESS, GET_USER_INFO, OPPONENT_INFO } from '../constants/index';
+
+export function opponentInfo(username, roomId) {
+  const opponentInfo = { username, roomId }
+  return {
+    type: OPPONENT_INFO,
+    payload: opponentInfo
+  };
+}
 
 export function saveUserInfo(username, roomId) {
   const userInfo = { username, roomId }
@@ -129,16 +137,14 @@ export function fetchQuestions(categories){
   console.log(categories[0], "CHECKING CAT");
   const url = `/api/questions/${categories[0]}/${categories[1]}/${categories[2]}/${categories[3]}/${categories[4]}`;
   return function (dispatch) {
-    axios.get('/api/questions').then((response) => {    
+    axios.get(url).then((response) => {    
       dispatch({
-        type: FETCH_QUESTIONS_RANDOM,
+        type: FETCH_QUESTIONS,
         payload:response
       });
     })
   }
 }
-
-
 
 export function fetchQuestionsMultiplayer(questions) {
 

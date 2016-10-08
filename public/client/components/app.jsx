@@ -47,7 +47,7 @@ class App extends Component {
 
 
   renderScore() {
-    console.log('this.props.userInfo', this.props.userInfo);
+    // console.log('this.props.userInfo', this.props.userInfo);
     if (this.state.roomId) {
       let turnStyle;
       let opponentStyle;
