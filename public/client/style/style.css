@@ -32,6 +32,7 @@ h2, h3, h4, h5{
 }
 .auth-nav {
   float: right;
+  color: white;
 }
 tr.score-leaderboard:nth-child(even) {
   background-color: #adadad;
@@ -343,8 +344,4 @@ img {
 .error-container {
   font-size: 21;
   color: #d9534f;
-}
-
-.auth-nav {
-  color: red;
 }

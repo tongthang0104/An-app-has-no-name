@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import * as actions from '../../actions/index';
 import Header from '../header';
@@ -57,6 +57,11 @@ class Signup extends Component {
             </div>
               <Button type="submit" disabled={submitting}>Signup</Button>
               <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+              <div>
+                <Link to='/users/signin'>
+                  <Button waves='light'>Sign In instead</Button>
+                </Link>
+              </div>
               {/* <div>{this.renderSignupStatus()}</div> */}
             </div>
           </form>

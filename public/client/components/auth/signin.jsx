@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import { SubmissionError } from 'redux-form';
 import * as actions from '../../actions/index';
 import Header from '../header';
@@ -55,6 +55,11 @@ class Signin extends Component {
                 <div className="error-container signin-error"> { this.props.errorMessage.signin }</div> }
               <Button type="submit" disabled={submitting}>Log In</Button>
               <Button type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+              <div>
+                <Link to='/users/signup'>Sign Up instead
+                  {/* <Button waves='light'>Sign Up instead</Button> */}
+                </Link>
+              </div>
               {/* <div>{this.renderLoginStatus()}</div> */}
             </div>
           </form>
