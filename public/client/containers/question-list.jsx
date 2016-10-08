@@ -374,7 +374,7 @@ renderAllModals() {
           <h2>Your score: {this.props.playerOneScore}</h2>
           {/* check if Multiplayer mode or not */}
           {this.state.roomId ?
-            <div><h1>Player 2: {this.state.playerTwoScore}</h1>
+            <div><h2>Opponent: {this.state.playerTwoScore}</h2>
             {showWinner}</div> : null
           }
 
