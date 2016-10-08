@@ -13,7 +13,7 @@ import Promise from 'bluebird';
 import {browserHistory} from 'react-router';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import {customStyles} from '../helpers/lodashHelper.js';
+import {customStyles} from '../helpers/modalStyle.js';
 import Chatbox from './chatbox';
 import { Button, Card, Collapsible, CollapsibleItem, Modal} from 'react-materialize';
 

@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux';
 import ReactCountDownClock from 'react-countdown-clock';
 import _ from 'lodash';
 import { changeScore, incrementScore, decrementScore } from '../actions/index';
-import { unescapeHelper } from '../helpers/lodashHelper';
 import Socket from '../socket';
 import * as audio from '../audio';
+import he from 'he';
+
 
 class QuestionDetail extends Component {
   constructor (props) {
@@ -67,10 +68,10 @@ class QuestionDetail extends Component {
       if(!props){
         return null
       }
-      const question = unescapeHelper(props.question);
-      const answerArray = [unescapeHelper(props.correct_answer)]
+      const question = he.decode(props.question);
+      const answerArray = [he.decode(props.correct_answer)]
       for(let i = 0; i < props.incorrect_answers.length; i++){
-        answerArray.push(unescapeHelper(props.incorrect_answers[i]))
+        answerArray.push(he.decode(props.incorrect_answers[i]))
       }
 
       return (
