@@ -26,7 +26,7 @@ class App extends Component {
       if (this.state.username) {
         this.props.saveUserInfo(this.state.username, data.roomId)
       } else {
-        this.setState({username: 'Guest'})
+        this.setState({username: 'Opponent'})
         this.props.saveUserInfo(this.state.username, data.roomId)
       }
     });
