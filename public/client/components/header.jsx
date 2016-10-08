@@ -6,7 +6,7 @@ class Header extends Component {
     constructor(props) {
     super(props);
     this.renderSigninStatus = this.renderSigninStatus.bind(this);
-    this.renderLogoutStatus = this.renderLogoutStatus.bind(this); 
+    this.renderLogoutStatus = this.renderLogoutStatus.bind(this);
   }
   // forceUpdate() {
   //   return this.renderStatus();

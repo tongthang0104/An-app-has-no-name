@@ -7,9 +7,8 @@ import sinon from 'sinon';
 import reducer from '../public/client/reducers/reducer_active_category';
 import ActionTypes from '../public/client/constants/index'
 
-describe('app reducer', () => {
+describe('reducer', () => {
   it('initializes the state', () => {
     expect(reducer(undefined, {})).to.equal(null)
-  })
-
+  });
 })

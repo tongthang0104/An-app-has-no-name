@@ -26,7 +26,7 @@ class FetchBar extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="test">
         <h5>OR</h5>
         <Button waves="light" onClick={this.submit}>Play with Random Categories</Button>
       </div>
