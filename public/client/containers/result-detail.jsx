@@ -10,8 +10,8 @@ export default class ReactDetail extends Component {
     if(this.props.roomId){
       return (
         <div>
-          <h2>Player1 Score: {this.props.Player1}</h2>
-          <h2>Player2 Score:  {this.props.Player2}</h2>
+          <h2>Your Score: {this.props.Player1}</h2>
+          <h2>{this.props.playerTwoName}'s Score:  {this.props.Player2}</h2>
           <h2>Correct Answer: {correctAnswer}</h2>
         </div>
       );
@@ -19,7 +19,7 @@ export default class ReactDetail extends Component {
     } else {
       return (
         <div>
-          <h2>Player1 Score: {this.props.Player1}</h2>
+          <h2>Your Score: {this.props.Player1}</h2>
           <h2>Correct Answer: {correctAnswer}</h2>
         </div>
       );

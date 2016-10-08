@@ -30,6 +30,7 @@ class QuestionList extends Component {
       p2ScoreResultModal: "0",
       answerResultModal: '',
       gameOver: false,
+      playerTwoName: 'Opponent',
       playerTwoScore: 0,
       yourTurn: false,
     };
@@ -66,15 +67,20 @@ class QuestionList extends Component {
   }
 
   componentWillMount() {
-      Socket.on('receiveMultiplayerQuestions', (data) => {
-        this.setState({roomId: data.roomId});
-      });
+    Socket.on('receiveMultiplayerQuestions', (data) => {
+      this.setState({roomId: data.roomId});
+    });
 
-      Socket.on('playerJoined', (data) => {
-        this.setState({roomId: data.roomId});
-      });
+    Socket.on('playerJoined', (data) => {
+      this.setState({roomId: data.roomId});
+    });
   }
-
+  componentWillReceiveProps() {
+    // console.log('Player 2 componentWillReceiveProps', this.state.playerTwoName, this.props.opponentInfo);
+      if (this.props.opponentInfo) {
+        this.setState({playerTwoName:this.props.opponentInfo.username})
+    };
+  }
 componentDidMount() {
   this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
   Socket.on('receiveOpenOrder', (data) => {
@@ -254,8 +260,8 @@ closeEndingModal(){
   this.sendScore();
   Socket.emit('leaveRoomAndEndGame', this.state.roomId);
   this.reset();
-  const url = path.resolve(__dirname, '../../', 'index.html')
-  browserHistory.push(url);
+  // const url = path.resolve(__dirname, '../../', 'index.html')
+  // browserHistory.push(url);
 }
 
 // Questions render
@@ -339,7 +345,7 @@ renderAllModals() {
   if (this.state.playerTwoScore === this.props.playerOneScore) {
     showWinner = <h3>Draw!</h3>
   } else if (this.state.playerTwoScore > this.props.playerOneScore) {
-    showWinner = <h3>Player 2 wins!</h3>
+    showWinner = <h3>{this.state.playerTwoName} wins!</h3>
   } else {
     showWinner = <h3>You Win!</h3>
   }
@@ -369,16 +375,22 @@ renderAllModals() {
     },
 
     endingView: function(callback){
+      const url = path.resolve(__dirname, '../../', 'index.html')
+      console.log(this.state.playerTwoName, 'this.state.playerTwoName');
       return (
         <div>
           <h2>Your score: {this.props.playerOneScore}</h2>
           {/* check if Multiplayer mode or not */}
           {this.state.roomId ?
-            <div><h2>Opponent: {this.state.playerTwoScore}</h2>
+            <div><h1>{this.state.playerTwoName}'s score: {this.state.playerTwoScore}</h1>
             {showWinner}</div> : null
           }
-
-          <Button onClick={callback}>Go to home page</Button>
+          <Link to={url} onClick={callback}>
+            <Button waves='light'>Go to home page</Button>
+          </Link>
+          <Link to={'/scores/leaderboard'} onClick={callback}>
+            <Button waves='light'>Go to Leaderboard</Button>
+          </Link>
         </div>
         )
       }.bind(this),
@@ -394,7 +406,7 @@ renderAllModals() {
     questionResultView: function(callback) {
       return (
         <div>
-          <ResultDetail  roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
+          <ResultDetail  playerTwoName={this.state.playerTwoName} roomId={this.state.roomId} Player1={this.state.p1ScoreResultModal} Player2={this.state.p2ScoreResultModal} Correct={this.state.answerResultModal} />
           <ReactCountDownClock
             seconds={3}
             color="#26a69a"
@@ -442,6 +454,7 @@ addAlert (info) {
 
 //react render
 render () {
+   // console.log('p2 from render', this.props.opponentInfo, this.state.playerTwoName);
     return (
       <div className="List-group" key={this.props.questions}>
         <div>
@@ -466,7 +479,8 @@ function mapStateToProps(state){
   return {
     questions: state.QuestionReducer,
     roomId: state.roomId,
-    playerOneScore: state.ScoreReducer
+    playerOneScore: state.ScoreReducer,
+    opponentInfo: state.UserInfoReducer.opponentInfo,
   };
 }
 
