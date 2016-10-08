@@ -223,7 +223,7 @@ closeResult(){
 
   // Single Player mode
 
-  if (!this.state.roomId && this.state.singleP.length === 25) {
+  if (!this.state.roomId && this.state.singleP.length === 3) {
       this.setState({gameOver: true});
       this.gameOver();
   }
@@ -260,7 +260,7 @@ closeEndingModal(){
   this.sendScore();
   Socket.emit('leaveRoomAndEndGame', this.state.roomId);
   this.reset();
-  // const url = path.resolve(__dirname, '../../', 'index.html')
+  // const url = path.resolve(__dirname, '../../', 'index.html');
   // browserHistory.push(url);
 }
 
