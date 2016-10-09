@@ -42,8 +42,8 @@ class QuestionList extends Component {
     this.getScore = this.getScore.bind(this);
     this.closeEndingModal = this.closeEndingModal.bind(this);
     this.changeScore = this.props.changeScore.bind(this);
-    this.resetQuestion = this.props.resetQuestion.bind(this);
-    this.reset = this.reset.bind(this);
+    // this.resetQuestion = this.props.resetQuestion.bind(this);
+    // this.reset = this.reset.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
     this.renderModal = this.renderModal.bind(this);
     this.renderAllModals = this.renderAllModals.bind(this);
@@ -167,12 +167,15 @@ openModal(question) {
     const id = localStorage.getItem('id');
     const score = this.props.playerOneScore;
     const username = localStorage.getItem('username');
-    localStorage.setItem('score', score);
     if (username) {
       // console.log('Username from sendScore(): ', username);
       const scoreData = { score, id, username }
       this.props.saveScore(scoreData)
+      localStorage.setItem('score', null);
       // console.log(scoreData, "Score being saved: " ,scoreData);
+    } else {
+      localStorage.setItem('score', score);
+      console.log("Score can't be saved without username. Username: ", username, score);
     }
   }
 
@@ -191,15 +194,15 @@ gameOver(data) {
       });
     }
   } else {
-    this.reset();
+    // this.reset();
   }
 }
 
 // Reset questions to be null
-reset(){
-  // this.changeScore(0);
-  this.resetQuestion();
-}
+// reset(){
+//   this.changeScore(0);
+//   this.resetQuestion();
+// }
 
 // Get the score
 getScore(data){
@@ -256,11 +259,16 @@ closeModal() {
 // Final modal close
 closeEndingModal(){
   this.sendScore();
-
-  const url = path.resolve(__dirname, '../../', 'index.html');
-  browserHistory.push(url);
+  Socket.emit('leaveRoomAndEndGame', this.state.roomId);
+  // this.reset();
+  // const url = path.resolve(__dirname, '../../', 'index.html');
+  // browserHistory.push(url);
 }
 
+closeEndingModalUnauth() {
+  const score = this.props.playerOneScore;
+  localStorage.setItem('score', score);
+}
 // Questions render
 renderQuestion(questions) {
   const { modalOpen } = this.state;
@@ -384,12 +392,25 @@ renderAllModals() {
           <Link to={url} onClick={callback}>
             <Button waves='light'>Go to home page</Button>
           </Link>
-          <Link to={'/scores/leaderboard'} onClick={callback}>
-            <Button waves='light'>Go to Leaderboard</Button>
-          </Link>
+          { this.props.authenticated?
+            <Link to={'/scores/leaderboard'} onClick={callback}>
+              <Button waves='light'>Go to Leaderboard</Button>
+            </Link>
+            :
+            <div>
+              <Link to='/users/signup' onClick={callback}>Sign Up 
+                    {/* <Button waves='light'>Sign Up instead</Button> */}
+              </Link>
+              or 
+              <Link to='/users/signin' onClick={callback}>Sign In 
+                    {/* <Button waves='light'>Sign Up instead</Button> */}
+              </Link>
+              to save score
+            </div>
+          }
         </div>
-        )
-      }.bind(this),
+      )
+    }.bind(this),
 
     questionDetailView: function(callback) {
       return (
@@ -475,6 +496,7 @@ function mapStateToProps(state){
     roomId: state.roomId,
     playerOneScore: state.ScoreReducer,
     opponentInfo: state.UserInfoReducer.opponentInfo,
+    authenticated: state.AuthReducer.authenticated,
   };
 }
 

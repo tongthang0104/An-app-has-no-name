@@ -50,7 +50,7 @@ class QuestionDetail extends Component {
     return shuffle.map((answer) => {
       return (
         <div id={answer} onClick={this.checkAnswer} >
-          <ColorfulLink data={answer} answerClicked={this.state.clickedAnswer} >
+          <ColorfulLink data={answer} >
             {answer}
           </ColorfulLink>
         </div>
@@ -144,7 +144,7 @@ var ColorfulLink = React.createClass({
       linkStyle = {backgroundColor: '#eee'}
     }
 		return <div id={id} data={this.props.data} onClick={this.toggleActive} style={linkStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
-			{this.props.children}
+			{this.props.children} {/* Array of options coming from renderanswer's data */}
 		</div>
 	}
 })
