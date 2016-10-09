@@ -48,7 +48,11 @@ class Main extends Component {
     this.changeScore = this.props.changeScore.bind(this);
   }
 
+  componentWillMount() {
+    Socket.disconnect();
+    Socket.connect();
 
+  }
   componentDidMount(){
 
     // this.setState({socket: Socket})

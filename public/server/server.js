@@ -78,7 +78,16 @@ io.on('connection', function (socket) {
     socket.broadcast.to(data.roomId).emit('gotUserInfo', data);
   });
   gameSocket.on('CreateRoom', CreateRoom);
-  gameSocket.on('fetchQuestions', fetchQuestions);
+  gameSocket.on('fetchQuestions', data => {
+
+
+      //***** At this point we have the questions from the Client
+
+      //broadcast data.questions and invoke the function receiveMultiplayerQuestions at Client side and send data.questions to Client.
+      console.log("Question from server", data)
+      socket.broadcast.to(data.roomId).emit('receiveMultiplayerQuestions', data);
+  });
+
   gameSocket.on('openModal', (data) => {
     io.sockets.in(data.roomId).emit('receiveOpenOrder', data);
     this.emit('myTurn', false);
@@ -148,16 +157,6 @@ const JoinRoom = function(data){
     }
 };
 
-const fetchQuestions = function(data) {
-
-
-  //***** At this point we have the questions from the Client
-
-  //broadcast data.questions and invoke the function receiveMultiplayerQuestions at Client side and send data.questions to Client.
-  console.log("Question from server", data)
-  io.sockets.in(data.roomId).emit('receiveMultiplayerQuestions', data);
-};
-
 
 const openModal = function(data) {
 
@@ -199,8 +198,9 @@ const checkRoom = function(roomId) {
   }
 };
 
-const gameStart = function(data) {
-  this.emit('turnChange', {yourTurn: true});
+const gameStart = function(roomId) {
+  io.sockets.in(roomId).emit('hostStartGame', {roomId: roomId})
+  this.emit('turnChange', {roomId: roomId, yourTurn: true});
 };
 
 const getMessages = function(data){

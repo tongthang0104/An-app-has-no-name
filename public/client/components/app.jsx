@@ -21,8 +21,10 @@ class App extends Component {
 
   componentWillMount() {
     //Get the room id
-    Socket.on('receiveMultiplayerQuestions', (data) => {
+    Socket.on('playerJoined', (data) => {
       this.setState({roomId: data.roomId});
+
+      console.log('rooom', data.roomId)
       if (this.state.username) {
         this.props.saveUserInfo(this.state.username, data.roomId)
       } else {
@@ -37,7 +39,7 @@ class App extends Component {
     Socket.on('turnChange', (data) => {
       //broadcast yourTurn to be true to the other player
       console.log('THis is your turn', data)
-      this.setState({yourTurn: data.yourTurn});
+      this.setState({roomId: data, yourTurn: data.yourTurn});
     });
 
     Socket.on('myTurn', (bool) => {

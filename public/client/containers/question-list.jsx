@@ -33,6 +33,7 @@ class QuestionList extends Component {
       playerTwoName: 'Opponent',
       playerTwoScore: 0,
       yourTurn: false,
+      roomId: null
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -66,14 +67,11 @@ class QuestionList extends Component {
       return 'Your work is not saved! Are you sure you want to leave?';
     }
   }
-
   componentWillMount() {
-    Socket.on('receiveMultiplayerQuestions', (data) => {
+    Socket.on('hostStartGame', data => {
       this.setState({roomId: data.roomId});
-    });
-
-    Socket.on('playerJoined', (data) => {
-      this.setState({roomId: data.roomId});
+      console.log('expect to run twice')
+      Materialize.toast('The game started', 4000);
     });
   }
   componentWillReceiveProps() {
@@ -83,7 +81,8 @@ class QuestionList extends Component {
     };
   }
 componentDidMount() {
-  this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+  this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave);
+
   Socket.on('receiveOpenOrder', (data) => {
     this.setState({
       modalOpen: !data.modalOpen,
@@ -112,6 +111,7 @@ componentDidMount() {
   Socket.on('gameOver', this.gameOver);
   Socket.on('turnChange', (data) => {
     //broadcast yourTurn to be true to the other player
+
     this.setState({yourTurn: data.yourTurn});
   });
 
@@ -150,10 +150,13 @@ openModal(question) {
     //Check if multiplayer or not
     if (this.state.roomId) {
       Socket.emit('openModal', data);
+      console.log('There is roomId', this.state.roomId)
+
       // Set turn to be false
       this.setState({yourTurn: false});
 
     } else {
+      console.log('no Room id', this.state.roomId)
 
       //Single Player mode
       this.setState({modalOpen: true});
@@ -242,6 +245,7 @@ closeModal() {
   // Multiplayer
   if (this.state.roomId) {
     Socket.emit('closeModal', data);
+    Socket.emit('trackingGame', data);
   } else {
   // SinglePlayer
     let counter = 0;
@@ -252,7 +256,6 @@ closeModal() {
   }
 
   //Send the data back to Server to broadcast
-  Socket.emit('trackingGame', data);
   this.setState({resultModal:true});
 }
 
