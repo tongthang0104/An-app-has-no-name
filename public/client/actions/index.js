@@ -25,14 +25,13 @@ export function getLeaderboard() {
   return function(dispatch) {
     axios.get(url)
     .then((response) => {
-      console.log(response, "Here is the leaderboard...");
       dispatch({
         type: FETCH_LEADERBOARD,
         payload:response
       });
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     });
   }
 }
@@ -48,13 +47,12 @@ export function saveScore(props) {
         });
       })
       .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     });
   }
 }
 
 export function authError(CONST, error) {
-  console.log('error from authError', error);
   return {
     type: CONST,
     payload: error,
@@ -64,16 +62,14 @@ export function authError(CONST, error) {
 export function signinUser(props) {
   const url = `/users/signin`;
   return function (dispatch) {
-    console.log('check if going into signin func');
     axios.post(url, props)
       .then((response) => {
-      console.log("check axios post");
         const username = response.data.username;
         const id = response.data.id;
         localStorage.setItem('user', response.data.token);
         localStorage.setItem('username', username);
         localStorage.setItem('id', id);
-        dispatch({ 
+        dispatch({
           type: AUTH_USER ,
           payload: { username }
         });
@@ -84,21 +80,18 @@ export function signinUser(props) {
 }
 
 export function signupUser(props) {
-  console.log('signup user check');
   const url = `/users/signup`;
   return function (dispatch) {
-    console.log('check if going into func');
     axios.post(url, props)
       .then((response) => {
-      console.log("check axios post");
         const username = response.data.username;
         const id = response.data.id;
         localStorage.setItem('user', response.data.token);
         localStorage.setItem('username', username);
         localStorage.setItem('id', id);
-        dispatch({ 
-          type: AUTH_USER, 
-          payload: { username } 
+        dispatch({
+          type: AUTH_USER,
+          payload: { username }
         });
         browserHistory.push('/');
       })
@@ -124,7 +117,7 @@ export function selectQuestion(question) {
 }
 export function fetchQuestionsRandCat(){
   return function (dispatch) {
-    axios.get('/api/questions').then((response) => {    
+    axios.get('/api/questions').then((response) => {
       dispatch({
         type: FETCH_QUESTIONS_RANDOM,
         payload:response
@@ -134,10 +127,9 @@ export function fetchQuestionsRandCat(){
 }
 
 export function fetchQuestions(categories){
-  console.log(categories[0], "CHECKING CAT");
   const url = `/api/questions/${categories[0]}/${categories[1]}/${categories[2]}/${categories[3]}/${categories[4]}`;
   return function (dispatch) {
-    axios.get(url).then((response) => {    
+    axios.get(url).then((response) => {
       dispatch({
         type: FETCH_QUESTIONS,
         payload:response
@@ -148,7 +140,6 @@ export function fetchQuestions(categories){
 
 export function fetchQuestionsMultiplayer(questions) {
 
-  console.log('fetching from multiplayer', questions)
   return {
     type: FETCH_MULTI_QUESTIONS,
     payload:questions,
@@ -163,7 +154,6 @@ export const changeScore = (score) => {
 };
 
 export const incrementScore = (score, difficulty, roomId) => {
-  console.log('THIS IS INCREMENT_SCORE', difficulty);
   return {
     type: INCREMENT_SCORE,
     roomId: roomId,

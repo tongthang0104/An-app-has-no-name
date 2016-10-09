@@ -13,7 +13,7 @@ import {
 
 export default function(state = {}, action) {
   switch(action.type) {
-    
+
     // case SIGNUP_SUCCESS:
     //   return { ...state, signup: true, error: {}, username: action.payload.username  };
     case SIGNUP_FAILURE:
@@ -27,10 +27,8 @@ export default function(state = {}, action) {
     case UNAUTH_USER:
       return { ...state, authenticated: false, error: {} };
     case GET_USER_INFO:
-      console.log(action.payload, 'sdlkjfldksjfdl');
       return { ...state, userinfo: action.payload, error: {}}
   }
 
   return state;
 }
-

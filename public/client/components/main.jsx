@@ -48,7 +48,11 @@ class Main extends Component {
     this.changeScore = this.props.changeScore.bind(this);
   }
 
+  componentWillMount() {
+    Socket.disconnect();
+    Socket.connect();
 
+  }
   componentDidMount(){
 
     // this.setState({socket: Socket})
@@ -106,7 +110,6 @@ class Main extends Component {
         this.setState({
           roomId: ''
         });
-          console.log(this.state.roomValid);
 
     } else {
       this.setState({
@@ -167,7 +170,6 @@ class Main extends Component {
   }
 
   receiveMultiplayerQuestions(data) {
-    console.log("broadcasting", data);
       this.fetchQuestionsMultiplayer(data.questions);
   }
 

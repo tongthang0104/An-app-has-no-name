@@ -21,7 +21,7 @@ class App extends Component {
 
   componentWillMount() {
     //Get the room id
-    Socket.on('receiveMultiplayerQuestions', (data) => {
+    Socket.on('playerJoined', (data) => {
       this.setState({roomId: data.roomId});
       if (this.state.username) {
         this.props.saveUserInfo(this.state.username, data.roomId)
@@ -30,14 +30,12 @@ class App extends Component {
         this.props.saveUserInfo(this.state.username, data.roomId)
       }
     });
-    // console.log('Username from joinRoom: ', this.state.username);
   }
 
   componentDidMount() {
     Socket.on('turnChange', (data) => {
       //broadcast yourTurn to be true to the other player
-      console.log('THis is your turn', data)
-      this.setState({yourTurn: data.yourTurn});
+      this.setState({roomId: data, yourTurn: data.yourTurn});
     });
 
     Socket.on('myTurn', (bool) => {
@@ -47,7 +45,6 @@ class App extends Component {
 
 
   renderScore() {
-    // console.log('this.props.userInfo', this.props.userInfo);
     if (this.state.roomId) {
       let turnStyle;
       let opponentStyle;
@@ -55,14 +52,10 @@ class App extends Component {
       if (this.state.yourTurn) {
         turnStyle = {backgroundColor: '#2fd0c0'};
         opponentStyle = {backgroundColor: '#d5f6f2'};
-        console.log('This is your Turn:', this.state.yourTurn);
       } else {
         turnStyle = {backgroundColor: '#d5f6f2'};
         opponentStyle = {backgroundColor: '#2fd0c0'}
-        console.log('This is your Turn:', this.state.yourTurn);
       }
-      // console.log('Multiplayer', this.state.roomId)
-
       return (
         <table  className="Score-Table" >
           <td className="Right-Score">
