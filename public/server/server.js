@@ -71,6 +71,7 @@ const io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
 
+  gameSocket = socket;
   socket.on('JoinRoom', JoinRoom);
   socket.on('fetchUserInfo', (data) => {
     socket.broadcast.to(data.roomId).emit('gotUserInfo', data);
