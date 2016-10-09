@@ -14,13 +14,17 @@ class Header extends Component {
   renderSigninStatus() {
     if(this.props.username){
       return (
-        <h5 className="auth-nav">You're signed in as {this.props.username}</h5>
+        <div>
+        <li>
+          <Link to="/users/signout">Signout</Link>
+        </li><h5 className="auth-nav">You're signed in as {this.props.username}</h5>
+        </div>
       )
     }
   }
   renderLogoutStatus() {
     return (
-      <h5 className="auth-nav">Signin or Signup to save score!</h5>
+      <h5 className="auth-nav">to save score!</h5>
     )
   }
 
@@ -36,11 +40,11 @@ class Header extends Component {
             <li>
               <Link className="li-header" to="/scores/leaderboard">Leaderboard</Link>
             </li>
+
             <div className="auth-nav"> {this.props.authenticated}
             { this.props.authenticated ?
               <li>
                 <li>{this.renderSigninStatus()}</li>
-                <Link to="/users/signout">Signout</Link>
               </li>
                 :
               <li>
@@ -48,6 +52,7 @@ class Header extends Component {
                 <li>
                   <Link to="/users/signin">Signin</Link>
                 </li>
+                  <li><h5 className="auth-nav">OR</h5></li>
                 <li>
                   <Link to="/users/signup">Create Account</Link>
                 </li>

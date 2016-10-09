@@ -299,10 +299,12 @@ li:nth-child(odd){
   color: #26a69a;
 }
 .li-header {
-  font-size:30px;
+  font-size:25px;
 }
 input {
   text-align: center;
+  color: #26a69a;
+  font-size: 25px !important;
 }
 #input-group {
   color: #26a69a;
@@ -344,4 +346,8 @@ img {
 .error-container {
   font-size: 21;
   color: #d9534f;
+}
+
+.auth-nav {
+  color: white;
 }
