@@ -33,7 +33,7 @@ module.exports = {
 
   getRandomCategories: (max = 5, pickedCat = []) => {
     let filterCategories = _.without(module.exports.categoriesList, ...pickedCat);
-    
+
     if (filterCategories) {
       return module.exports.randomize(filterCategories, max);
     } else {
@@ -85,7 +85,6 @@ module.exports = {
       return Math.floor(Math.random() * (max - min) + min);
     };
     const allCategories =  Object.keys(questionList);
-    console.log("random Num", getRandomArbitrary(0, allCategories.length));
     const randCat = allCategories[getRandomArbitrary(0, allCategories.length)];
 
     const randomQuestion = questionList[randCat][getRandomArbitrary(0, 5)];

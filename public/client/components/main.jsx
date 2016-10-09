@@ -110,7 +110,6 @@ class Main extends Component {
         this.setState({
           roomId: ''
         });
-          console.log(this.state.roomValid);
 
     } else {
       this.setState({
@@ -171,7 +170,6 @@ class Main extends Component {
   }
 
   receiveMultiplayerQuestions(data) {
-    console.log("broadcasting", data);
       this.fetchQuestionsMultiplayer(data.questions);
   }
 

@@ -3,7 +3,6 @@ const jwt  = require('jwt-simple');
 
 module.exports = {
   signup: (req, res) => { //
-    console.log("signup check fro server");
     User.sync()
     .then((User) => {
       const { username, password } = req.body;
@@ -19,16 +18,9 @@ module.exports = {
               res.status(200).send({token, username, id: user.id, data: "You have been signed up!"});
             });
         } else {
-          console.log("sdsfsdfwelrwerwerwerwe");
-          console.log("sdsfsdfwelrwerwerwerwe");
-          console.log("sdsfsdfwelrwerwerwerwe");
           res.status(422).send({error: "Oops! Username already exists!"});
         }
-      })
-      // .catch((error)=>{
-      //   console.log(error, 'error');
-      //   res.status(422).send({error});
-      // })
+      });
     });
   },
 
@@ -42,7 +34,7 @@ module.exports = {
           if (match) {
             const copyUser = JSON.parse(JSON.stringify(user));
             copyUser.token = '';
-            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead. 
+            //encode on copy of user with token set to empty. Otherwise the token will keep encoding on the previous token and it gets huge. Might be better to do another update on the user instead.
             const token = jwt.encode(copyUser, 'secret');
             user.update({token, token})
             .then(() => {
@@ -59,29 +51,6 @@ module.exports = {
   },
 
   signout: (req, res) => {
-    console.log('You have been logged out');
     res.sendFile(path.resolve(__dirname, '../', 'index.html'));
   },
 }
-
-
-  // checkAuth: function (req, res, next) {
-  //   var token = req.headers['x-access-token'];
-  //   if (!token) {
-  //     next(new Error('No token'));
-  //   } else {
-  //     var user = jwt.decode(token, 'secret');
-  //     var findUser = Q.nbind(User.findOne, User);
-  //     findUser({username: user.username})
-  //       .then(function (foundUser) {
-  //         if (foundUser) {
-  //           res.status(200).send();
-  //         } else {
-  //           res.status(401).send();
-  //         }
-  //       })
-  //       .fail(function (error) {
-  //         next(error);
-  //       });
-  //   }
-  // }

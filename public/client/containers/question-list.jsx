@@ -70,7 +70,6 @@ class QuestionList extends Component {
   componentWillMount() {
     Socket.on('hostStartGame', data => {
       this.setState({roomId: data.roomId});
-      console.log('expect to run twice')
       Materialize.toast('The game started', 4000);
     });
   }
@@ -150,14 +149,11 @@ openModal(question) {
     //Check if multiplayer or not
     if (this.state.roomId) {
       Socket.emit('openModal', data);
-      console.log('There is roomId', this.state.roomId)
 
       // Set turn to be false
       this.setState({yourTurn: false});
 
     } else {
-      console.log('no Room id', this.state.roomId)
-
       //Single Player mode
       this.setState({modalOpen: true});
     }
@@ -177,8 +173,6 @@ openModal(question) {
       const scoreData = { score, id, username }
       this.props.saveScore(scoreData)
       // console.log(scoreData, "Score being saved: " ,scoreData);
-    } else {
-     console.log("Score can't be saved without username. Username: ", username, score);
     }
   }
 
@@ -379,7 +373,6 @@ renderAllModals() {
 
     endingView: function(callback){
       const url = path.resolve(__dirname, '../../', 'index.html')
-      console.log(this.state.playerTwoName, 'this.state.playerTwoName');
       return (
         <div>
           <h2>Your score: {this.props.playerOneScore}</h2>

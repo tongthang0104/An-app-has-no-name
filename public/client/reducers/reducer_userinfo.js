@@ -10,7 +10,6 @@ export default function(state = {}, action) {
 
     case USER_INFO:
     if (action.payload) {
-      console.log("Userinfo to send to chatroom", action.payload);
       Socket.emit('fetchUserInfo', action.payload)
       return { ...state, userInfo: action.payload };
       // return {userInfo: action.payload}

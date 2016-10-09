@@ -26,7 +26,6 @@ componentDidMount(){
     }
   });
   Socket.on('broadcastScore', (data) => {
-    console.log("in broadcast score", data)
     this.setState({score: data.score});
   });
 }
