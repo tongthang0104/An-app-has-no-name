@@ -42,8 +42,8 @@ class QuestionList extends Component {
     this.getScore = this.getScore.bind(this);
     this.closeEndingModal = this.closeEndingModal.bind(this);
     this.changeScore = this.props.changeScore.bind(this);
-    // this.resetQuestion = this.props.resetQuestion.bind(this);
-    // this.reset = this.reset.bind(this);
+    this.resetQuestion = this.props.resetQuestion.bind(this);
+    this.reset = this.reset.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
     this.renderModal = this.renderModal.bind(this);
     this.renderAllModals = this.renderAllModals.bind(this);
@@ -199,10 +199,10 @@ gameOver(data) {
 }
 
 // Reset questions to be null
-// reset(){
-//   this.changeScore(0);
-//   this.resetQuestion();
-// }
+reset(){
+  // this.changeScore(0);
+  this.resetQuestion();
+}
 
 // Get the score
 getScore(data){
