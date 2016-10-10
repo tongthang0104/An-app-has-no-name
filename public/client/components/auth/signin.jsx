@@ -27,6 +27,7 @@ class Signin extends Component {
   }
 
   handleFormSubmit(values) {
+    console.log(values, 'values');
     this.props.signinUser(values);
     // browserHistory.push('/');
   }

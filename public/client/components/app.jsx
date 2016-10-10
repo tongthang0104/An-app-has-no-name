@@ -76,9 +76,10 @@ class App extends Component {
   }
 
   render(){
+    console.log('{this.props.children}', this.props.children);
     return (
       <div className="wrap">
-        {this.props.children}
+        {this.props.children} {/* questionlist is nested route/component so this is where questionlist gets rendered */}
         {this.renderScore()}
       </div>
     );
