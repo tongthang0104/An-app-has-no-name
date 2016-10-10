@@ -386,7 +386,7 @@ renderAllModals() {
           <h2>Your score: {this.props.playerOneScore}</h2>
           {/* check if Multiplayer mode or not */}
           {this.state.roomId ?
-            <div><h1>{this.state.playerTwoName}'s score: {this.state.playerTwoScore}</h1>
+            <div><h2>{this.state.playerTwoName}'s score: {this.state.playerTwoScore}</h2>
             {showWinner}</div> : null
           }
           <Link to={url} onClick={callback}>
@@ -398,11 +398,11 @@ renderAllModals() {
             </Link>
             :
             <div>
-              <Link to='/users/signup' onClick={callback}>Sign Up 
+              <Link to='/users/signup' onClick={callback}>Sign Up
                     {/* <Button waves='light'>Sign Up instead</Button> */}
               </Link>
-              or 
-              <Link to='/users/signin' onClick={callback}>Sign In 
+              or
+              <Link to='/users/signin' onClick={callback}>Sign In
                     {/* <Button waves='light'>Sign Up instead</Button> */}
               </Link>
               to save score
